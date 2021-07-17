@@ -1,0 +1,6 @@
+.env
+.gitattributes
+.idea
+workspace
+.DS_Store
+vendor
