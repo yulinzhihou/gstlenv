@@ -61,6 +61,8 @@ rm -rf  ${BASE_PATH}/*.ini ${BASE_PATH}/config.json ${BASE_PATH}/billing
 
 if [ $? == 0 ]; then
   echo -e "${CSUCCESS} 配置文件已经写入成功，可以执行【runtlbb】进行开服操作！！${CEND}"
+  exit 0;
 else
   echo -e "${CRED} 配置文件写入失败！${CEND}"
+  exit 1;
 fi

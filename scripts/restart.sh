@@ -19,11 +19,12 @@ else
 fi
 
 while :; do echo
-    for ((time = 10; time > 0; time--)); do
-      echo -ne "\r在准备正行重启操作！！，剩余 ${CBLUE}$time${CEND} 秒，可以在计时结束前，按 CTRL+C 退出！\r"
+    for ((time = 10; time >= 0; time--)); do
+      echo -ne "\r在准备正行重启操作！！，剩余 ${CRED}$time${CEND} 秒，可以在计时结束前，按 CTRL+C 退出！\r"
       sleep 1
     done
     echo -ne "\n\r"
+    echo -ne "${CYELLOW}正在重启…………${CEND}"
     cd ${ROOT_PATH}/${GSDIR} && docker-compose restart
     if [ $? == 0 ]; then
       echo -e "${CSUCCESS} 服务端已经重启成功，如果需要重新开服，请运行【runtlbb】命令 ${CEND}"

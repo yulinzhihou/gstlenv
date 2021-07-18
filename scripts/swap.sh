@@ -24,6 +24,8 @@ if [ ! -f /usr/swap/swapfile ]; then
     chmod -R 600 /usr/swap/swapfile && swapon /usr/swap/swapfile && \
     echo "/usr/swap/swapfile swap swap defaults 0 0" >> /etc/fstab
     echo -e "${CSUCCESS} 虚拟缓存提升到 (`free -hm | awk -F " " 'NR==2{print $2}'` + 4.0G) 成功！ ${CEND}"
+    exit 0;
 else
     echo -e "${CRED} 虚拟缓存已经提升到 (`free -hm | awk -F " " 'NR==3{print $2}'`) ${CEND}"
+    exit 1;
 fi

@@ -20,9 +20,9 @@ fi
 
 # 更新命令
 download () {
-  # wget -q ${FILENAME} https://gitee.com/yulinzhihou/gs_tl_env/repository/archive/${VERSION}.tar.gz  -O ${TMP_PATH}/${WHOLE_NAME}
+  wget -q ${FILENAME} https://gitee.com/yulinzhihou/gstlenv/repository/archive/${VERSION}.tar.gz  -O ${TMP_PATH}/${WHOLE_NAME}
   # gs env 服务器环境 ，组件
-  wget -q https://gsgameshare.com/${WHOLE_NAME} -O ${TMP_PATH}/${WHOLE_NAME}
+  # wget -q https://gsgameshare.com/${WHOLE_NAME} -O ${TMP_PATH}/${WHOLE_NAME}
   cd ${TMP_PATH} && \
   # 解压目录
   tar zxf ${WHOLE_NAME} && mv ${FILENAME} ${ROOT_PATH}/${ENVDIR} && rm -rf ${TMP_PATH}/${WHOLE_NAME}
@@ -44,8 +44,10 @@ if [ $? == '0' ]; then
   set_command
   if [ $? == '0' ]; then
     echo -e "${CSUCCESS} 命令重新生成成功，如果需要了解详情，可以运行 gs 命令进行帮助查询！！${CEND}"
+    exit 0;
   else
     echo -e "${CRED} 命令重新生成失败，请联系作者，或者重装安装环境 ${CEND}"
+    exit 1;
   fi
 fi
 

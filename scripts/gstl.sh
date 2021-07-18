@@ -196,7 +196,7 @@ init_config(){
             fi
         done
     else 
-        echo -e "GS专用环境容器还没下载下来，请重新执行【$0】命令！"
+        echo -e "GS专用环境容器还没下载下来，请重新执行【$0】命令！，或者加客服QQ：1303588722反馈问题"
         exit 1;
     fi
     \cp -rf ${WHOLE_PATH} /usr/local/bin/.env

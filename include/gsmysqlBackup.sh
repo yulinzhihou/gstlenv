@@ -8,7 +8,7 @@
 
 FILENAME=`date "+%Y-%m-%d-%H-%M-%S"`
 TLBBDB_LOG_PATH='/var/lib/mysql/tlbbdb_backup.log'
-WEB_LOG_PATH='/var/lib/mysql/WEB_backup.log'
+WEB_LOG_PATH='/var/lib/mysql/web_backup.log'
 mysqldump -uroot -p"${MYSQL_ROOT_PASSWORD}" tlbbdb > /var/lib/mysql/tlbbdb-${FILENAME}.sql
 #判断是否备份成功
 if [[ $? -eq 0 ]]; then

@@ -26,6 +26,7 @@ if [ -f "/root/tlbb.tar.gz" ]; then
     chmod -R 777 /tlgame && \
     mv  /root/tlbb.tar.gz  /root/`date +%Y%m%d%H%I%S`-tlbb.tar.gz
     echo -e "${CSUCCESS} 服务端文件【tlbb.tar.gz】已经解压成功！！${CEND}"
+    exit 0;
 elif [ -f "/root/tlbb.zip" ]; then
     tar zcf tlgame-`date +%Y%m%d%H%I%S`${SUFFIX} ${TLBB_PATH} && \
     rm -rf ${TLBB_PATH}/tlbb && \
@@ -33,6 +34,8 @@ elif [ -f "/root/tlbb.zip" ]; then
     chmod -R 777 /tlgame && \
     mv ~/tlbb.zip ~/`date +%Y%m%d%H%I%S`-tlbb.zip
     echo -e "${CSUCCESS} 服务端文件 tlbb.zip 已经上传成功！！${CEND}"
+    exit 0;
 else
     echo -e "${CRED} 服务端文件不存在，或者位置上传错误，请上传至 [/root] 目录下面${CEND}"
+    exit 1;
 fi

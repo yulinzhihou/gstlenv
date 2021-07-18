@@ -19,11 +19,12 @@ else
 fi
 
 while :; do echo
-    for ((time = 10; time > 0; time--)); do
-      sleep 1
+    for ((time = 10; time >= 0; time--)); do
       echo -ne "\r在准备正行清除操作！！，剩余 ${CBLUE}$time${CEND} 秒，可以在计时结束前，按 CTRL+C 退出！\r"
+      sleep 1
     done
     echo -ne "\n\r"
+    echo -ne "${CYELLOW}正在进行清除操作…………${CEND}"
     if [ -e ${ROOT_PATH}/${GSDIR} ]; then
       docker stop $(docker ps -a -q) && \
       docker rm -f $(docker ps -a -q) && \
@@ -39,8 +40,10 @@ while :; do echo
 
     if [ $? == 0 ]; then
       echo -e "${CSUCCESS} 数据清除成功，请重新安装环境！！${CEND}"
+      exit 0;
     else
       echo -e "${CRED} 数据清除失败！可能需要重装系统或者环境了！${CEND}"
+      exit 1;
     fi
     break
 done

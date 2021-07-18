@@ -25,6 +25,8 @@ docker exec -d gsserver /home/billing/billing up -d && \
 docker exec -d gsserver /bin/bash run.sh
 if [ $? == 0 ]; then
   echo -e "${CSUCCESS} 已经成功启动服务端，请耐心等待几分钟后，建议使用：【runtop】查看开服的情况！！${CEND}"
+  exit 0;
 else
   echo -e "${CRED} 启动服务端失败！${CEND}"
+  exit 1;
 fi
