@@ -19,13 +19,8 @@ pushd ${GSTL_DIR} > /dev/null
 
 # 加载配置
 . ./.env
-. ./include/color.sh
+. ./scripts/color.sh
 . ./include/check_os.sh
-
-# 帮助信息
-show_help() {
-  _green "https://gsgameshare.com"
-}
 
 # 系统组件安装
 sys_plugins_install() {
@@ -67,7 +62,7 @@ EOF
       [ "${OS}" == "CentOS" ] && sudo systemctl daemon-reload && sudo systemctl restart docker
 
     else
-      echo -e "${CBLUE}docker was installed !!!${CEND}";
+      echo -e "${CBLUE} 环境 Docker 安装成功 !!!${CEND}";
     fi
 
 
@@ -75,7 +70,7 @@ EOF
   chmod +x /usr/local/bin/docker-compose
   docker-compose --version >& /dev/null
   if [ $? -eq 0 ]; then
-    echo -e "${CBLUE} docker-compose was installed !!! ${CEND}";
+    echo -e "${CBLUE} 容器工具 docker-compose 安装成功 !!! ${CEND}";
   fi
 }
 
@@ -102,11 +97,11 @@ set_timezone() {
 # 安装整合
 do_install() {
   set_timezone
-  [ $? == 0 ] && echo -e "${CBLUE} set_timezone success!! ${CEND}" || { echo -e "${CRED} set_timezone failed!! ;${CEND}"; exit 1;}
+  [ $? == 0 ] && echo -e "${CBLUE}  设置时区成功!! ${CEND}" || { echo -e "${CRED} 设置时区失败!! ;${CEND}"; exit 1;}
   do_install_docker
-  [ $? == 0 ] && echo -e "${CBLUE} docker_install success!! ${CEND}" || { echo -e "${CRED} docker_install failed!! ;${CEND}"; exit 1;}
+  [ $? == 0 ] && echo -e "${CBLUE}  环境核心组件安装成功！！ ${CEND}" || { echo -e "${CRED} 环境核心组件安装失败!! ;${CEND}"; exit 1;}
   set_command
-  [ $? == 0 ] && echo -e "${CBLUE} set_command success！${CEND}" || { echo -e "${CRED}  set_command failed ！！${CEND}"; exit 1;}
+  [ $? == 0 ] && echo -e "${CBLUE}  设置全局命令成功！！${CEND}" || { echo -e "${CRED} 设置全局命令失败！！${CEND}"; exit 1;}
 }
 
 # 安装完成提示信息
@@ -119,7 +114,7 @@ show_install_msg() {
   #       1.论坛客服QQ:\t1303588722
   #       2.论坛有对应的环境教程，有不懂的可以进论坛--原创教程
   #       3.技术交流群:\t826717146,如果搜索不到群，请加客服QQ,备注进群即可
-  #       4.环境还未安装完成，请手动执行 gstl
+  #       4.环境即将安装完成，请手动执行 gstl
   #######################################################################
   ${CEND}"
   endTime=`date +%s`
@@ -136,5 +131,5 @@ do_install
 if [ $? -eq 0 ]; then
   show_install_msg
 else
-  echo -e "${CRED}环境还未安装完成，请手动执行 gstl${CEND}"
+  echo -e "${CRED}环境即将安装完成，请手动执行 gstl${CEND}"
 fi 
