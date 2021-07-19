@@ -21,7 +21,7 @@ fi
 
 FILE_PATH="/root/.gs/"
 
-function setconfig_rebuild() {
+setconfig_rebuild() {
     if [ -e ${FILE_PATH} ] && [ ! -f ${FILE_PATH}.env ]; then
         cd ${FILE_PATH} && \cp -rf env.sample .env && source ${FILE_PATH}.env
     fi
@@ -166,7 +166,8 @@ function setconfig_rebuild() {
             break
             fi
         done
-        \cp -rf ${WHOLE_PATH} /usr/local/bin/.env
+        \cp -rf ${WHOLE_PATH} /usr/local/bin/.env && \
+        \cp -rf ${WHOLE_PATH} /root/.tlgame/.env
         chattr +i ${WHOLE_PATH}
     else 
         echo -e "GS专用环境容器还没下载下来，请重新执行【gstl】命令！"

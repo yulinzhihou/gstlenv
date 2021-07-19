@@ -17,7 +17,7 @@ GSDIR='.gs'
 ROOT_PATH='/root'
 # 容器配置文件名称
 CONFIG_FILE='.env'
-# 容器配置文件绝对路径
+# 容器配置文件绝对路径，使用gstlenv的配置文件 
 WHOLE_PATH='/root/.gs/.env'
 # 容器下载临时路径
 TMP_PATH='/opt'
@@ -46,11 +46,14 @@ login(){
 # 下载容器参数
 download() {
     # gs docker 镜像
-    cd ${TMP_PATH} && \
-    wget -q https://gsgameshare.com/${WHOLE_NAME} -O ${TMP_PATH}/${WHOLE_NAME} && \
-    tar zxf ${WHOLE_NAME} && mv ${DOCKERNAME} ${ROOT_PATH}/${GSDIR} && \
-    chown -R root:root ${ROOT_PATH}/${GSDIR} && \
-    cd ${ROOT_PATH}/${GSDIR} && \cp -rf env.sample .env && rm -rf ${TMP_PATH}/${WHOLE_NAME} 
+    # cd ${TMP_PATH} && \
+    # wget -q https://gsgameshare.com/${WHOLE_NAME} -O ${TMP_PATH}/${WHOLE_NAME} && \
+    # tar zxf ${WHOLE_NAME} && mv ${DOCKERNAME} ${ROOT_PATH}/${GSDIR} && \
+    # chown -R root:root ${ROOT_PATH}/${GSDIR} && \
+    if [ -d ${ROOT_PATH}/${GSDIR} ]; then
+        mkdir -p ${ROOT_PATH}/${GSDIR}
+    fi
+    cd ${ROOT_PATH}/.tlgame && \cp -rf docker-compose.yml ${ROOT_PATH}/${GSDIR} &&  \cp -rf env.sample ${WHOLE_PATH}
 }
 
 # 配置容器启动的参数
@@ -199,7 +202,8 @@ init_config(){
         echo -e "GS专用环境容器还没下载下来，请重新执行【$0】命令！，或者加客服QQ：1303588722反馈问题"
         exit 1;
     fi
-    \cp -rf ${WHOLE_PATH} /usr/local/bin/.env
+    \cp -rf ${WHOLE_PATH} /usr/local/bin/.env && \
+    \cp -rf ${WHOLE_PATH} /root/.tlgame/.env
     chattr +i ${WHOLE_PATH}
 }
 
