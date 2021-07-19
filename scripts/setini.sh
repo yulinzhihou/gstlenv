@@ -53,6 +53,7 @@ fi
 \cp -rf ${BASE_PATH}/config.json ${GS_PROJECT_PATH}/billing/
 \cp -rf ${BASE_PATH}/LoginInfo.ini ${BASE_PATH}/ShareMemInfo.ini ${BASE_PATH}/ServerInfo.ini ${GS_PROJECT_PATH}/tlbb/Server/Config/
 docker cp ${BASE_PATH}/odbc.ini gsserver:/etc
+docker cp /root/.tlgame/scripts/step.sh gsserver:/usr/local/bin/step
 #每次更新后，先重置更改过的文件
 #sed -i 's/^else$/else\n  \/home\/billing\/billing up -d/g' ${GS_PROJECT_PATH}/tlbb/run.sh && \
 sed -i 's/exit$/tail -f \/dev\/null/g' ${GS_PROJECT_PATH}/tlbb/run.sh && \
