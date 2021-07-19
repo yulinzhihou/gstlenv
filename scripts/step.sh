@@ -48,7 +48,7 @@ run_step_2() {
 }
 
 run_step_3() {
-  arr = ('Login' 'Login8' 'Login_fix')
+  arr=('Login' 'Login8' 'Login_fix')
   for i in $(seq 0 1 ${#arr[*]})
   do
     index=$i
@@ -66,7 +66,7 @@ run_step_3() {
 }
 
 run_step_4() {
-  arr = ('World' 'World8' 'World_fix')
+  arr=('World' 'World8' 'World_fix')
   for i in $(seq 0 1 ${#arr[*]})
   do
     index=$i
@@ -84,7 +84,7 @@ run_step_4() {
 }
 
 run_step_5() {
-  arr = ('Server' 'Server8' 'Server_fix' 'ServerTest')
+  arr=('Server' 'Server8' 'Server_fix' 'ServerTest')
   for i in $(seq 0 1 ${#arr[*]})
   do
     index=$i
@@ -103,7 +103,7 @@ run_step_5() {
 echo -e "${CRED}注意：执行此命令前，建议重启服务器，避免一些不必要的问题！${CEND}"
 echo -e "${CYYAN}使用此命令需要手动创建多窗口，点当前容器标签右键---克隆/复制容器---会基于当前容器创建一个全新的容器。每个容器输入一个命令，一共需要4个窗口${CEND}" 
 echo -e "${CYELLOW}如果有问题：可以加客服QQ1302588722，进行反馈${CEND}"
-while true do
+while :; do echo
   echo -e "
     ※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※
     ◎ 请不要重复启动，重复启动没有任何意义，也达到启动不了的效果。
@@ -113,6 +113,8 @@ while true do
     ◎ 步骤[4]：启动 [World] 服务
     ◎ 步骤[5]：启动 [Server] 服务
     ※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※"
+    echo -ne "\r\n"
+    echo -ne "\r\n"
     read -p "请选择功能 输入序号并回车：" num
     case "$num" in
     [1]) run_step_1;break ;;

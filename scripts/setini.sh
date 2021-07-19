@@ -59,7 +59,7 @@ docker cp /root/.tlgame/scripts/step.sh gsserver:/usr/local/bin/step
 sed -i 's/exit$/tail -f \/dev\/null/g' ${GS_PROJECT_PATH}/tlbb/run.sh && \
 cd ${BASE_PATH}/ && \
 rm -rf  ${BASE_PATH}/*.ini ${BASE_PATH}/config.json ${BASE_PATH}/billing
-
+chown -R root:root ${GS_PROJECT_PATH} && chmod -R 777 ${GS_PROJECT_PATH}
 if [ $? == 0 ]; then
   echo -e "${CSUCCESS} 配置文件已经写入成功，可以执行【runtlbb】进行开服操作！！${CEND}"
   exit 0;
