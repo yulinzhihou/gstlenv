@@ -30,7 +30,7 @@ CWARNING="$CYELLOW"
 CMSG="$CCYAN"
 
 run_step_1() {
-  docker exec -d gsserver /home/billing/billing up -d
+  cd /home/billing && ./billing up -d
   if [ $? == 0 ]; then
     echo -e "${CSUCCESS} 启动 [BILLING] 服务成功，请耐心等待几分钟。建议使用：【runtop】查看情况！！${CEND}"
   else
@@ -39,10 +39,7 @@ run_step_1() {
 }
 
 run_step_2() {
-  docker exec -d gsserver ./Server/shm stop && \
-  docker exec -d gsserver /home/billing/billing up -d  && \
-  docker exec -d gsserver /bin/bash Server/shm start
-
+  cd /home/tlbb/Server && ./shm stop && ./shm start
   if [ $? == 0 ]; then
     echo -e "${CSUCCESS} 启动 [ShareMemory] 服务成功，请耐心等待几分钟。建议使用：【runtop】查看情况！！${CEND}"
   else
@@ -51,7 +48,16 @@ run_step_2() {
 }
 
 run_step_3() {
-  docker exec -d gsserver /bin/bash Server/Login
+  arr = ('Login' 'Login8' 'Login_fix')
+  for i in $(seq 0 1 ${#arr[*]})
+  do
+    index=$i
+    if [ -f "/home/tlbb/Server/${arr[index]}" ]; then
+        cd /home/tlbb/Server && ./${arr[index]}
+        break;
+    fi
+  done
+#   cd /home/tlbb/Server && ./Login
   if [ $? == 0 ]; then
     echo -e "${CSUCCESS} 启动 [Login] 服务成功，请耐心等待几分钟。建议使用：【runtop】查看情况！！${CEND}"
   else
@@ -60,7 +66,16 @@ run_step_3() {
 }
 
 run_step_4() {
-  docker exec -d gsserver /bin/bash Server/World
+  arr = ('World' 'World8' 'World_fix')
+  for i in $(seq 0 1 ${#arr[*]})
+  do
+    index=$i
+    if [ -f "/home/tlbb/Server/${arr[index]}" ]; then
+        cd /home/tlbb/Server && ./${arr[index]}
+        break;
+    fi
+  done
+#   cd /home/tlbb/Server && ./World
   if [ $? == 0 ]; then
     echo -e "${CSUCCESS} 启动 [World] 服务成功，请耐心等待几分钟。建议使用：【runtop】查看情况！！${CEND}"
   else
@@ -69,7 +84,15 @@ run_step_4() {
 }
 
 run_step_5() {
-  docker exec -d gsserver /bin/bash Server/Server
+  arr = ('Server' 'Server8' 'Server_fix' 'ServerTest')
+  for i in $(seq 0 1 ${#arr[*]})
+  do
+    index=$i
+    if [ -f "/home/tlbb/Server/${arr[index]}" ]; then
+        cd /home/tlbb/Server && ./${arr[index]}
+        break;
+    fi
+  done
   if [ $? == 0 ]; then
     echo -e "${CSUCCESS} 启动 [Server] 服务成功，请耐心等待几分钟。建议使用：【runtop】查看情况！！${CEND}"
   else
