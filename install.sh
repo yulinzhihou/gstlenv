@@ -2,7 +2,7 @@
 # Author: yulinzhihou <yulinzhihou@gmail.com>
 # Forum:  https://gsgamesahre.com
 # Project: https://github.com/yulinzhihou/gs_tl_env.git
-# Date :  2021-06-30
+# Date :  2021-07-19
 # Notes:  GS_TL_Env for CentOS/RedHat 7+ Debian 10+ and Ubuntu 18+
 
 # 第一步：更新系统组件，安装docker,docker-composer
