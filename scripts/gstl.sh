@@ -50,7 +50,7 @@ download() {
     # wget -q https://gsgameshare.com/${WHOLE_NAME} -O ${TMP_PATH}/${WHOLE_NAME} && \
     # tar zxf ${WHOLE_NAME} && mv ${DOCKERNAME} ${ROOT_PATH}/${GSDIR} && \
     # chown -R root:root ${ROOT_PATH}/${GSDIR} && \
-    if [ -d ${ROOT_PATH}/${GSDIR} ]; then
+    if [ ! -d ${ROOT_PATH}/${GSDIR} ]; then
         mkdir -p ${ROOT_PATH}/${GSDIR}
     fi
     cd ${ROOT_PATH}/.tlgame && \cp -rf docker-compose.yml ${ROOT_PATH}/${GSDIR} &&  \cp -rf env.sample ${WHOLE_PATH}
