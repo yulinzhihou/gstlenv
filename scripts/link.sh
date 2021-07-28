@@ -19,7 +19,7 @@ else
 fi
 
 if [[ $1 == "gsmysql" ]] || [[ $1 == "gsnginx" ]]; then
-    cd ${ROOT_PATH}/${GSDIR} && docker-compose exec $1 bash
+    cd ${ROOT_PATH}/${GSDIR} && docker-compose exec $1 /bin/sh
 elif [ -z $1 ]; then
     cd ${ROOT_PATH}/${GSDIR} && docker-compose exec gsserver bash
 else

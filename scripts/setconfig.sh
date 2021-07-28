@@ -183,7 +183,7 @@ while :; do echo
       sleep 1
     done
     echo -ne "\n\r"
-    echo -ne "${CYELLOW}正在重启…………${CEND}"
+    echo -ne "${CYELLOW}正在重启…………\r\n${CEND}"
     setconfig_rebuild
     setini
     # 开环境
