@@ -28,6 +28,13 @@ if [ ! -d "${GS_PROJECT_PATH}/billing/" ]; then
 fi
 \cp -rf ${BASE_PATH}/billing ${GS_PROJECT_PATH}/billing/
 
+# 游戏内注册=0，登录器注册=1
+if [ ${IS_DLQ} == 1 ]; then
+  sed -i "s/127.0.0.2/${BILLING_SERVER_IP}/g" ${BASE_PATH}/ServerInfo.ini
+else
+  sed -i "s/127.0.0.2/127.0.0.1/g" ${BASE_PATH}/ServerInfo.ini
+fi
+
 # 游戏配置文件
 if [ "${TL_MYSQL_PASSWORD}" != "123456" ]; then
     sed -i "s/DBPassword=123456/DBPassword=${TL_MYSQL_PASSWORD}/g" ${BASE_PATH}/LoginInfo.ini

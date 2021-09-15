@@ -18,11 +18,16 @@ else
   . /usr/local/bin/color
 fi
 
+# 游戏内注册=0，登录器注册=1
+if [ ${IS_DLQ} == 0 ]; then
+  docker exec -d gsserver /home/billing/billing up -d 
+fi
+
 chmod -R 777 /tlgame && \
 chown -R root:root /tlgame && \
 cd ${ROOT_PATH}/${GSDIR} && \
-docker exec -d gsserver /home/billing/billing up -d && \
 docker exec -d gsserver /bin/bash run.sh
+
 if [ $? == 0 ]; then
   echo -e "${CSUCCESS} 已经成功启动服务端，请耐心等待几分钟后，建议使用：【runtop】查看开服的情况！！${CEND}"
   exit 0;
