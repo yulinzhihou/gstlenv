@@ -4,3 +4,6 @@
 workspace
 .DS_Store
 vendor
+info.txt
+gsenv.sh
+gsdocker.sh

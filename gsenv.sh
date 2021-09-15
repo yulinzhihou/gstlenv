@@ -22,9 +22,9 @@ WHOLE_NAME=${FILENAME}${SUFFIX}
 #解压后重全名文件夹名称
 ENVDIR='.tlgame'
 #环境版本号
-VERSION='v2.0.5'
+VERSION='v2.0.6'
 #更新时间
-UPDATE='2021-07-20'
+UPDATE='2021-09-15'
 
 INFO=$(curl https://gsgameshare.com/info.txt)
 
