@@ -80,13 +80,15 @@ init_config(){
                             echo "${CWARNING}输入错误! 注册方式：1=登录器注册，0=游戏内注册${CEND}";break;;
                         esac
                     done
+                else 
+                    IS_NEW_DLQ=0
                 fi
                 break;
             fi
         done
 
         # 判断是否输入的是需要登录器。
-        if [ ${IS_NEW_DLQ} == 1 ]; then
+        if [ ${IS_NEW_DLQ} == '1' ]; then
             while :; do echo
                 read -p "请输入【验证服务器IP地址】(默认: ${BILLING_DEFAULT_SERVER_IPADDR}): " BILLING_NEW_SERVER_IPADDR
                 BILLING_NEW_SERVER_IPADDR=${BILLING_NEW_SERVER_IPADDR:-${BILLING_DEFAULT_SERVER_IPADDR}}
