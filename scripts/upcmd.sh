@@ -2,7 +2,7 @@
 # Author: yulinzhihou <yulinzhihou@gmail.com>
 # Forum:  https://gsgamesahre.com
 # Project: https://github.com/yulinzhihou/gs_tl_env.git
-# Date :  2021-02-13
+# Date :  2021-09-16
 # Notes:  GS_TL_Env for CentOS/RedHat 7+ Debian 10+ and Ubuntu 18+
 # comment: 根据当前环境变量重新生成命令
 # 引入全局参数
@@ -20,12 +20,19 @@ fi
 
 # 更新命令
 download () {
-  wget -q ${FILENAME} https://gitee.com/yulinzhihou/gstlenv/repository/archive/${VERSION}.tar.gz  -O ${TMP_PATH}/${WHOLE_NAME}
+  wget -q https://gitee.com/yulinzhihou/gstlenv/repository/archive/${VERSION}.tar.gz  -O ${TMP_PATH}/${VERSION}.tar.gz
   # gs env 服务器环境 ，组件
   # wget -q https://gsgameshare.com/${WHOLE_NAME} -O ${TMP_PATH}/${WHOLE_NAME}
+  if [ ! -d ${TMP_PATH}/${VERSION} ]; then
+    mkdir -p ${TMP_PATH}/${VERSION}
+  fi
   cd ${TMP_PATH} && \
   # 解压目录
-  tar zxf ${WHOLE_NAME} && mv ${FILENAME} ${ROOT_PATH}/${ENVDIR} && rm -rf ${TMP_PATH}/${WHOLE_NAME}
+  tar zxf ${VERSION}.tar.gz -C $VERSION && cd ${VERSION} && mv * ${VERSION} && \cp -rf ${VERSION}/* $GS_PROJECT/
+  if [ $? == '0' ]; then 
+    rm -rf ${TMP_PATH}/${VERSION}.tar.gz && \
+    rm -rf ${TMP_PATH}/${VERSION}
+  fi
 }
 
 set_command() {
