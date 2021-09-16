@@ -18,10 +18,12 @@ else
   . /usr/local/bin/color
 fi
 
-if [[ $1 == "gsmysql" ]] || [[ $1 == "gsnginx" ]]; then
-    cd ${ROOT_PATH}/${GSDIR} && docker-compose exec $1 /bin/sh
+if [[ $1 == "gsmysql" ]] || [[ $1 == "gsnginx" ]] || [[ $1 == "gsredis" ]]; then
+  cd ${ROOT_PATH}/${GSDIR} && docker-compose exec $1 /bin/sh
+elif [ $1 == 'gsphp' ]; then
+  docker exec -it gsphp /bin/sh
 elif [ -z $1 ]; then
-    cd ${ROOT_PATH}/${GSDIR} && docker-compose exec gsserver bash
+  cd ${ROOT_PATH}/${GSDIR} && docker-compose exec gsserver bash
 else
   echo -e "${CRED}错误：输入有误！！请使用 link gsmysql|gsnginx|gsserver${CEND}";
 fi
