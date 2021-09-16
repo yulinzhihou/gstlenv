@@ -32,7 +32,7 @@ function getUserInput() {
               while :; do echo
                   read -p "请输入【IP地址或者解析过来的域名】(默认: [0.0.0.0]): " DOMAIN_IP
                   DOMAIN_IP=${DOMAIN_IP:-"0.0.0.0"}
-                  if [ ! -n ${DOMAIN_IP} ]; then
+                  if [ ${DOMAIN_IP} ]; then
                       sed -i "s/server_name  .*/server_name  ${DOMAIN_IP}/g" /tlgame/conf.d/ow.conf
                       break
                   else
@@ -49,6 +49,16 @@ function getUserInput() {
 # 创建目录，生成配置文件 
 function owConf() {
   config=<<EOF
+
+EOF
+
+  # 创建目录
+  if [ ! -d /tlgame/www/gm ]; then
+      mkdir -p /tlgame/www/gm
+  fi
+
+  if [ ! -d /tlgame/conf.d ]; then
+     cat > /tlgame/conf.d/gm.conf <<EOF
 server {
     listen       80  default;
     server_name  0.0.0.0;
@@ -136,15 +146,8 @@ server {
 #     #}
 # }
 EOF
-
-  # 创建目录
-  if [ ! -d "/tlgame/www/gm" ]; then
-      mkdir -p /tlgame/www/gm
-      #
-      if [ ! -f /tlgame/conf.d/gm.conf ]; then
-          echo -e $config > /tlgame/conf.d/gm.conf
-      fi
-  fi
+  fi 
+  
 }
 
 owConf
