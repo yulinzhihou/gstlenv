@@ -109,7 +109,6 @@ init_config(){
             done;
         fi
 
-
         # 配置BILLING_PORT
         while :; do echo
             read -e -p "当前【Billing验证端口】为：${CBLUE}[${BILLING_PORT}]${CEND}，是否需要修改【Billing验证端口】 [y/n](默认: n): " IS_MODIFY
@@ -275,21 +274,29 @@ docker_run() {
         echo -e "${CBLUE}环境安装成功，配置文件已经初始化。更多命令执行 【gs】查看${CEND}"
         exit 1;
     else
-        echo -e "${CRED}环境安装失败，配置文件已经初始化。更多命令执行 【gs】查看${CEND}"
+        echo -e "${CRED}环境安装失败，配置文件已经初始化。更多命令执行 【gs】查看${CRED}"
         exit 1;
     fi
 }
 
-if [ ! -d ${ROOT_PATH}/${GSDIR} ]; then
-    download
-fi
-
-if [ -f ${WHOLE_PATH} ]; then
-    . ${WHOLE_PATH}
-else 
-    echo -e "GS专用环境容器还没下载下来，请重新执行【$0】命令！"
+# 如果重复使用，则需要跳过。
+docker ps --format "{{.Names}}" | grep gsserver
+if [ $? == '0' ]; then
+    echo -e "${CRED}GS专用环境容器已经被初始化，如果需要重新初始化，请执行【setconfig】命令！${CRED}"
     exit 1;
+else 
+    if [ ! -d ${ROOT_PATH}/${GSDIR} ]; then
+        download
+    fi
+
+    if [ -f ${WHOLE_PATH} ]; then
+        . ${WHOLE_PATH}
+    else 
+        echo -e "${CBLUE}GS专用环境容器还没下载下来，请重新执行【$0】命令！${CRED}"
+        exit 1;
+    fi
+
+    init_config
+    docker_run
 fi
 
-init_config
-docker_run

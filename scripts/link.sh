@@ -25,5 +25,5 @@ elif [[ $1 == 'gsphp' ]]; then
 elif [ -z $1 ] || [ $1 == 'gsserver' ]; then
   cd ${ROOT_PATH}/${GSDIR} && docker-compose exec gsserver bash
 else
-  echo -e "${CRED}错误：输入有误！！请使用 link gsmysql|gsnginx|gsserver${CEND}";
+  echo -e "${CRED}错误：输入有误！！请使用 link gsmysql|gsphp|gsredis|gsnginx|gsserver${CEND}";
 fi
