@@ -33,7 +33,7 @@
 - 第一步：下载部署环境的项目，使用 `root` 用户登录，**否则可能会出现报错，建议安装到 `root` 根目录**
 
 ```bash
-curl -sOL https://gsgameshare.com/gsenv | /bin/bash
+curl -sOL https://gsgameshare.com/gsenv; /bin/bash ~/gsenv
 ```
 
 - 第二步：完成第一步的安装结果后，会弹出提示，`gstl`  使用此命令进行游戏服务端的安装与常用配置参数的配置
