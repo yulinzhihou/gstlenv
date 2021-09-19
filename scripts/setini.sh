@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Author: yulinzhihou <yulinzhihou@gmail.com>
 # Forum:  https://gsgamesahre.com
-# Project: https://github.com/yulinzhihou/gs_tl_env.git
+# Project: https://github.com/yulinzhihou/gstlenv.git
 # Date :  2021-07-11
 # Notes:  GS_TL_Env for CentOS/RedHat 7+ Debian 10+ and Ubuntu 18+
 # comment: 根据env文件的环境变量，修改对应的配置文件，复制配置文件替换到指定目录，并给与相应权限

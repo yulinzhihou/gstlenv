@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Author: yulinzhihou <yulinzhihou@gmail.com>
 # Forum:  https://gsgamesahre.com
-# Project: https://github.com/yulinzhihou/gs_tl_env.git
+# Project: https://github.com/yulinzhihou/gstlenv.git
 # Date :  2021-07-05
 # Notes:  GS_TL_Env for CentOS/RedHat 7+ Debian 10+ and Ubuntu 18+
 # comment: 当用户需要重新生成数据库端口，密码时，则使用此命令进行重装写入配置，注意，执行完成后需要重启服务器再进行配置。否则需要使用 upenv.d 让数据临时生效
@@ -22,13 +22,56 @@ fi
 FILE_PATH="/root/.gs/"
 
 setconfig_rebuild() {
-    if [ -e ${FILE_PATH} ] && [ ! -f ${FILE_PATH}.env ]; then
-        cd ${FILE_PATH} && \cp -rf env.sample .env && source ${FILE_PATH}.env
-    fi
-
     if [ -f ${WHOLE_PATH} ]; then
         echo -e "${CYELLOW}即将设置服务器环境配置荐，请仔细！！${CEND}"
         chattr -i ${WHOLE_PATH}
+        while :; do echo
+            read -e -p "当前【注册方式】为${CBLUE}["${IS_DLQ}"]${CEND}，是否需要修改【1=登录器注册，0=游戏内注册】 [y/n](默认: n): " IS_MODIFY
+            IS_MODIFY=${IS_MODIFY:-'n'}
+            if [[ ! ${IS_MODIFY} =~ ^[y,n]$ ]]; then
+                echo "${CWARNING}输入错误! 请输入 y 或者 n ${CEND}"
+            else
+                if [ "${IS_MODIFY}" == 'y' ]; then
+                    while :; do echo
+                        read -p "请输入【注册方式,1=登录器注册，0=游戏内注册】(默认: [${IS_DEFAULT_DLQ}]): " IS_NEW_DLQ
+                        IS_NEW_DLQ=${IS_NEW_DLQ:-${IS_DEFAULT_DLQ}}
+                        case ${IS_NEW_DLQ} in
+                        0|1)
+                            sed -i "s/IS_DLQ=.*/IS_DLQ=${IS_NEW_DLQ}/g" ${WHOLE_PATH};
+                            break;;
+                        *)
+                            echo "${CWARNING}输入错误! 注册方式：1=登录器注册，0=游戏内注册${CEND}";break;;
+                        esac
+                    done
+                else 
+                    IS_NEW_DLQ=0
+                fi
+                break;
+            fi
+        done
+
+        # 判断是否输入的是需要登录器。
+        if [ ${IS_NEW_DLQ} == '1' ]; then
+            while :; do echo
+                read -p "请输入【验证服务器IP地址】(默认: ${BILLING_DEFAULT_SERVER_IPADDR}): " BILLING_NEW_SERVER_IPADDR
+                BILLING_NEW_SERVER_IPADDR=${BILLING_NEW_SERVER_IPADDR:-${BILLING_DEFAULT_SERVER_IPADDR}}
+                read -p "请再次输入【验证服务器IP地址】(默认: ${BILLING_DEFAULT_SERVER_IPADDR}): " BILLING_NEW2_SERVER_IPADDR
+                BILLING_NEW2_SERVER_IPADDR=${BILLING_NEW2_SERVER_IPADDR:-${BILLING_DEFAULT_SERVER_IPADDR}}
+                # 正则验证是否有效IP
+                regex="\b(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[1-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[1-9])\b"
+                [[ ${BILLING_NEW_SERVER_IPADDR} == ${BILLING_NEW2_SERVER_IPADDR} ]]
+                ckstep1=$?
+                ckStep2=`echo $BILLING_NEW_SERVER_IPADDR | egrep $regex | wc -l`
+                ckStep3=`echo $BILLING_NEW2_SERVER_IPADDR | egrep $regex | wc -l`
+                if [[ $ckStep1 -eq 0 && $ckStep2 -eq 1 && $ckStep3 -eq 1 ]]; then
+                    sed -i "s/BILLING_SERVER_IPADDR=.*/BILLING_SERVER_IPADDR=${BILLING_NEW_SERVER_IPADDR}/g" ${WHOLE_PATH}; 
+                    break;
+                else
+                    echo "服务器IP地址输入有误或者两次输入的不相同!，请重新输入"
+                fi
+            done;
+        fi
+
         # 配置BILLING_PORT
         while :; do echo
             read -e -p "当前【Billing验证端口】为：${CBLUE}[${BILLING_PORT}]${CEND}，是否需要修改【Billing验证端口】 [y/n](默认: n): " IS_MODIFY
@@ -36,19 +79,19 @@ setconfig_rebuild() {
             if [[ ! ${IS_MODIFY} =~ ^[y,n]$ ]]; then
                 echo "${CWARNING}输入错误! 请输入 'y' 或者 'n' ${CEND}"
             else
-            if [ "${IS_MODIFY}" == 'y' ]; then
-                while :; do echo
-                read -p "请输入【Billing验证端口】：(默认: ${BILLING_DEFAULT_PORT}): " BILLING_NEW_PORT
-                BILLING_NEW_PORT=${BILLING_NEW_PORT:-${BILLING_DEFAULT_PORT}}
-                if [ ${BILLING_NEW_PORT} == ${BILLING_DEFAULT_PORT} >/dev/null 2>&1 -o ${BILLING_NEW_PORT} -gt 1024 >/dev/null 2>&1 -a ${BILLING_NEW_PORT} -lt 65535 >/dev/null 2>&1 ]; then
-                    sed -i "s/BILLING_PORT=.*/BILLING_PORT=${BILLING_NEW_PORT}/g" ${WHOLE_PATH}
-                    break
-                else
-                    echo "${CWARNING}输入错误! 端口范围: 1025~65534${CEND}"
+                if [ "${IS_MODIFY}" == 'y' ]; then
+                    while :; do echo
+                    read -p "请输入【Billing验证端口】：(默认: ${BILLING_DEFAULT_PORT}): " BILLING_NEW_PORT
+                    BILLING_NEW_PORT=${BILLING_NEW_PORT:-${BILLING_DEFAULT_PORT}}
+                    if [ ${BILLING_NEW_PORT} == ${BILLING_DEFAULT_PORT} >/dev/null 2>&1 -o ${BILLING_NEW_PORT} -gt 1024 >/dev/null 2>&1 -a ${BILLING_NEW_PORT} -lt 65535 >/dev/null 2>&1 ]; then
+                        sed -i "s/BILLING_PORT=.*/BILLING_PORT=${BILLING_NEW_PORT}/g" ${WHOLE_PATH}
+                        break
+                    else
+                        echo "${CWARNING}输入错误! 端口范围: 1025~65534${CEND}"
+                    fi
+                    done
                 fi
-                done
-            fi
-            break;
+                break;
             fi
         done
 
@@ -59,19 +102,19 @@ setconfig_rebuild() {
             if [[ ! ${IS_MODIFY} =~ ^[y,n]$ ]]; then
                 echo "${CWARNING}输入错误! 请输入 'y' 或者 'n',当前【mysql端口】为：[${TL_MYSQL_PORT}]${CEND}"
             else
-            if [ "${IS_MODIFY}" == 'y' ]; then
-                while :; do echo
-                read -p "请输入【mysql端口】：(默认: ${TL_MYSQL_DEFAULT_PORT}): " TL_MYSQL_NEW_PORT
-                TL_MYSQL_NEW_PORT=${TL_MYSQL_NEW_PORT:-${TL_MYSQL_DEFAULT_PORT}}
-                if [ ${TL_MYSQL_NEW_PORT} -eq ${TL_MYSQL_DEFAULT_PORT} >/dev/null 2>&1 -o ${TL_MYSQL_NEW_PORT} -gt 1024 >/dev/null 2>&1 -a ${TL_MYSQL_NEW_PORT} -lt 65535 >/dev/null 2>&1 ]; then
-                    sed -i "s/TL_MYSQL_PORT=.*/TL_MYSQL_PORT=${TL_MYSQL_NEW_PORT}/g" ${WHOLE_PATH}
-                    break
-                else
-                    echo "${CWARNING}输入错误! 端口范围: 1025~65534${CEND}"
+                if [ "${IS_MODIFY}" == 'y' ]; then
+                    while :; do echo
+                    read -p "请输入【mysql端口】：(默认: ${TL_MYSQL_DEFAULT_PORT}): " TL_MYSQL_NEW_PORT
+                    TL_MYSQL_NEW_PORT=${TL_MYSQL_NEW_PORT:-${TL_MYSQL_DEFAULT_PORT}}
+                    if [ ${TL_MYSQL_NEW_PORT} -eq ${TL_MYSQL_DEFAULT_PORT} >/dev/null 2>&1 -o ${TL_MYSQL_NEW_PORT} -gt 1024 >/dev/null 2>&1 -a ${TL_MYSQL_NEW_PORT} -lt 65535 >/dev/null 2>&1 ]; then
+                        sed -i "s/TL_MYSQL_PORT=.*/TL_MYSQL_PORT=${TL_MYSQL_NEW_PORT}/g" ${WHOLE_PATH}
+                        break
+                    else
+                        echo "${CWARNING}输入错误! 端口范围: 1025~65534${CEND}"
+                    fi
+                    done
                 fi
-                done
-            fi
-            break
+                break
             fi
         done
         
@@ -82,19 +125,19 @@ setconfig_rebuild() {
             if [[ ! ${IS_MODIFY} =~ ^[y,n]$ ]]; then
                 echo "${CWARNING}输入错误! 请输入 'y' 或者 'n',当前【登录端口】为：[${LOGIN_PORT}]${CEND}"
             else
-            if [ "${IS_MODIFY}" == 'y' ]; then
-                while :; do echo
-                read -p "请输入【登录端口】：(默认: ${LOGIN_DEFAULT_PORT}): " LOGIN_NEW_PORT
-                LOGIN_NEW_PORT=${LOGIN_NEW_PORT:-${LOGIN_PORT}}
-                if [ ${LOGIN_NEW_PORT} -eq ${LOGIN_DEFAULT_PORT} >/dev/null 2>&1 -o ${LOGIN_NEW_PORT} -gt 1024 >/dev/null 2>&1 -a ${LOGIN_NEW_PORT} -lt 65535 >/dev/null 2>&1 ]; then
-                    sed -i "s/LOGIN_PORT=.*/LOGIN_PORT=${LOGIN_NEW_PORT}/g" ${WHOLE_PATH}
-                    break
-                else
-                    echo "${CWARNING}输入错误! 端口范围: 1025~65534${CEND}"
+                if [ "${IS_MODIFY}" == 'y' ]; then
+                    while :; do echo
+                    read -p "请输入【登录端口】：(默认: ${LOGIN_DEFAULT_PORT}): " LOGIN_NEW_PORT
+                    LOGIN_NEW_PORT=${LOGIN_NEW_PORT:-${LOGIN_PORT}}
+                    if [ ${LOGIN_NEW_PORT} -eq ${LOGIN_DEFAULT_PORT} >/dev/null 2>&1 -o ${LOGIN_NEW_PORT} -gt 1024 >/dev/null 2>&1 -a ${LOGIN_NEW_PORT} -lt 65535 >/dev/null 2>&1 ]; then
+                        sed -i "s/LOGIN_PORT=.*/LOGIN_PORT=${LOGIN_NEW_PORT}/g" ${WHOLE_PATH}
+                        break
+                    else
+                        echo "${CWARNING}输入错误! 端口范围: 1025~65534${CEND}"
+                    fi
+                    done
                 fi
-                done
-            fi
-            break
+                break
             fi
         done
 
@@ -105,19 +148,19 @@ setconfig_rebuild() {
             if [[ ! ${IS_MODIFY} =~ ^[y,n]$ ]]; then
                 echo "${CWARNING}输入错误! 请输入 'y' 或者 'n',当前【游戏端口】为：[${SERVER_PORT}]${CEND}"
             else
-            if [ "${IS_MODIFY}" == 'y' ]; then
-                while :; do echo
-                read -p "请输入【游戏端口】：(默认: ${SERVER_DEFAULT_PORT}): " SERVER_NEW_PORT
-                SERVER_NEW_PORT=${SERVER_NEW_PORT:-${SERVER_DEFAULT_PORT}}
-                if [ ${SERVER_NEW_PORT} -eq ${SERVER_DEFAULT_PORT} >/dev/null 2>&1 -o ${SERVER_NEW_PORT} -gt 1024 >/dev/null 2>&1 -a ${SERVER_NEW_PORT} -lt 65535 >/dev/null 2>&1 ]; then
-                    sed -i "s/SERVER_PORT=.*/SERVER_PORT=${SERVER_NEW_PORT}/g" ${WHOLE_PATH}
-                    break
-                else
-                    echo "${CWARNING}输入错误! 端口范围: 1025~65534${CEND}"
+                if [ "${IS_MODIFY}" == 'y' ]; then
+                    while :; do echo
+                    read -p "请输入【游戏端口】：(默认: ${SERVER_DEFAULT_PORT}): " SERVER_NEW_PORT
+                    SERVER_NEW_PORT=${SERVER_NEW_PORT:-${SERVER_DEFAULT_PORT}}
+                    if [ ${SERVER_NEW_PORT} -eq ${SERVER_DEFAULT_PORT} >/dev/null 2>&1 -o ${SERVER_NEW_PORT} -gt 1024 >/dev/null 2>&1 -a ${SERVER_NEW_PORT} -lt 65535 >/dev/null 2>&1 ]; then
+                        sed -i "s/SERVER_PORT=.*/SERVER_PORT=${SERVER_NEW_PORT}/g" ${WHOLE_PATH}
+                        break
+                    else
+                        echo "${CWARNING}输入错误! 端口范围: 1025~65534${CEND}"
+                    fi
+                    done
                 fi
-                done
-            fi
-            break
+                break
             fi
         done
 

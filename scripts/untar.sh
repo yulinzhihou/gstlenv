@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Author: yulinzhihou <yulinzhihou@gmail.com>
 # Forum:  https://gsgamesahre.com
-# Project: https://github.com/yulinzhihou/gs_tl_env.git
+# Project: https://github.com/yulinzhihou/gstlenv.git
 # Date :  2021-07-05
 # Notes:  GS_TL_Env for CentOS/RedHat 7+ Debian 10+ and Ubuntu 18+
 # comment: 解压tar.gz文件包到指定的目录，并给相应的权限
