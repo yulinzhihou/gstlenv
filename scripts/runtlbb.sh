@@ -19,7 +19,7 @@ else
 fi
 
 # 游戏内注册=0，登录器注册=1
-if [ $IS_DLQ == '0' ]; then
+if [ ${IS_DLQ} == '0' ]; then
   docker exec -d gsserver /home/billing/billing up -d 
 fi
 

@@ -264,57 +264,104 @@ EOF
 }
 
 # 执行
-show_help
-while :; do echo
-    read -e -p "${CCYAN}按上面展示的编号或者命令输入:${CEND}" IS_MODIFY
-    IS_MODIFY=${IS_MODIFY:-'n'}
-    if [[ $IS_MODIFY == 'n' ]]; then
-        echo "${CWARNING}输入错误! ${CEND}"
-        exit 1;
-    else
-        case "$IS_MODIFY" in
-          '01'|'1'|'untar')
-            untar_help;;
-          '02'|'2'|'setini')
-            setini_help;;
-          '03'|'3'|'runtlbb')
-            runtlbb_help;;
-          '04'|'4'|'runtop')
-            runtop_help;;
-          '05'|'5'|'link')
-            link_help;;
-          '06'|'6'|'swap')
-            swap_help;;
-          '07'|'7'|'rebuild')
-            rebuild_help;;
-          '08'|'8'|'remove')
-            remove_help;;
-          '09'|'9'|'setconfig')
-            setconfig_help;;
-          '10'|'change')
-            change_help;;
-          '11'|'restart')
-            restart_help;;
-          '12'|'gsbak')
-            gsbak_help;;
-          '13'|'upcmd')
-            upcmd_help;;
-          '14'|'upgm')
-            upgm_help;;
-          '15'|'upow')
-            upow_help;;
-          '16'|'step')
-            step_help;;
-          '17'|'gstl')
-            gstl_help;;
-          '18'|'backup')
-            backup_help;;
-          '19'|'close')
-            close_help;;
-          '0'|'00'|'q'|'Q')
-            break;;
-          *)
-            show_help;;
-        esac
-    fi
-done
+if [ -n $1 ]; then
+  case "$1" in
+    '01'|'1'|'untar')
+      untar_help;;
+    '02'|'2'|'setini')
+      setini_help;;
+    '03'|'3'|'runtlbb')
+      runtlbb_help;;
+    '04'|'4'|'runtop')
+      runtop_help;;
+    '05'|'5'|'link')
+      link_help;;
+    '06'|'6'|'swap')
+      swap_help;;
+    '07'|'7'|'rebuild')
+      rebuild_help;;
+    '08'|'8'|'remove')
+      remove_help;;
+    '09'|'9'|'setconfig')
+      setconfig_help;;
+    '10'|'change')
+      change_help;;
+    '11'|'restart')
+      restart_help;;
+    '12'|'gsbak')
+      gsbak_help;;
+    '13'|'upcmd')
+      upcmd_help;;
+    '14'|'upgm')
+      upgm_help;;
+    '15'|'upow')
+      upow_help;;
+    '16'|'step')
+      step_help;;
+    '17'|'gstl')
+      gstl_help;;
+    '18'|'backup') 
+      backup_help;;
+    '19'|'close')
+      close_help;;
+    '0'|'00'|'q'|'Q')
+      break;;
+    *)
+      show_help;;
+  esac
+else
+  show_help
+  while :; do echo
+      read -e -p "${CCYAN}按上面展示的编号或者命令输入:${CEND}" IS_MODIFY
+      IS_MODIFY=${IS_MODIFY:-'n'}
+      if [[ $IS_MODIFY == 'n' ]]; then
+          echo "${CWARNING}输入错误! ${CEND}"
+          exit 1;
+      else
+          case "$IS_MODIFY" in
+            '01'|'1'|'untar')
+              untar_help;;
+            '02'|'2'|'setini')
+              setini_help;;
+            '03'|'3'|'runtlbb')
+              runtlbb_help;;
+            '04'|'4'|'runtop')
+              runtop_help;;
+            '05'|'5'|'link')
+              link_help;;
+            '06'|'6'|'swap')
+              swap_help;;
+            '07'|'7'|'rebuild')
+              rebuild_help;;
+            '08'|'8'|'remove')
+              remove_help;;
+            '09'|'9'|'setconfig')
+              setconfig_help;;
+            '10'|'change')
+              change_help;;
+            '11'|'restart')
+              restart_help;;
+            '12'|'gsbak')
+              gsbak_help;;
+            '13'|'upcmd')
+              upcmd_help;;
+            '14'|'upgm')
+              upgm_help;;
+            '15'|'upow')
+              upow_help;;
+            '16'|'step')
+              step_help;;
+            '17'|'gstl')
+              gstl_help;;
+            '18'|'backup')
+              backup_help;;
+            '19'|'close')
+              close_help;;
+            '0'|'00'|'q'|'Q')
+              break;;
+            *)
+              show_help;;
+          esac
+      fi
+  done
+fi
