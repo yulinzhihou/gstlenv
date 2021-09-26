@@ -8,15 +8,15 @@
 # 颜色代码
 # 引入全局参数
 if [ -f /root/.gs/.env ]; then
-  . /root/.gs/.env
+    . /root/.gs/.env
 else
-  . /usr/local/bin/.env
+    . /usr/local/bin/.env
 fi
 # 颜色代码
 if [ -f ./color.sh ]; then
-  . ${GS_PROJECT}/scripts/color.sh
+    . ${GS_PROJECT}/scripts/color.sh
 else
-  . /usr/local/bin/color
+    . /usr/local/bin/color
 fi
 
 BASE_PATH="/root/.tlgame/config"
@@ -30,9 +30,9 @@ fi
 
 # 游戏内注册=0，登录器注册=1
 if [ ${IS_DLQ} == 1 ]; then
-  sed -i "s/127.0.0.2/${BILLING_SERVER_IP}/g" ${BASE_PATH}/ServerInfo.ini
+    sed -i "s/127.0.0.2/${BILLING_SERVER_IPADDR}/g" ${BASE_PATH}/ServerInfo.ini
 else
-  sed -i "s/127.0.0.2/127.0.0.1/g" ${BASE_PATH}/ServerInfo.ini
+    sed -i "s/127.0.0.2/127.0.0.1/g" ${BASE_PATH}/ServerInfo.ini
 fi
 
 # 游戏配置文件
@@ -68,9 +68,9 @@ cd ${BASE_PATH}/ && \
 rm -rf  ${BASE_PATH}/*.ini ${BASE_PATH}/config.json ${BASE_PATH}/billing
 chown -R root:root ${GS_PROJECT_PATH} && chmod -R 777 ${GS_PROJECT_PATH}
 if [ $? == 0 ]; then
-  echo -e "${CSUCCESS} 配置文件已经写入成功，可以执行【runtlbb】进行开服操作！！${CEND}"
-  exit 0;
+    echo -e "${CSUCCESS} 配置文件已经写入成功，可以执行【runtlbb】进行开服操作！！${CEND}"
+    exit 0;
 else
-  echo -e "${CRED} 配置文件写入失败！${CEND}"
-  exit 1;
+    echo -e "${CRED} 配置文件写入失败！${CEND}"
+    exit 1;
 fi
