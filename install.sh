@@ -24,12 +24,12 @@ pushd ${GSTL_DIR} > /dev/null
 
 # 系统组件安装
 sys_plugins_install() {
-  echo -e "${CGREEN}开始安装系统常用组件 !!!${CEND}";
-  # 安装 wget gcc curl git python
-  [ "${PM}" == 'apt-get' ] && apt-get -y update
-  [ "${PM}" == 'yum' ] && yum clean all && yum -y update
-  ${PM} -y install wget gcc curl python git jq
-  [ "${CentOS_ver}" == '8' ] && { yum -y install python36 gcc wget curl git jq; sudo alternatives --set python /usr/bin/python3; }
+    echo -e "${CGREEN}开始安装系统常用组件 !!!${CEND}";
+    # 安装 wget gcc curl git python
+    [ "${PM}" == 'apt-get' ] && apt-get -y update
+    [ "${PM}" == 'yum' ] && yum clean all && yum -y update
+    ${PM} -y install wget gcc curl python git jq vim
+    [ "${CentOS_ver}" == '8' ] && { yum -y install python36 gcc wget curl git jq vim; sudo alternatives --set python /usr/bin/python3; }
 }
 
 # 安装docker docker-compose
@@ -37,11 +37,11 @@ do_install_docker() {
     echo -e "${CGREEN}开始安装环境核心组件 !!!${CEND}";
     egrep "^docker" /etc/group >& /dev/null
     if [ $? -ne 0 ]; then
-      sudo groupadd docker
-      sudo usermod -aG docker ${USER}
-      sudo gpasswd -a ${USER} docker
+        sudo groupadd docker
+        sudo usermod -aG docker ${USER}
+        sudo gpasswd -a ${USER} docker
     fi
-
+    
     docker info >& /dev/null
     if [ $? -ne 0 ]; then
         # 制作的国内镜像安装脚本
@@ -54,24 +54,24 @@ do_install_docker() {
 }
 EOF
         fi
-
-      [ "${OS}" == "Debian" ] || [ "${OS}" == "Ubuntu" ] && sudo apt-get service docker start
-      [ "${OS}" == "CentOS" ] && sudo systemctl daemon-reload && sudo systemctl restart docker
-      # 安装 docker-compose
-      [ "${OS}" == "Debian" ] || [ "${OS}" == "Ubuntu" ] && sudo apt-get service docker start
-      [ "${OS}" == "CentOS" ] && sudo systemctl daemon-reload && sudo systemctl restart docker
-
+        
+        [ "${OS}" == "Debian" ] || [ "${OS}" == "Ubuntu" ] && sudo apt-get service docker start
+        [ "${OS}" == "CentOS" ] && sudo systemctl daemon-reload && sudo systemctl restart docker
+        # 安装 docker-compose
+        [ "${OS}" == "Debian" ] || [ "${OS}" == "Ubuntu" ] && sudo apt-get service docker start
+        [ "${OS}" == "CentOS" ] && sudo systemctl daemon-reload && sudo systemctl restart docker
+        
     else
-      echo -e "${CBLUE} 环境 Docker 安装成功 !!!${CEND}";
+        echo -e "${CBLUE} 环境 Docker 安装成功 !!!${CEND}";
     fi
-
-
-  curl -L https://get.daocloud.io/docker/compose/releases/download/${DOCKER_COMPOSER_VERSION}/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
-  chmod +x /usr/local/bin/docker-compose
-  docker-compose --version >& /dev/null
-  if [ $? -eq 0 ]; then
-    echo -e "${CBLUE} 容器工具 docker-compose 安装成功 !!! ${CEND}";
-  fi
+    
+    
+    curl -L https://get.daocloud.io/docker/compose/releases/download/${DOCKER_COMPOSER_VERSION}/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+    chmod +x /usr/local/bin/docker-compose
+    docker-compose --version >& /dev/null
+    if [ $? -eq 0 ]; then
+        echo -e "${CBLUE} 容器工具 docker-compose 安装成功 !!! ${CEND}";
+    fi
 }
 
 # 配置常用命令到系统中
@@ -96,17 +96,17 @@ set_timezone() {
 
 # 安装整合
 do_install() {
-  set_timezone
-  [ $? == 0 ] && echo -e "${CBLUE}  设置时区成功!! ${CEND}" || { echo -e "${CRED} 设置时区失败!! ;${CEND}"; exit 1;}
-  do_install_docker
-  [ $? == 0 ] && echo -e "${CBLUE}  环境核心组件安装成功！！ ${CEND}" || { echo -e "${CRED} 环境核心组件安装失败!! ;${CEND}"; exit 1;}
-  set_command
-  [ $? == 0 ] && echo -e "${CBLUE}  设置全局命令成功！！${CEND}" || { echo -e "${CRED} 设置全局命令失败！！${CEND}"; exit 1;}
+    set_timezone
+    [ $? == 0 ] && echo -e "${CBLUE}  设置时区成功!! ${CEND}" || { echo -e "${CRED} 设置时区失败!! ;${CEND}"; exit 1;}
+    do_install_docker
+    [ $? == 0 ] && echo -e "${CBLUE}  环境核心组件安装成功！！ ${CEND}" || { echo -e "${CRED} 环境核心组件安装失败!! ;${CEND}"; exit 1;}
+    set_command
+    [ $? == 0 ] && echo -e "${CBLUE}  设置全局命令成功！！${CEND}" || { echo -e "${CRED} 设置全局命令失败！！${CEND}"; exit 1;}
 }
 
 # 安装完成提示信息
 show_install_msg() {
-  printf "${CCYAN}
+    printf "${CCYAN}
   #######################################################################
   #       GS_TL_Env 支持： CentOS/RedHat 7+  Ubuntu 18+ Debian 10+
   #       GS游享网 [https://gsgameshare.com] 专用环境安装成功!
@@ -116,10 +116,10 @@ show_install_msg() {
   #       3.技术交流群:\t826717146,如果搜索不到群，请加客服QQ,备注进群即可
   #       4.环境即将安装完成，请手动执行 gstl
   #######################################################################
-  ${CEND}"
-  endTime=`date +%s`
-  ((outTime=($endTime-$startTime)/60))
-  echo -e "总耗时:\e[44m $outTime \e[0m 分钟!"
+    ${CEND}"
+    endTime=`date +%s`
+    ((outTime=($endTime-$startTime)/60))
+    echo -e "总耗时:\e[44m $outTime \e[0m 分钟!"
 }
 
 ##################################################################
@@ -129,7 +129,7 @@ clear
 # 开始安装
 do_install
 if [ $? -eq 0 ]; then
-  show_install_msg
+    show_install_msg
 else
-  echo -e "${CRED}环境即将安装完成，请手动执行 gstl${CEND}"
-fi 
+    echo -e "${CRED}环境即将安装完成，请手动执行 gstl${CEND}"
+fi

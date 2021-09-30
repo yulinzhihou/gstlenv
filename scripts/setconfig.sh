@@ -22,9 +22,9 @@ fi
 FILE_PATH="/root/.gs/"
 
 setconfig_rebuild() {
-    if [ -f ${WHOLE_PATH} ]; then
+    if [ -f ${GS_WHOLE_PATH} ]; then
         echo -e "${CYELLOW}即将设置服务器环境配置荐，请仔细！！${CEND}"
-        chattr -i ${WHOLE_PATH}
+        chattr -i ${GS_WHOLE_PATH}
         while :; do echo
             read -e -p "当前【注册方式】为${CBLUE}["${IS_DLQ}"]${CEND}，是否需要修改【1=登录器注册，0=游戏内注册】 [y/n](默认: n): " IS_MODIFY
             IS_MODIFY=${IS_MODIFY:-'n'}
@@ -209,9 +209,9 @@ setconfig_rebuild() {
             break
             fi
         done
-        \cp -rf ${WHOLE_PATH} /usr/local/bin/.env && \
-        \cp -rf ${WHOLE_PATH} /root/.tlgame/.env
-        chattr +i ${WHOLE_PATH}
+        \cp -rf ${GS_WHOLE_PATH} /usr/local/bin/.env && \
+        \cp -rf ${GS_WHOLE_PATH} /root/.tlgame/.env
+        chattr +i ${GS_WHOLE_PATH}
     else 
         echo -e "GS专用环境容器还没下载下来，请重新执行【gstl】命令！"
         exit 1;

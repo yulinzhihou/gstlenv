@@ -7,15 +7,15 @@
 # comment: 解压tar.gz文件包到指定的目录，并给相应的权限
 # 引入全局参数
 if [ -f /root/.gs/.env ]; then
-  . /root/.gs/.env
+    . /root/.gs/.env
 else
-  . /usr/local/bin/.env
+    . /usr/local/bin/.env
 fi
 # 颜色代码
 if [ -f ./color.sh ]; then
-  . ${GS_PROJECT}/scripts/color.sh
+    . ${GS_PROJECT}/scripts/color.sh
 else
-  . /usr/local/bin/color
+    . /usr/local/bin/color
 fi
 
 if [ -f "/root/tlbb.tar.gz" ]; then
@@ -27,13 +27,13 @@ if [ -f "/root/tlbb.tar.gz" ]; then
     mv  /root/tlbb.tar.gz  /root/`date +%Y%m%d%H%I%S`-tlbb.tar.gz
     echo -e "${CSUCCESS} 服务端文件【tlbb.tar.gz】已经解压成功！！${CEND}"
     exit 0;
-elif [ -f "/root/tlbb.zip" ]; then
+    elif [ -f "/root/tlbb.zip" ]; then
     tar zcf tlgame-`date +%Y%m%d%H%I%S`${SUFFIX} ${TLBB_PATH} && \
     rm -rf ${TLBB_PATH}/tlbb && \
     unzip -q ~/tlbb.zip -d /tlgame/ && \
     chmod -R 777 /tlgame && \
     mv ~/tlbb.zip ~/`date +%Y%m%d%H%I%S`-tlbb.zip
-    echo -e "${CSUCCESS} 服务端文件 tlbb.zip 已经上传成功！！${CEND}"
+    echo -e "${CSUCCESS} 服务端文件 tlbb.zip 已经上传成功！！，可以执行【setini】进行配置文件写入${CEND}"
     exit 0;
 else
     echo -e "${CRED} 服务端文件不存在，或者位置上传错误，请上传至 [/root] 目录下面${CEND}"
