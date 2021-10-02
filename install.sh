@@ -55,11 +55,11 @@ do_install_docker() {
 EOF
         fi
         
-        [ "${OS}" == "Debian" ] || [ "${OS}" == "Ubuntu" ] && sudo apt-get service docker start  && system enable docker
-        [ "${OS}" == "CentOS" ] && sudo systemctl daemon-reload && sudo systemctl restart docker && system enable docker
+        [ "${OS}" == "Debian" ] || [ "${OS}" == "Ubuntu" ] && sudo apt-get service docker start  && systemctl enable docker
+        [ "${OS}" == "CentOS" ] && sudo systemctl daemon-reload && sudo systemctl restart docker && systemctl enable docker
         # 安装 docker-compose
-        [ "${OS}" == "Debian" ] || [ "${OS}" == "Ubuntu" ] && sudo apt-get service docker start && system enable docker
-        [ "${OS}" == "CentOS" ] && sudo systemctl daemon-reload && sudo systemctl restart docker && system enable docker
+        [ "${OS}" == "Debian" ] || [ "${OS}" == "Ubuntu" ] && sudo apt-get service docker start && systemctl enable docker
+        [ "${OS}" == "CentOS" ] && sudo systemctl daemon-reload && sudo systemctl restart docker && systemctl enable docker
         
     else
         echo -e "${CBLUE} 环境 Docker 安装成功 !!!${CEND}";
