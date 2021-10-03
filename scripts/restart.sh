@@ -19,7 +19,7 @@ else
 fi
 
 while :; do echo
-    for ((time = 10; time >= 0; time--)); do
+    for ((time = 5; time >= 0; time--)); do
       echo -ne "\r在准备正行重启操作！！，剩余 ${CRED}$time${CEND} 秒，可以在计时结束前，按 CTRL+C 退出！\r"
       sleep 1
     done

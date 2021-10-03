@@ -39,7 +39,7 @@ function main(){
 
 
 while :; do echo
-    for ((time = 10; time >= 0; time--)); do
+    for ((time = 5; time >= 0; time--)); do
       echo -ne "\r正准备换端操作，会清除所有数据，建议在执行前先进行【backup】命令进行备份，剩余 ${CRED}$time${CEND} 秒，可以在计时结束前，按 CTRL+C 退出！\r"
       sleep 1
     done
