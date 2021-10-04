@@ -21,7 +21,7 @@ fi
 while :; do
   echo
   for ((time = 5; time >= 0; time--)); do
-    echo -ne "\r在准备正行清除操作！！，剩余 ${CBLUE}$time${CEND} 秒，可以在计时结束前，按 CTRL+C 退出！\r"
+    echo -ne "\r正准备恢复出厂设置，数据全清！！，剩余 ${CBLUE}$time${CEND} 秒，可以在计时结束前，按 CTRL+C 退出！\r"
     sleep 1
   done
   echo -ne "\n\r"
@@ -31,11 +31,16 @@ while :; do
       docker rm -f $(docker ps -a -q) &&
       docker rmi -f $(docker images -q) &&
       mv /tlgame /tlgame-$(date +%Y%m%d%H%I%S) &&
+      chattr -i ${GS_WHOLE_PATH} &&
+      rm -rf ${GS_PROJECT} &&
       rm -rf ${ROOT_PATH}/${GSDIR}
   else
     docker stop $(docker ps -a -q) &&
       docker rm -f $(docker ps -a -q) &&
       docker rmi -f $(docker images -q) &&
+      chattr -i ${GS_WHOLE_PATH} &&
+      rm -rf ${GS_PROJECT} &&
+      rm -rf ${ROOT_PATH}/${GSDIR} &&
       mv /tlgame /tlgame-$(date +%Y%m%d%H%I%S)
   fi
 
