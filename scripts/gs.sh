@@ -47,6 +47,7 @@ ${CYELLOW}###########################################
 #    19:close      关服                   #
 #    20:gslog      查看日志               #
 #    21:rmlog      删除日志               #
+#    22:curgs      配置参数               #
 #    0:q 退出,或者按 CTRL+C               #
 ###########################################${CEND}
 EFF
@@ -267,7 +268,7 @@ EOF
 #    20:gslog
 gslog_help() {
   cat <<EOF
-${CRED}close${CEND} ${CGREEN}作用: 查看调试日志
+${CRED}gslog${CEND} ${CGREEN}作用: 查看调试日志
       条件: ◎ [1]：查看 [BILLING] 日志,只有用本服务器billing才能查看
             ◎ [2]：查看 [ShareMemory] 日志
             ◎ [3]：查看 [Login] 日志
@@ -283,8 +284,19 @@ EOF
 #    21:rmlog
 rmlog_help() {
   cat <<EOF
-${CRED}close${CEND} ${CGREEN}作用: 删除调试日志
+${CRED}rmlog${CEND} ${CGREEN}作用: 删除调试日志
       条件: 无
+      参数: 无
+      说明: 如有问题，可以向客服反馈
+${CEND}
+EOF
+}
+
+#    22:curgs
+curgs_help() {
+  cat <<EOF
+${CRED}curgs${CEND} ${CGREEN}作用: 查看配置信息
+      条件: 请不要在大众面前使用，因为服务器的配置信息容易暴露
       参数: 无
       说明: 如有问题，可以向客服反馈
 ${CEND}
@@ -356,6 +368,9 @@ if [ -n $1 ]; then
     ;;
   '21' | 'rmlog')
     rmlog_help
+    ;;
+  '22' | 'curgs')
+    curgs_help
     ;;
   '0' | '00' | 'q' | 'Q')
     break
@@ -437,6 +452,9 @@ else
         ;;
       '21' | 'rmlog')
         rmlog_help
+        ;;
+      '22' | 'curgs')
+        curgs_help
         ;;
       '0' | '00' | 'q' | 'Q')
         break

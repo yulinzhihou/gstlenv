@@ -18,32 +18,33 @@ else
   . /usr/local/bin/color
 fi
 
-while :; do echo
-    for ((time = 5; time >= 0; time--)); do
-      echo -ne "\r在准备正行清除操作！！，剩余 ${CBLUE}$time${CEND} 秒，可以在计时结束前，按 CTRL+C 退出！\r"
-      sleep 1
-    done
-    echo -ne "\n\r"
-    echo -ne "${CYELLOW}正在进行清除操作…………${CEND}"
-    if [ -e ${ROOT_PATH}/${GSDIR} ]; then
-      docker stop $(docker ps -a -q) && \
-      docker rm -f $(docker ps -a -q) && \
-      docker rmi -f $(docker images -q) && \
-      mv /tlgame  /tlgame-`date +%Y%m%d%H%I%S` && \
+while :; do
+  echo
+  for ((time = 5; time >= 0; time--)); do
+    echo -ne "\r在准备正行清除操作！！，剩余 ${CBLUE}$time${CEND} 秒，可以在计时结束前，按 CTRL+C 退出！\r"
+    sleep 1
+  done
+  echo -ne "\n\r"
+  echo -ne "${CYELLOW}正在进行清除操作…………${CEND}"
+  if [ -e ${ROOT_PATH}/${GSDIR} ]; then
+    docker stop $(docker ps -a -q) &&
+      docker rm -f $(docker ps -a -q) &&
+      docker rmi -f $(docker images -q) &&
+      mv /tlgame /tlgame-$(date +%Y%m%d%H%I%S) &&
       rm -rf ${ROOT_PATH}/${GSDIR}
-    else
-      docker stop $(docker ps -a -q) && \
-      docker rm -f $(docker ps -a -q) && \
-      docker rmi -f $(docker images -q) && \
-      mv /tlgame  /tlgame-`date +%Y%m%d%H%I%S`
-    fi
+  else
+    docker stop $(docker ps -a -q) &&
+      docker rm -f $(docker ps -a -q) &&
+      docker rmi -f $(docker images -q) &&
+      mv /tlgame /tlgame-$(date +%Y%m%d%H%I%S)
+  fi
 
-    if [ $? == 0 ]; then
-      echo -e "${CSUCCESS} 数据清除成功，请重新安装环境！！${CEND}"
-      exit 0;
-    else
-      echo -e "${CRED} 数据清除失败！可能需要重装系统或者环境了！${CEND}"
-      exit 1;
-    fi
-    break
+  if [ $? == 0 ]; then
+    echo -e "${CSUCCESS} 数据清除成功，请重新安装环境!!! 可以重新输入 【curl -sOL https://gsgameshare.com/gsenv; /bin/bash gsenv】进行重新安装!!!${CEND}"
+    exit 0
+  else
+    echo -e "${CRED} 数据清除失败！可能需要重装系统或者环境了！${CEND}"
+    exit 1
+  fi
+  break
 done
