@@ -21,16 +21,18 @@ fi
 cat <<EOF
 ${CGREEN}
 ※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※
-◎  [1].数据库端口: $([ ${TL_MYSQL_PORT} == ${TL_MYSQL_DEFAULT_PORT} ] && echo ${TL_MYSQL_PORT} || echo ${TL_MYSQL_DEFAULT_PORT})
-◎  [2].数据库密码: $([ ${TL_MYSQL_PASSWORD} == ${TL_MYSQL_DEFAULT_PASSWORD} ] && echo ${TL_MYSQL_PASSWORD} || echo ${TL_MYSQL_DEFAULT_PASSWORD})
-◎  [3].验证端口: $([ ${BILLING_PORT} == ${BILLING_DEFAULT_PORT} ] && echo ${BILLING_PORT} || echo ${BILLING_DEFAULT_PORT})
-◎  [4].登录网关端口: $([ ${LOGIN_PORT} == ${LOGIN_DEFAULT_PORT} ] && echo ${LOGIN_PORT} || echo ${LOGIN_DEFAULT_PORT})
-◎  [5].游戏网关端口: $([ ${SERVER_PORT} == ${SERVER_DEFAULT_PORT} ] && echo ${SERVER_PORT} || echo ${SERVER_DEFAULT_PORT})
-◎  [6].网站端口: $([ ${WEB_PORT} == ${WEB_DEFAULT_PORT} ] && echo ${WEB_PORT} || echo ${WEB_DEFAULT_PORT})
-◎  [7].是否单服务器: $([ ${IS_DLQ} == '1' ] && echo "是" || echo "否")
-◎  [8].转发机器: $([ ${BILLING_DEFAULT_SERVER_IPADDR} == ${BILLING_SERVER_IPADDR} ] && echo ${BILLING_SERVER_IPADDR} || echo ${BILLING_DEFAULT_SERVER_IPADDR})
-◎  [9].网站端口: $([ ${WEB_PORT} == ${WEB_DEFAULT_PORT} ] && echo ${WEB_PORT} || echo ${WEB_DEFAULT_PORT})
-◎  [0].服务端路径: $(echo ${TLBB_PATH})
+此命令只用于查看当前配置信息，不作任何修改。如需要重新设置，请执行【setconfig】命令
+※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※
+◎  数据库端口: $([ ${TL_MYSQL_PORT} == ${TL_MYSQL_DEFAULT_PORT} ] && echo ${TL_MYSQL_PORT} || echo ${TL_MYSQL_DEFAULT_PORT})
+◎  数据库密码: $([ ${TL_MYSQL_PASSWORD} == ${TL_MYSQL_DEFAULT_PASSWORD} ] && echo ${TL_MYSQL_PASSWORD} || echo ${TL_MYSQL_DEFAULT_PASSWORD})
+◎  验证端口: $([ ${BILLING_PORT} == ${BILLING_DEFAULT_PORT} ] && echo ${BILLING_PORT} || echo ${BILLING_DEFAULT_PORT})
+◎  登录网关端口: $([ ${LOGIN_PORT} == ${LOGIN_DEFAULT_PORT} ] && echo ${LOGIN_PORT} || echo ${LOGIN_DEFAULT_PORT})
+◎  游戏网关端口: $([ ${SERVER_PORT} == ${SERVER_DEFAULT_PORT} ] && echo ${SERVER_PORT} || echo ${SERVER_DEFAULT_PORT})
+◎  网站端口: $([ ${WEB_PORT} == ${WEB_DEFAULT_PORT} ] && echo ${WEB_PORT} || echo ${WEB_DEFAULT_PORT})
+◎  是否单服务器: $([ ${IS_DLQ} == '1' ] && echo "是" || echo "否")
+◎  转发机器: $([ ${BILLING_DEFAULT_SERVER_IPADDR} == ${BILLING_SERVER_IPADDR} ] && echo ${BILLING_SERVER_IPADDR} || echo ${BILLING_DEFAULT_SERVER_IPADDR})
+◎  网站端口: $([ ${WEB_PORT} == ${WEB_DEFAULT_PORT} ] && echo ${WEB_PORT} || echo ${WEB_DEFAULT_PORT})
+◎  服务端路径: $(echo ${TLBB_PATH})
 ※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※
 ${CEND}
 EOF

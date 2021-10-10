@@ -61,13 +61,13 @@ download() {
 
 # 配置容器启动的参数
 init_config() {
-    echo -e "${CYELLOW}即将设置服务器环境配置荐，请仔细！！${CEND}"
+    echo -e "${CYELLOW}即将设置服务器环境配置荐，请仔细！！注意：W机=Windows服务器，L机=Linux服务器${CEND}"
     chattr -i ${WHOLE_PATH}
     if [ -f ${WHOLE_PATH} ]; then
         # 配置是游戏注册还是登录器注册
         while :; do
             echo
-            read -e -p "当前【注册方式】为${CBLUE}["${IS_DLQ}"]${CEND}，是否需要修改【1=登录器注册，0=游戏内注册】 [y/n](默认: n): " IS_MODIFY
+            read -e -p "当前【服务器】为${CBLUE}["${IS_DLQ}"]${CEND}，是否需要修改【1=W机+L机，0=单L机】 [y/n](默认: n): " IS_MODIFY
             IS_MODIFY=${IS_MODIFY:-'n'}
             if [[ ! ${IS_MODIFY} =~ ^[y,n]$ ]]; then
                 echo "${CWARNING}输入错误! 请输入 y 或者 n ${CEND}"
@@ -75,7 +75,7 @@ init_config() {
                 if [ "${IS_MODIFY}" == 'y' ]; then
                     while :; do
                         echo
-                        read -p "请输入【注册方式,1=登录器注册，0=游戏内注册】(默认: [${IS_DEFAULT_DLQ}]): " IS_NEW_DLQ
+                        read -p "请输入【服务器,1=W机+L机，0=单L机】(默认: [${IS_DEFAULT_DLQ}]): " IS_NEW_DLQ
                         IS_NEW_DLQ=${IS_NEW_DLQ:-${IS_DEFAULT_DLQ}}
                         case ${IS_NEW_DLQ} in
                         0 | 1)
@@ -83,7 +83,7 @@ init_config() {
                             break
                             ;;
                         *)
-                            echo "${CWARNING}输入错误! 注册方式：1=登录器注册，0=游戏内注册${CEND}"
+                            echo "${CWARNING}输入错误! 服务器：1=W机+L机，0=单L机${CEND}"
                             break
                             ;;
                         esac
