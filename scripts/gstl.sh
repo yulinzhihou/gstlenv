@@ -278,7 +278,7 @@ init_config() {
 
 # 运行容器
 docker_run() {
-    TIPS="${CRED}环境不充足，请重新安装服务器基础环境组件和必要安装包，运行【 wget -q https://gsgameshare.com/gsenv -O ./gsenv && bash gsenv 】${CEND}"
+    TIPS="${CRED}环境不充足，请重新安装服务器基础环境组件和必要安装包，运行【 curl -sOL https://GSgameshare.com/gsenv; /bin/bash gsenv 】${CEND}"
     docker info >&/dev/null
     if [ $? -ne 0 ]; then
         echo -e $TIPS
@@ -290,7 +290,7 @@ docker_run() {
         exit 1
     fi
     # 开始根据编排工具安装
-    cd ${ROOT_PATH}/${GSDIR} && docker-compose up -d
+    cd ${ROOT_PATH}/${GSDIR} && docker-compose up -d·
     if [ $? -eq 0 ]; then
         echo "success" >${ROOT_PATH}/${GSDIR}/gs.lock
         echo -e "${CBLUE}环境安装成功，配置文件已经初始化。更多命令执行 【gs】查看${CEND}"
@@ -303,7 +303,7 @@ docker_run() {
 
 # 如果重复使用，则需要跳过。
 docker ps --format "{{.Names}}" | grep gsserver
-if [ $? == '0' || -f "${ROOT_PATH}/${GSDIR}/gs.lock" ]; then
+if [ $? == '0' ] || [ -f "${ROOT_PATH}/${GSDIR}/gs.lock" ]; then
     echo -e "${CRED}GS专用环境容器已经被初始化，如果需要重新初始化，请执行【setconfig】命令！${CEND}"
     exit 1
 else

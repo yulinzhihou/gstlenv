@@ -19,13 +19,14 @@ else
 fi
 
 if [ ! -f /usr/swap/swapfile ]; then
-    mkdir -p /usr/swap && dd if=/dev/zero of=/usr/swap/swapfile bs=100M count=40 && \
-    mkswap /usr/swap/swapfile && \
-    chmod -R 600 /usr/swap/swapfile && swapon /usr/swap/swapfile && \
-    echo "/usr/swap/swapfile swap swap defaults 0 0" >> /etc/fstab
-    echo -e "${CSUCCESS} 虚拟缓存提升到 (`free -hm | awk -F " " 'NR==2{print $2}'` + 4.0G) 成功！ 并且成功增加到开机自动加载！！${CEND}"
-    exit 0;
+  mkdir -p /usr/swap && dd if=/dev/zero of=/usr/swap/swapfile bs=100M count=40 &&
+    chmod -R 600 /usr/swap/swapfile &&
+    mkswap /usr/swap/swapfile &&
+    swapon /usr/swap/swapfile &&
+    echo "/usr/swap/swapfile swap swap defaults 0 0" >>/etc/fstab
+  echo -e "${CSUCCESS} 虚拟缓存提升到 ($(free -hm | awk -F " " 'NR==2{print $2}') + 4.0G) 成功！ 并且成功增加到开机自动加载！！${CEND}"
+  exit 0
 else
-    echo -e "${CRED} 虚拟缓存已经提升到 (`free -hm | awk -F " " 'NR==3{print $2}'`) ${CEND}"
-    exit 1;
+  echo -e "${CRED} 虚拟缓存已经提升到 ($(free -hm | awk -F " " 'NR==3{print $2}')) ${CEND}"
+  exit 1
 fi

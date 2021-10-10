@@ -55,10 +55,10 @@ do_install_docker() {
 EOF
         fi
         
-        [ "${OS}" == "Debian" ] || [ "${OS}" == "Ubuntu" ] && sudo apt-get service docker start  && systemctl enable docker
+        [ "${OS}" == "Debian" ] || [ "${OS}" == "Ubuntu" ] && sudo apt-get services docker start  && systemctl enable docker
         [ "${OS}" == "CentOS" ] && sudo systemctl daemon-reload && sudo systemctl restart docker && systemctl enable docker
         # 安装 docker-compose
-        [ "${OS}" == "Debian" ] || [ "${OS}" == "Ubuntu" ] && sudo apt-get service docker start && systemctl enable docker
+        [ "${OS}" == "Debian" ] || [ "${OS}" == "Ubuntu" ] && sudo apt-get services docker start && systemctl enable docker
         [ "${OS}" == "CentOS" ] && sudo systemctl daemon-reload && sudo systemctl restart docker && systemctl enable docker
         
     else
