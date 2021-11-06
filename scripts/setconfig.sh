@@ -241,7 +241,7 @@ setconfig_rebuild() {
 while :; do
     echo
     for ((time = 10; time >= 0; time--)); do
-        echo -ne "\r在准备正行重新生成配置文件操作！！，剩余 ${CRED}$time${CEND} 秒，可以在计时结束前，按 CTRL+C 退出！\r"
+        echo -ne "\r在准备正行重新生成配置文件操作！！，剩余 ${CRED}$time${CEND} 秒，可以在计时结束前，按 CTRL+C 退出！"
         sleep 1
     done
     echo -ne "\n\r"

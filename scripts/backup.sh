@@ -23,18 +23,21 @@ FILENAME="$(date +%Y_%m_%d_%H_%M_%S)"
 FILEPATH="/tlgame/backup/"
 LOG_FILE="backup.log"
 
+# 检测
 if [ ! -d ${FILEPATH} ]; then
   mkdir -p ${FILEPATH}
 fi
 
 backup_tlbb() {
+  echo -e "${CYELLOW}正在备份版本目录，请稍等……\r${CEND}"
   #备份服务端
-  cd /tlgame && tar zcf tlbb-${FILENAME}.tar.gz tlbb
+  cd /tlgame && tar zcf tlbb-${FILENAME}.tar.gz tlbb &&
+    mv tlbb-*.tar.gz ${FILEPATH}
   #判断是否备份成功
   if [ $? -eq 0 ]; then
-    echo -e "${CSUCCESS}$(date '+%Y-%m-%d-%H-%M-%S')\ttlbb-${FILENAME}.tar.gz\t备份成功!!${CEND}" >>${FILEPATH}${LOG_FILE}
+    echo -e "${CSUCCESS}$(date '+%Y-%m-%d-%H-%M-%S')\ttlbb-${FILENAME}.tar.gz\t备份成功!!${CEND}" | tee -a ${FILEPATH}${LOG_FILE}
   else
-    echo -e "${CRED}$(date '+%Y-%m-%d-%H-%M-%S')\ttlbb-${FILENAME}.tar.gz\t备份失败${CEND}" >>${FILEPATH}${LOG_FILE}
+    echo -e "${CRED}$(date '+%Y-%m-%d-%H-%M-%S')\ttlbb-${FILENAME}.tar.gz\t备份失败${CEND}" | tee -a ${FILEPATH}${LOG_FILE}
   fi
 
   #清理7天前的，也就是保留7天的数据
@@ -42,12 +45,14 @@ backup_tlbb() {
 }
 
 backup_mysql() {
-  docker exec -it gsmysql /bin/sh /var/lib/mysql/gsmysqlBackup.sh
+  echo -e "${CYELLOW}正在备份数据库，请稍等……\r${CEND}"
+  docker exec -it gsmysql /bin/sh /var/lib/mysql/gsmysqlBackup.sh &&
+    mv /tlgame/gsmysql/*.sql ${FILEPATH}
   #判断是否备份成功
   if [ $? -eq 0 ]; then
-    echo -e "${CSUCCESS}$(date '+%Y-%m-%d-%H-%M-%S')\tgsmysqlBackup\t备份成功!!${CEND}" >>${FILEPATH}${LOG_FILE}
+    echo -e "${CSUCCESS}$(date '+%Y-%m-%d-%H-%M-%S')\tgsmysqlBackup\t备份成功!!${CEND}" | tee -a ${FILEPATH}${LOG_FILE}
   else
-    echo -e "${CRED}$(date '+%Y-%m-%d-%H-%M-%S')\tgsmysqlBackup\t备份失败${CEND}" >>${FILEPATH}${LOG_FILE}
+    echo -e "${CRED}$(date '+%Y-%m-%d-%H-%M-%S')\tgsmysqlBackup\t备份失败${CEND}" | tee -a ${FILEPATH}${LOG_FILE}
   fi
   #清理7天前的，也就是保留7天的数据
   find /tlgame/backup/ -name "*.sql" -type f -mtime +7 -exec rm -rf {} \; >/dev/null 2>&1
@@ -61,11 +66,9 @@ else
     backup_tlbb
     backup_mysql
     if [ $? == 0 ]; then
-      echo -e "${CSUCCESS} 已经成功备份完成，备份文件在 [/tlgame/backup] 目录下${CEND}"
+      echo -e "${CSUCCESS}已经成功备份完成，备份文件在 [/tlgame/backup] 目录下${CEND}"
     else
-      echo -e "${CRED} 备份失败！${CEND}"
+      echo -e "${CRED}备份失败！${CEND}"
     fi
   fi
 fi
-
-mv /tlgame/gsmysql/*.sql ${FILEPATH} && mv *.tar.gz ${FILEPATH}

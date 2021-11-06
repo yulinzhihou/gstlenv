@@ -21,39 +21,42 @@ fi
 # 获取用户目录
 function getUserInput() {
   # 配置是游戏注册还是登录器注册
-  while :; do echo
-      read -e -p "当前【域名】为${CBLUE}["0.0.0.0"]${CEND}，是否需要修改【0.0.0.0=使用服务器外网IP+端口访问】 [y/n](默认: n): " IS_MODIFY
-      IS_MODIFY=${IS_MODIFY:-'n'}
-      if [[ ! ${IS_MODIFY} =~ ^[y,n]$ ]]; then
-          echo "${CWARNING}输入错误! 请输入 y 或者 n ${CEND}"
-      else
-          if [ "${IS_MODIFY}" == 'y' ]; then
-              while :; do echo
-                  read -p "请输入【IP地址或者解析过来的域名】(默认: [0.0.0.0]): " DOMAIN_IP
-                  DOMAIN_IP=${DOMAIN_IP:-"0.0.0.0"}
-                  if [ ${DOMAIN_IP} ]; then
-                      sed -i "s/server_name .*/server_name  ${DOMAIN_IP}/g" /tlgame/conf.d/ow.conf
-                      break
-                  else
-                      echo "${CWARNING}输入错误!${CEND}"
-                  fi
-              done
+  while :; do
+    echo
+    echo -e "${CYELLOW}国内机器需要已经备案域名，才能使用80端口。默认端口为51888，默认是服务器外网IP+端口访问${CEND}"
+    read -e -p "当前【域名】为${CBLUE}["0.0.0.0"]${CEND}，是否需要修改【0.0.0.0=使用服务器外网IP+端口访问】 [y/n](默认: n): " IS_MODIFY
+    IS_MODIFY=${IS_MODIFY:-'n'}
+    if [[ ! ${IS_MODIFY} =~ ^[y,n]$ ]]; then
+      echo "${CWARNING}输入错误! 请输入 y 或者 n ${CEND}"
+    else
+      if [ "${IS_MODIFY}" == 'y' ]; then
+        while :; do
+          echo
+          read -p "请输入【IP地址或者解析过来的域名】(默认: [0.0.0.0]): " DOMAIN_IP
+          DOMAIN_IP=${DOMAIN_IP:-"0.0.0.0"}
+          if [ ${DOMAIN_IP} ]; then
+            sed -i "s/server_name .*/server_name  ${DOMAIN_IP}/g" /tlgame/conf.d/ow.conf
+            break
+          else
+            echo "${CWARNING}输入错误!${CEND}"
           fi
-          break;
+        done
       fi
+      break
+    fi
   done
 
 }
 
-# 创建目录，生成配置文件 
+# 创建目录，生成配置文件
 function owConf() {
   # 创建目录
   if [ ! -d "/tlgame/www/ow" ]; then
-      mkdir -p /tlgame/www/ow
+    mkdir -p /tlgame/www/ow
   fi
 
   if [ -d "/tlgame/conf.d" ]; then
-    cat > /tlgame/conf.d/ow.conf <<EOF
+    cat >/tlgame/conf.d/ow.conf <<EOF
 server {
     listen       80  default;
     server_name  0.0.0.0;

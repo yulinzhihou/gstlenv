@@ -18,7 +18,20 @@ else
   . /usr/local/bin/color
 fi
 
-FILENAME=`date "+%Y-%m-%d-%H-%M-%S"`
+FILENAME=$(date "+%Y-%m-%d-%H-%M-%S")
+
+if [ $# -eq 0 ]; then
+  TIME=1
+else
+  case $1 in
+  [1-9] | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23)
+    TIME=$1
+    ;;
+  *)
+    TIME=1
+    ;;
+  esac
+fi
 
 # *    *    *    *    *
 # -    -    -    -    -
@@ -35,21 +48,41 @@ FILENAME=`date "+%Y-%m-%d-%H-%M-%S"`
 # 正斜线（/）：可以用正斜线指定时间的间隔频率，例如“0-23/2”表示每两小时执行一次。同时正斜线可以和星号一起使用，例如*/10，如果用在minute字段，表示每十分钟执行一次。
 
 # 数据备份
-data_backup(){
-    echo -e "${CGREEN}开始设置数据备份 !!!${CEND}";
-    #备份数据库
-    crontabCount=`crontab -l | grep docker exec -it `docker ps --format "{{.Names}}" | grep "gsmysql"` | grep -v grep |wc -l`
-    # crontabCount=`crontab -l | grep docker exec -it gsmysql | grep -v grep | wc -l`
-    if [ $crontabCount -eq 0 ];then
-        # (echo "0 */1 * * * sh docker exec -it `docker ps --format "{{.Names}}" | grep "gsmysql"``docker ps --format "{{.Names}}" | grep "gsmysql"` /bin/bash -c './gsmysqlBackup.sh' > /dev/null 2>&1 &"; crontab -l) | crontab
-        (echo "0 */1 * * * sh docker exec -it gsmysql /bin/bash /var/lib/mysql/gsmysqlBackup.sh > /dev/null 2>&1 &"; crontab -l) | crontab
-    fi
+data_backup() {
+  echo -e "${CGREEN}开始设置定时数据备份，目前为【${TIME}】小时备份一次数据库和版本！备份到 /tlgame/backup/ 目录下${CEND}"
+  #备份数据库
+  crontabCount=$(crontab -l | grep 'docker exec -it gsmysql' | grep -v grep | wc -l)
+  # crontabCount=`crontab -l | grep docker exec -it gsmysql | grep -v grep | wc -l`
+  if [ $crontabCount -eq 0 ]; then
+    # (echo "0 */1 * * * sh docker exec -it `docker ps --format "{{.Names}}" | grep "gsmysql"``docker ps --format "{{.Names}}" | grep "gsmysql"` /bin/bash -c './gsmysqlBackup.sh' > /dev/null 2>&1 &"; crontab -l) | crontab
+    (
+      echo "0 */${TIME} * * * sh docker exec -it gsmysql /bin/bash /var/lib/mysql/gsmysqlBackup.sh > /dev/null 2>&1 &"
+      crontab -l
+    ) | crontab
+  fi
 
-    #备份服务端
-    crontabCount=`crontab -l | grep `docker ps --format "{{.Names}}" | grep "gsserver"` | grep -v grep |wc -l`
-    if [ $crontabCount -eq 0 ];then
-        (echo "0 0 */1 * * /bin/bash /usr/local/bin/backup > /dev/null 2>&1 &"; crontab -l) | crontab
-    fi
+  #备份服务端
+  crontabCount=$(crontab -l | grep '/usr/local/bin/backup' | grep -v grep | wc -l)
+  if [ $crontabCount -eq 0 ]; then
+    (
+      echo "0 */${TIME} * * * /bin/bash /usr/local/bin/backup > /dev/null 2>&1 &"
+      crontab -l
+    ) | crontab
+  fi
 }
 
-data_backup
+# 部署备份脚本
+echo -e "时间 ："${TIME}
+if [ ! -f ${GS_PROJECT}"/include/gsmysqlBackup.sh" ]; then
+  \cp -rf ${GS_PROJECT}"/include/gsmysqlBackup.sh" /tlgame/gsmysql/
+  if [ $? == '0' ]; then
+    data_backup
+  else
+    echo -e "${CRED}备份命令不完整，请更新命令[upcmd]后再执行！${CEND}"
+    exit 1
+  fi
+
+else
+  data_backup
+  exit 0
+fi

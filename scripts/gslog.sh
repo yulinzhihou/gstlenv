@@ -23,15 +23,15 @@ fi
 function tail_log_file() {
     cd ${TLBB_PATH}"/Server/Log" &&
         LOGFILENAME=$(ls -t | grep "${INPUTNAME}" | head -n1 | awk '{print $0}')
-    tail -f ${LOGFILENAME}
+    tail -n 100 -f ${LOGFILENAME}
 }
 
 while :; do
     # 先判断目录是否存在
     if [ -d ${TLBB_PATH}"/Server/Log" ]; then
         # 存在目录则进行打印监听，通过传入的 login ShareMemory world等进程的参数进行查看
-        for ((time = 5; time >= 0; time--)); do
-            echo -ne "\r正准备查看日志动态！！，剩余 ${CRED}$time${CEND} 秒，可以在计时结束前，按 CTRL+C 退出！${CRED}切记!!!看完日志需要退出请按 CTRL+C 退出！${CEND}\r"
+        for ((time = 3; time >= 0; time--)); do
+            echo -ne "\r正准备查看日志动态！！,请使用完一定记得关闭（命令【rmlog】）。不然日志可能会挤爆服务器硬盘！${CEND}"
             sleep 1
         done
         echo -ne "\n\r"
@@ -47,6 +47,7 @@ while :; do
 ◎ [2]：查看 [ShareMemory] 日志
 ◎ [3]：查看 [Login] 日志
 ◎ [4]：查看 [World] 日志
+◎ [5]：查看 [Lua] 日志
 ◎ [0]：查看 [error] 日志
 ◎ [q]：退出按 q 或者 Q，也可以按 CTRL+C 退出！
 ※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※\r\n"
@@ -70,6 +71,10 @@ while :; do
                 ;;
             '4')
                 INPUTNAME='world'
+                tail_log_file
+                ;;
+            '5')
+                INPUTNAME='lua'
                 tail_log_file
                 ;;
             'q' | 'Q')

@@ -61,7 +61,7 @@ download() {
 
 # 配置容器启动的参数
 init_config() {
-    echo -e "${CYELLOW}即将设置服务器环境配置荐，请仔细！！注意：W机=Windows服务器，L机=Linux服务器${CEND}"
+    echo -e "${CYELLOW}即将设置服务器环境配置荐，请仔细！！注意：W机=Windows服务器，L机=Linux服务器${CEND} \r ${CRED}如果选择了W机+L机模式，则本服务器不要开启 [billing] 服务！！！"
     chattr -i ${WHOLE_PATH}
     if [ -f ${WHOLE_PATH} ]; then
         # 配置是游戏注册还是登录器注册
@@ -304,6 +304,10 @@ docker_run() {
 # 如果重复使用，则需要跳过。
 docker ps --format "{{.Names}}" | grep gsserver
 if [ $? == '0' ] || [ -f "${ROOT_PATH}/${GSDIR}/gs.lock" ]; then
+    # 部署备份脚本
+    if [ ! -f ${GS_PROJECT}"/include/gsmysqlBackup.sh" ]; then
+        \cp -rf ${GS_PROJECT}"/include/gsmysqlBackup.sh" /tlgame/gsmysql/
+    fi
     echo -e "${CRED}GS专用环境容器已经被初始化，如果需要重新初始化，请执行【setconfig】命令！${CEND}"
     exit 1
 else
@@ -321,3 +325,5 @@ else
     init_config
     docker_run
 fi
+# 执行安装完成后，呼出全局命令
+gs
