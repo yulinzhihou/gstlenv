@@ -63,14 +63,14 @@ docker cp ${BASE_PATH}/odbc.ini gsserver:/etc
 docker cp /root/.tlgame/scripts/step.sh gsserver:/usr/local/bin/step
 #每次更新后，先重置更改过的文件
 #sed -i 's/^else$/else\n  \/home\/billing\/billing up -d/g' ${GS_PROJECT_PATH}/tlbb/run.sh && \
-sed -i 's/exit$/tail -f \/dev\/null/g' ${GS_PROJECT_PATH}/tlbb/run.sh && \
-cd ${BASE_PATH}/ && \
-rm -rf  ${BASE_PATH}/*.ini ${BASE_PATH}/config.json ${BASE_PATH}/billing
+sed -i 's/exit$/tail -f \/dev\/null/g' ${GS_PROJECT_PATH}/tlbb/run.sh &&
+    cd ${BASE_PATH}/ &&
+    rm -rf ${BASE_PATH}/*.ini ${BASE_PATH}/config.json ${BASE_PATH}/billing
 chown -R root:root ${GS_PROJECT_PATH} && chmod -R 777 ${GS_PROJECT_PATH}
-if [ $? == 0 ]; then
-    echo -e "${CSUCCESS} 配置文件已经写入成功，可以执行【runtlbb】进行开服操作！！${CEND}"
-    exit 0;
+if [ $? -eq 0 ]; then
+    echo -e "${CSUCCESS}配置文件已经写入成功，可以执行【runtlbb】进行开服操作！！${CEND}"
+    exit 0
 else
-    echo -e "${CRED} 配置文件写入失败！${CEND}"
-    exit 1;
+    echo -e "${CRED}配置文件写入失败！${CEND}"
+    exit 1
 fi

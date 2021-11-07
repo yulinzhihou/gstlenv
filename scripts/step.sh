@@ -31,7 +31,7 @@ CMSG="$CCYAN"
 
 run_step_1() {
     cd /home/billing && ./billing up -d
-    if [ $? == 0 ]; then
+    if [ $? -eq 0 ]; then
         echo -e "${CSUCCESS} 启动 [BILLING] 服务成功，请耐心等待几分钟。建议使用：【runtop】查看情况！！${CEND}"
     else
         echo -e "${CRED} 启动 [BILLING] 服务失败！${CEND}"
@@ -40,7 +40,7 @@ run_step_1() {
 
 run_step_2() {
     cd /home/tlbb/Server && ./shm stop && ./shm start
-    if [ $? == 0 ]; then
+    if [ $? -eq 0 ]; then
         echo -e "${CSUCCESS} 启动 [ShareMemory] 服务成功，请耐心等待几分钟。建议使用：【runtop】查看情况！！${CEND}"
     else
         echo -e "${CRED} 启动 [ShareMemory] 服务失败！${CEND}"
@@ -58,7 +58,7 @@ run_step_3() {
         fi
     done
     #   cd /home/tlbb/Server && ./Login
-    if [ $? == 0 ]; then
+    if [ $? -eq 0 ]; then
         echo -e "${CSUCCESS} 启动 [Login] 服务成功，请耐心等待几分钟。建议使用：【runtop】查看情况！！${CEND}"
     else
         echo -e "${CRED} 启动 [Login] 服务失败！${CEND}"
@@ -76,7 +76,7 @@ run_step_4() {
         fi
     done
     #   cd /home/tlbb/Server && ./World
-    if [ $? == 0 ]; then
+    if [ $? -eq 0 ]; then
         echo -e "${CSUCCESS} 启动 [World] 服务成功，请耐心等待几分钟。建议使用：【runtop】查看情况！！${CEND}"
     else
         echo -e "${CRED} 启动 [World] 服务失败！${CEND}"
@@ -93,7 +93,7 @@ run_step_5() {
             break;
         fi
     done
-    if [ $? == 0 ]; then
+    if [ $? -eq 0 ]; then
         echo -e "${CSUCCESS} 启动 [Server] 服务成功，请耐心等待几分钟。建议使用：【runtop】查看情况！！${CEND}"
     else
         echo -e "${CRED} 启动 [Server] 服务失败！${CEND}"

@@ -44,7 +44,7 @@ while :; do
       mv /tlgame /tlgame-$(date +%Y%m%d%H%I%S)
   fi
 
-  if [ $? == 0 ]; then
+  if [ $? -eq 0 ]; then
     echo -e "${CSUCCESS} 数据清除成功，请重新安装环境!!! 可以重新输入 【curl -sOL https://gsgameshare.com/gsenv; /bin/bash gsenv】进行重新安装!!!${CEND}"
     exit 0
   else

@@ -27,7 +27,7 @@ while :; do
   echo -ne "\n\r"
   echo -ne "${CYELLOW}正在重启…………\n\r${CEND}"
   cd ${ROOT_PATH}/${GSDIR} && docker-compose restart
-  if [ $? == 0 ]; then
+  if [ $? -eq 0 ]; then
     # 删除因为改版本导致引擎启动失败的dump文件
     cd ${ROOT_PATH}/${GSDIR} && rm -rf core.*
     echo -e "${CSUCCESS} 服务端已经重启成功，如果需要重新开服，请运行【runtlbb】命令 ${CEND}"

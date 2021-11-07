@@ -65,23 +65,21 @@ data_backup() {
   crontabCount=$(crontab -l | grep '/usr/local/bin/backup' | grep -v grep | wc -l)
   if [ $crontabCount -eq 0 ]; then
     (
-      echo "0 */${TIME} * * * /bin/bash /usr/local/bin/backup > /dev/null 2>&1 &"
+      echo "0 */${TIME} * * * /bin/bash /usr/local/bin/backup all > /dev/null 2>&1 &"
       crontab -l
     ) | crontab
   fi
 }
 
 # 部署备份脚本
-echo -e "时间 ："${TIME}
 if [ ! -f ${GS_PROJECT}"/include/gsmysqlBackup.sh" ]; then
   \cp -rf ${GS_PROJECT}"/include/gsmysqlBackup.sh" /tlgame/gsmysql/
-  if [ $? == '0' ]; then
+  if [ $? -eq 0 ]; then
     data_backup
   else
     echo -e "${CRED}备份命令不完整，请更新命令[upcmd]后再执行！${CEND}"
     exit 1
   fi
-
 else
   data_backup
   exit 0

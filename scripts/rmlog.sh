@@ -25,7 +25,7 @@ if [ -f ${TLBB_PATH}"/Server/Log" ]; then
     rm -rf ${TLBB_PATH}"/Server/Log"
 fi
 
-if [ $? == '0' ]; then
+if [ $? -eq 0 ]; then
     echo -e "${CSUCCESS} 清理成功！如果需要重新打开，请使用【gslog】,请使用完一定记得关闭。小心挤爆服务器硬盘！${CEND}"
     exit 0;
 else

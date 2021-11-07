@@ -97,11 +97,11 @@ set_timezone() {
 # 安装整合
 do_install() {
     set_timezone
-    [ $? == 0 ] && echo -e "${CBLUE}设置时区成功!! ${CEND}" || { echo -e "${CRED}设置时区失败!! ;${CEND}"; exit 1;}
+    [ $? -eq 0 ] && echo -e "${CBLUE}设置时区成功!! ${CEND}" || { echo -e "${CRED}设置时区失败!! ;${CEND}"; exit 1;}
     do_install_docker
-    [ $? == 0 ] && echo -e "${CBLUE}环境核心组件安装成功！！ ${CEND}" || { echo -e "${CRED}环境核心组件安装失败!! ;${CEND}"; exit 1;}
+    [ $? -eq 0 ] && echo -e "${CBLUE}环境核心组件安装成功！！ ${CEND}" || { echo -e "${CRED}环境核心组件安装失败!! ;${CEND}"; exit 1;}
     set_command
-    [ $? == 0 ] && echo -e "${CBLUE}设置全局命令成功！！${CEND}" || { echo -e "${CRED}设置全局命令失败！！${CEND}"; exit 1;}
+    [ $? -eq 0 ] && echo -e "${CBLUE}设置全局命令成功！！${CEND}" || { echo -e "${CRED}设置全局命令失败！！${CEND}"; exit 1;}
 }
 
 # 安装完成提示信息

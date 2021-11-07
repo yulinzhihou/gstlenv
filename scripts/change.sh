@@ -31,7 +31,7 @@ function main() {
     docker-compose up -d &&
     setini &&
     runtlbb
-  if [ $? == 0 ]; then
+  if [ $? -eq 0 ]; then
     echo -e "${CSUCCESS} 换端成功，请耐心等待几分钟后，建议使用：【runtop】查看开服的情况！${CEND}"
     exit 0
   else

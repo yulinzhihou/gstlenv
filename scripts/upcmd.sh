@@ -29,7 +29,7 @@ download () {
   cd ${TMP_PATH} && \
   # 解压目录
   tar zxf ${VERSION}.tar.gz -C $VERSION && cd ${VERSION} && mv * ${VERSION} && \cp -rf ${VERSION}/* $GS_PROJECT/
-  if [ $? == '0' ]; then 
+  if [ $? -eq 0 ]; then 
     rm -rf ${TMP_PATH}/${VERSION}.tar.gz && \
     rm -rf ${TMP_PATH}/${VERSION}
   fi
@@ -47,9 +47,9 @@ set_command() {
 
 
 download
-if [ $? == '0' ]; then
+if [ $? -eq 0 ]; then
   set_command
-  if [ $? == '0' ]; then
+  if [ $? -eq 0 ]; then
     echo -e "${CSUCCESS} 命令重新生成成功，如果需要了解详情，可以运行 【gs】命令进行帮助查询！！${CEND}"
     exit 0;
   else

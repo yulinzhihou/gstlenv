@@ -24,7 +24,7 @@ if [ -f ${ROOT_PATH}/${GSDIR} ];then
   docker exec -d gsserver /bin/bash ./Server/shm stop && \
   docker exec -d gsserver /bin/bash stop.sh && \
   docker exec -d gsserver /home/billing/billing stop
-  if [ $? == 0 ]; then
+  if [ $? -eq 0 ]; then
     echo -e "${CSUCCESS} 服务端关闭成功，如果需要重新开启，请运行【runtlbb】命令${CEND}"
     exit 0;
   else

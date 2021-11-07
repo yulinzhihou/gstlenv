@@ -32,7 +32,7 @@ while :; do
     rm -rf /tlgame/tlbb/* &&
     cd ${ROOT_PATH}/${GSDIR} &&
     docker-compose up -d
-  if [ $? == 0 ]; then
+  if [ $? -eq 0 ]; then
     echo -e "${CSUCCESS}环境已经重构成功，请上传服务端到指定位置，然后再开服操作！！可以重新上传服务端进行【untar】【setini】【runtlbb】进行开服操作！！${CEND}"
     exit 0
   else

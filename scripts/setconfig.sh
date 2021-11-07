@@ -21,8 +21,10 @@ fi
 
 FILE_PATH="/root/.gs/"
 
+# 设置配置参数
 setconfig_rebuild() {
     if [ -f ${GS_WHOLE_PATH} ]; then
+        echo -e "${CRED}如果选择了W机+L机模式，则本服务器不要开启 [billing] 服务！！！\r"
         echo -e "${CYELLOW}即将设置服务器环境配置荐，请仔细！！注意：W机=Windows服务器，L机=Linux服务器${CEND}"
         chattr -i ${GS_WHOLE_PATH}
         while :; do
@@ -238,23 +240,73 @@ setconfig_rebuild() {
     docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q)
 }
 
-while :; do
-    echo
-    for ((time = 10; time >= 0; time--)); do
+# 备份数据
+setconfig_backup() {
+    echo -ne "正在备份版本数据请稍候……\r"
+    cd /tlgame && tar zcf tlbb-setconfig-backup.tar.gz tlbb &&
+        docker exec -it gsmysql /bin/sh /var/lib/mysql/gsmysqlBackup.sh
+}
+
+# 还原数据
+setconfig_restore() {
+    echo -ne "正在还原修改参数之前的数据库与版本请稍候……\r"
+    if [ -f "/tlgame/tlbb-setconfig-backup.tar.gz" ]; then
+        cd /tlgame && tar zxf tlbb-setconfig-backup.tar.gz && rm -rf /tlgame/tlbb-setconfig-backup.tar.gz
+    fi
+
+    if [ -f "/tlgame/gsmysql/*.sql" ]; then
+        docker exec -it gsmysql /bin/sh /var/lib/mysql/gsmysqlRestore.sh
+    fi
+
+}
+
+# 核心调用
+main() {
+    for ((time = 3; time >= 0; time--)); do
         echo -ne "\r在准备正行重新生成配置文件操作！！，剩余 ${CRED}$time${CEND} 秒，可以在计时结束前，按 CTRL+C 退出！"
         sleep 1
     done
-    echo -ne "\n\r"
-    echo -ne "${CYELLOW}正在重启…………\r\n${CEND}"
-    setconfig_rebuild
-    setini
-    # 开环境
-    cd ${ROOT_PATH}/${GSDIR} && docker-compose up -d
-    if [ $? == 0 ]; then
-        echo -e "${CSUCCESS} 配置写入成功！！,可以使用 【curgs】命令查看配置的信息${CEND}"
+    #
+    while :; do
+        echo
+        echo -e "${CYELLOW}请选择是否需要保留原来的版本与数据库${CEND}"
+        read -e -p "${CBLUE}保留请输入[y]es,[n]o,默认是保留[y]${CEND}[y/n](默认: y): " IS_MODIFY
+        IS_MODIFY=${IS_MODIFY:-'y'}
+        if [[ ! ${IS_MODIFY} =~ ^[y,n]$ ]]; then
+            echo "${CWARNING}输入错误! 请输入 y 或者 n ${CEND}"
+        else
+            if [ "${IS_MODIFY}" == 'y' ]; then
+                # 备份数据
+                setconfig_backup &&
+                    # 设置参数
+                    setconfig_rebuild &&
+                    # 替换参数
+                    setini &&
+                    # 开环境
+                    cd ${ROOT_PATH}/${GSDIR} && docker-compose up -d &&
+                    # 还原数据
+                    setconfig_restore
+            else
+                # 备份数据
+                setconfig_backup &&
+                    # 设置参数
+                    setconfig_rebuild &&
+                    # 替换参数
+                    setini &&
+                    # 开环境
+                    cd ${ROOT_PATH}/${GSDIR} && docker-compose up -d
+            fi
+            break
+        fi
+    done
+
+    if [ $? -eq 0 ]; then
+        echo -e "${CSUCCESS}配置写入成功！！,可以使用 【curgs】命令查看配置的信息${CEND}"
         exit 0
     else
-        echo -e "${CRED} 配置写入失败，请移除环境重新安装！！${CEND}"
+        echo -e "${CRED}配置写入失败，请移除环境重新安装！！${CEND}"
         exit 1
     fi
-done
+}
+
+main
