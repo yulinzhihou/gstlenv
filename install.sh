@@ -129,7 +129,7 @@ clear
 # 开始安装
 do_install
 if [ $? -eq 0 ]; then
-    show_install_msg
+    show_install_msg && gstl
 else
     echo -e "${CRED}环境即将安装完成，请手动执行 gstl${CEND}"
 fi
