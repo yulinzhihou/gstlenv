@@ -294,7 +294,7 @@ docker_run() {
     cd ${ROOT_PATH}/${GSDIR} && docker-compose up -d
     if [ $? -eq 0 ]; then
         echo "success" >${ROOT_PATH}/${GSDIR}/gs.lock
-        echo -e "${CBLUE}环境安装成功，配置文件已经初始化。更多命令执行 【gs】查看${CEND}"
+        echo -e "${CGREEN}环境安装成功，配置文件已经初始化。如果不需要使用默认参数，请使用[setconfig]命令进行所有端口与密码的修改！！！${CEND}"
     else
         echo -e "${CRED}环境安装失败，配置文件已经初始化。更多命令执行 【gs】查看${CRED}"
     fi
@@ -302,6 +302,8 @@ docker_run() {
 
 # 如果重复使用，则需要跳过。
 # 部署备份脚本
+. ${WHOLE_PATH}
+
 if [ ! -f ${GS_PROJECT}"/include/gsmysqlBackup.sh" ]; then
     \cp -rf ${GS_PROJECT}"/include/gsmysqlBackup.sh" /tlgame/gsmysql/
     \cp -rf ${GS_PROJECT}"/include/gsmysqlRestore.sh" /tlgame/gsmysql/
