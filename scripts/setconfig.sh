@@ -290,8 +290,6 @@ main() {
             else
                 # 设置参数
                 setconfig_rebuild &&
-                    # 替换参数
-                    setini &&
                     # 开环境
                     cd ${ROOT_PATH}/${GSDIR} && docker-compose up -d
             fi
