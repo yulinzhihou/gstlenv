@@ -41,7 +41,7 @@ setconfig_rebuild() {
                         IS_NEW_DLQ=${IS_NEW_DLQ:-${IS_DEFAULT_DLQ}}
                         case ${IS_NEW_DLQ} in
                         0 | 1)
-                            sed -i "s/IS_DLQ=.*/IS_DLQ=${IS_NEW_DLQ}/g" ${WHOLE_PATH}
+                            sed -i "s/IS_DLQ=.*/IS_DLQ=${IS_NEW_DLQ}/g" ${GS_WHOLE_PATH}
                             break
                             ;;
                         *)
@@ -72,7 +72,7 @@ setconfig_rebuild() {
                 ckStep2=$(echo $BILLING_NEW_SERVER_IPADDR | egrep $regex | wc -l)
                 ckStep3=$(echo $BILLING_NEW2_SERVER_IPADDR | egrep $regex | wc -l)
                 if [[ $ckStep1 -eq 0 && $ckStep2 -eq 1 && $ckStep3 -eq 1 ]]; then
-                    sed -i "s/BILLING_SERVER_IPADDR=.*/BILLING_SERVER_IPADDR=${BILLING_NEW_SERVER_IPADDR}/g" ${WHOLE_PATH}
+                    sed -i "s/BILLING_SERVER_IPADDR=.*/BILLING_SERVER_IPADDR=${BILLING_NEW_SERVER_IPADDR}/g" ${GS_WHOLE_PATH}
                     break
                 else
                     echo "服务器IP地址输入有误或者两次输入的不相同!，请重新输入"
@@ -94,7 +94,7 @@ setconfig_rebuild() {
                         read -p "请输入【Billing验证端口】：(默认: ${BILLING_DEFAULT_PORT}): " BILLING_NEW_PORT
                         BILLING_NEW_PORT=${BILLING_NEW_PORT:-${BILLING_DEFAULT_PORT}}
                         if [ ${BILLING_NEW_PORT} == ${BILLING_DEFAULT_PORT} -o ${BILLING_NEW_PORT} -gt 1024 -a ${BILLING_NEW_PORT} -lt 65535 ] >/dev/null 2>&1 >/dev/null 2>&1 >/dev/null 2>&1; then
-                            sed -i "s/BILLING_PORT=.*/BILLING_PORT=${BILLING_NEW_PORT}/g" ${WHOLE_PATH}
+                            sed -i "s/BILLING_PORT=.*/BILLING_PORT=${BILLING_NEW_PORT}/g" ${GS_WHOLE_PATH}
                             break
                         else
                             echo "${CWARNING}输入错误! 端口范围: 1025~65534${CEND}"
@@ -119,7 +119,7 @@ setconfig_rebuild() {
                         read -p "请输入【mysql端口】：(默认: ${TL_MYSQL_DEFAULT_PORT}): " TL_MYSQL_NEW_PORT
                         TL_MYSQL_NEW_PORT=${TL_MYSQL_NEW_PORT:-${TL_MYSQL_DEFAULT_PORT}}
                         if [ ${TL_MYSQL_NEW_PORT} -eq ${TL_MYSQL_DEFAULT_PORT} -o ${TL_MYSQL_NEW_PORT} -gt 1024 -a ${TL_MYSQL_NEW_PORT} -lt 65535 ] >/dev/null 2>&1 >/dev/null 2>&1 >/dev/null 2>&1; then
-                            sed -i "s/TL_MYSQL_PORT=.*/TL_MYSQL_PORT=${TL_MYSQL_NEW_PORT}/g" ${WHOLE_PATH}
+                            sed -i "s/TL_MYSQL_PORT=.*/TL_MYSQL_PORT=${TL_MYSQL_NEW_PORT}/g" ${GS_WHOLE_PATH}
                             break
                         else
                             echo "${CWARNING}输入错误! 端口范围: 1025~65534${CEND}"
@@ -144,7 +144,7 @@ setconfig_rebuild() {
                         read -p "请输入【登录端口】：(默认: ${LOGIN_DEFAULT_PORT}): " LOGIN_NEW_PORT
                         LOGIN_NEW_PORT=${LOGIN_NEW_PORT:-${LOGIN_PORT}}
                         if [ ${LOGIN_NEW_PORT} -eq ${LOGIN_DEFAULT_PORT} -o ${LOGIN_NEW_PORT} -gt 1024 -a ${LOGIN_NEW_PORT} -lt 65535 ] >/dev/null 2>&1 >/dev/null 2>&1 >/dev/null 2>&1; then
-                            sed -i "s/LOGIN_PORT=.*/LOGIN_PORT=${LOGIN_NEW_PORT}/g" ${WHOLE_PATH}
+                            sed -i "s/LOGIN_PORT=.*/LOGIN_PORT=${LOGIN_NEW_PORT}/g" ${GS_WHOLE_PATH}
                             break
                         else
                             echo "${CWARNING}输入错误! 端口范围: 1025~65534${CEND}"
@@ -169,7 +169,7 @@ setconfig_rebuild() {
                         read -p "请输入【游戏端口】：(默认: ${SERVER_DEFAULT_PORT}): " SERVER_NEW_PORT
                         SERVER_NEW_PORT=${SERVER_NEW_PORT:-${SERVER_DEFAULT_PORT}}
                         if [ ${SERVER_NEW_PORT} -eq ${SERVER_DEFAULT_PORT} -o ${SERVER_NEW_PORT} -gt 1024 -a ${SERVER_NEW_PORT} -lt 65535 ] >/dev/null 2>&1 >/dev/null 2>&1 >/dev/null 2>&1; then
-                            sed -i "s/SERVER_PORT=.*/SERVER_PORT=${SERVER_NEW_PORT}/g" ${WHOLE_PATH}
+                            sed -i "s/SERVER_PORT=.*/SERVER_PORT=${SERVER_NEW_PORT}/g" ${GS_WHOLE_PATH}
                             break
                         else
                             echo "${CWARNING}输入错误! 端口范围: 1025~65534${CEND}"
@@ -194,7 +194,7 @@ setconfig_rebuild() {
                         read -p "请输入【网站端口】：(默认: ${WEB_DEFAULT_PORT}): " WEB_NEW_PORT
                         WEB_NEW_PORT=${WEB_NEW_PORT:-${WEB_PORT}}
                         if [ ${WEB_NEW_PORT} -eq ${WEB_DEFAULT_PORT} -o ${WEB_NEW_PORT} -gt 1024 -a ${WEB_NEW_PORT} -lt 65535 ] >/dev/null 2>&1 >/dev/null 2>&1 >/dev/null 2>&1; then
-                            sed -i "s/WEB_PORT=.*/WEB_PORT=${WEB_NEW_PORT}/g" ${WHOLE_PATH}
+                            sed -i "s/WEB_PORT=.*/WEB_PORT=${WEB_NEW_PORT}/g" ${GS_WHOLE_PATH}
                             break
                         else
                             echo "${CWARNING}输入错误! 端口范围: 1025~65534${CEND}"
@@ -219,7 +219,7 @@ setconfig_rebuild() {
                         read -p "请输入【数据库密码】(默认: ${TL_MYSQL_DEFAULT_PASSWORD}): " TL_MYSQL_NEW_PASSWORD
                         TL_MYSQL_NEW_PASSWORD=${TL_MYSQL_NEW_PASSWORD:-${TL_MYSQL_PASSWORD}}
                         if ((${#TL_MYSQL_NEW_PASSWORD} >= 5)); then
-                            sed -i "s/TL_MYSQL_PASSWORD=.*/TL_MYSQL_PASSWORD=${TL_MYSQL_NEW_PASSWORD}/g" ${WHOLE_PATH}
+                            sed -i "s/TL_MYSQL_PASSWORD=.*/TL_MYSQL_PASSWORD=${TL_MYSQL_NEW_PASSWORD}/g" ${GS_WHOLE_PATH}
                             break
                         else
                             echo "${CWARNING}密码最少要6个字符! ${CEND}"
