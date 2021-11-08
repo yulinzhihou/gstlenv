@@ -295,23 +295,22 @@ docker_run() {
     if [ $? -eq 0 ]; then
         echo "success" >${ROOT_PATH}/${GSDIR}/gs.lock
         echo -e "${CBLUE}环境安装成功，配置文件已经初始化。更多命令执行 【gs】查看${CEND}"
-        exit 1
     else
         echo -e "${CRED}环境安装失败，配置文件已经初始化。更多命令执行 【gs】查看${CRED}"
-        exit 1
     fi
 }
 
 # 如果重复使用，则需要跳过。
+# 部署备份脚本
+if [ ! -f ${GS_PROJECT}"/include/gsmysqlBackup.sh" ]; then
+    \cp -rf ${GS_PROJECT}"/include/gsmysqlBackup.sh" /tlgame/gsmysql/
+    \cp -rf ${GS_PROJECT}"/include/gsmysqlRestore.sh" /tlgame/gsmysql/
+    chmod -R 777 /tlgame/gsmysql/*.sh
+fi
 docker ps --format "{{.Names}}" | grep gsserver
 if [ $? -eq 0 ] || [ -f "${ROOT_PATH}/${GSDIR}/gs.lock" ]; then
-    # 部署备份脚本
-    if [ ! -f ${GS_PROJECT}"/include/gsmysqlBackup.sh" ]; then
-        \cp -rf ${GS_PROJECT}"/include/gsmysqlBackup.sh" /tlgame/gsmysql/
-        \cp -rf ${GS_PROJECT}"/include/gsmysqlRestore.sh" /tlgame/gsmysql/
-        chmod -R 777 /tlgame/gsmysql/*.sh
-    fi
     echo -e "${CRED}GS专用环境容器已经被初始化，如果需要重新初始化，请执行【setconfig】命令！${CEND}"
+    curgs && gs
     exit 1
 else
     if [ ! -d ${ROOT_PATH}/${GSDIR} ]; then
