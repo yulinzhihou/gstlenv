@@ -327,4 +327,4 @@ else
     init_config &&
         docker_run && curgs && gs
 fi
-echo -e "${CRED}GS专用环境容器已经被初始化，如果需要重新初始化，请执行【setconfig】命令！${CEND}"
+echo -e "${CYELLOW}GS专用环境容器已经被初始化，如果需要重新初始化，请执行【setconfig】命令！${CEND}"

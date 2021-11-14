@@ -296,7 +296,8 @@ main() {
                 # 设置参数
                 setconfig_rebuild &&
                     # 开环境
-                    cd ${ROOT_PATH}/${GSDIR} && docker-compose up -d
+                    cd ${ROOT_PATH}/${GSDIR} && docker-compose up -d &&
+                    rm -rf /tlgame/tlbb-setconfig-backup.tar.gz
             fi
             break
         fi

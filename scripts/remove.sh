@@ -33,7 +33,8 @@ while :; do
       mv /tlgame /tlgame-$(date +%Y%m%d%H%I%S) &&
       chattr -i ${GS_WHOLE_PATH} &&
       rm -rf ${GS_PROJECT} &&
-      rm -rf ${ROOT_PATH}/${GSDIR}
+      rm -rf ${ROOT_PATH}/${GSDIR} &&
+      rm -rf /usr/local/bin/.env
   else
     docker stop $(docker ps -a -q) &&
       docker rm -f $(docker ps -a -q) &&
@@ -41,7 +42,8 @@ while :; do
       chattr -i ${GS_WHOLE_PATH} &&
       rm -rf ${GS_PROJECT} &&
       rm -rf ${ROOT_PATH}/${GSDIR} &&
-      mv /tlgame /tlgame-$(date +%Y%m%d%H%I%S)
+      mv /tlgame /tlgame-$(date +%Y%m%d%H%I%S) &&
+      rm -rf /usr/local/bin/.env
   fi
 
   if [ $? -eq 0 ]; then

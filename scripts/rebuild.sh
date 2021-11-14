@@ -47,12 +47,13 @@ while :; do
   echo -ne "\n\r"
   echo -ne "${CYELLOW}正在重构，数据全部清空…………${CEND}"
   #重构前，先备份数据库以及版本数据。
-  docker stop $(docker ps -a -q) &&
+  setconfig_backup &&
+    docker stop $(docker ps -a -q) &&
     docker rm $(docker ps -a -q) &&
-    setconfig_backup &&
     rm -rf /tlgame/tlbb/* &&
     cd ${ROOT_PATH}/${GSDIR} &&
-    docker-compose up -d
+    docker-compose up -d &&
+    setconfig_restore
   if [ $? -eq 0 ]; then
     echo -e "${CSUCCESS}环境已经重构成功，请上传服务端到指定位置，然后再开服操作！！可以重新上传服务端进行【untar】【setini】【runtlbb】进行开服操作！！${CEND}"
     exit 0
