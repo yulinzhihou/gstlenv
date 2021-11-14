@@ -18,12 +18,23 @@ else
   . /usr/local/bin/color
 fi
 
-if [[ $1 == "gsmysql" ]] || [[ $1 == "gsnginx" ]] || [[ $1 == "gsredis" ]]; then
-  cd ${ROOT_PATH}/${GSDIR} && docker-compose exec $1 /bin/sh
-elif [[ $1 == 'gsphp' ]]; then
-  docker exec -it gsphp /bin/sh
-elif [ -z $1 ] || [ $1 == 'gsserver' ]; then
-  cd ${ROOT_PATH}/${GSDIR} && docker-compose exec gsserver bash
-else
-  echo -e "${CRED}错误：输入有误！！请使用 link gsmysql|gsphp|gsredis|gsnginx|gsserver${CEND}";
-fi
+case "$1" in
+'gsmysql' | 'mysql')
+  cd ${ROOT_PATH}/${GSDIR} && docker-compose exec gsmysql /bin/bash
+  ;;
+'gsserver' | 'server' | 'gs')
+  cd ${ROOT_PATH}/${GSDIR} && docker-compose exec gsserver /bin/bash
+  ;;
+'gsnginx' | 'nginx')
+  cd ${ROOT_PATH}/${GSDIR} && docker-compose exec gsnginx /bin/sh
+  ;;
+'redis' | 'gsredis')
+  cd ${ROOT_PATH}/${GSDIR} && docker-compose exec gsredis /bin/bash
+  ;;
+'gsphp' | 'php')
+  cd ${ROOT_PATH}/${GSDIR} && docker-compose exec gsphp /bin/sh
+  ;;
+*)
+  echo -e "${CRED}错误：输入有误！！请使用 link {gsmysql|mysql},{gsphp|php},{gsredis|redis},{gsnginx|nginx},{gsserver|server|gs}${CEND}"
+  ;;
+esac

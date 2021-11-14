@@ -19,17 +19,18 @@ else
   . /usr/local/bin/color
 fi
 
-if [ -f ${ROOT_PATH}/${GSDIR} ];then 
-  cd ${ROOT_PATH}/${GSDIR} && \
-  docker exec -d gsserver /bin/bash ./Server/shm stop && \
-  docker exec -d gsserver /bin/bash stop.sh && \
-  docker exec -d gsserver /home/billing/billing stop
+if [ -f ${ROOT_PATH}/${GSDIR} ]; then
+  cd ${ROOT_PATH}/${GSDIR} &&
+    docker exec -d gsserver /bin/bash ./Server/shm stop &&
+    docker exec -d gsserver /bin/bash stop.sh &&
+    docker exec -d gsserver /home/billing/billing stop
   if [ $? -eq 0 ]; then
+    # 删除因为改版本导致引擎启动失败的dump文件
+    cd ${ROOT_PATH}/${GSDIR} && rm -rf core.*
     echo -e "${CSUCCESS} 服务端关闭成功，如果需要重新开启，请运行【runtlbb】命令${CEND}"
-    exit 0;
+    exit 0
   else
     echo -e "${CRED} 服务端关闭失败！请稍后再试！${CEND}"
-    exit 1;
+    exit 1
   fi
 fi
-

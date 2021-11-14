@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 
 services:
   # Game server
@@ -29,6 +29,9 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: ${TL_MYSQL_PASSWORD}
       MYSQL_DATABASE: "tlbbdb"
+      MYSQL_DATABASE_TLBBDB: "tlbbdb"
+      MYSQL_DATABASE_WEB: "web"
+      MYSQL_DATABASE_GSGM: "gsgm"
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
     restart: ${RESTART}
   # WEBSERVER

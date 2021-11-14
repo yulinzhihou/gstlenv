@@ -304,16 +304,14 @@ docker_run() {
 # 部署备份脚本
 . ${WHOLE_PATH}
 
-if [ ! -f ${GS_PROJECT}"/include/gsmysqlBackup.sh" ]; then
-    \cp -rf ${GS_PROJECT}"/include/gsmysqlBackup.sh" /tlgame/gsmysql/
-    \cp -rf ${GS_PROJECT}"/include/gsmysqlRestore.sh" /tlgame/gsmysql/
-    chmod -R 777 /tlgame/gsmysql/*.sh
-fi
+# if [ ! -f ${GS_PROJECT}"/include/gsmysqlBackup.sh" ]; then
+#     \cp -rf ${GS_PROJECT}"/include/gsmysqlBackup.sh" /tlgame/gsmysql/
+#     \cp -rf ${GS_PROJECT}"/include/gsmysqlRestore.sh" /tlgame/gsmysql/
+#     chmod -R 777 /tlgame/gsmysql/*.sh
+# fi
 docker ps --format "{{.Names}}" | grep gsserver
 if [ $? -eq 0 ] || [ -f "${ROOT_PATH}/${GSDIR}/gs.lock" ]; then
-    echo -e "${CRED}GS专用环境容器已经被初始化，如果需要重新初始化，请执行【setconfig】命令！${CEND}"
     curgs && gs
-    exit 1
 else
     if [ ! -d ${ROOT_PATH}/${GSDIR} ]; then
         download
@@ -329,3 +327,4 @@ else
     init_config &&
         docker_run && curgs && gs
 fi
+echo -e "${CRED}GS专用环境容器已经被初始化，如果需要重新初始化，请执行【setconfig】命令！${CEND}"

@@ -31,7 +31,6 @@ ${CGREEN}
 ◎  网站端口: $([ ${WEB_PORT} == ${WEB_DEFAULT_PORT} ] && echo ${WEB_DEFAULT_PORT} || echo ${WEB_PORT})
 ◎  是否单服务器: $([ ${IS_DLQ} == '0' ] && echo "是" || echo "否")
 ◎  转发机器: $([ ${BILLING_DEFAULT_SERVER_IPADDR} == ${BILLING_SERVER_IPADDR} ] && echo ${BILLING_DEFAULT_SERVER_IPADDR} || echo ${BILLING_SERVER_IPADDR})
-◎  网站端口: $([ ${WEB_PORT} == ${WEB_DEFAULT_PORT} ] && echo ${WEB_DEFAULT_PORT} || echo ${WEB_PORT})
 ◎  服务端路径: $(echo ${TLBB_PATH})
 ※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※
 ${CEND}

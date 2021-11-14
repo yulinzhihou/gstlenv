@@ -193,11 +193,11 @@ setconfig_rebuild() {
                         echo
                         read -p "请输入【网站端口】：(默认: ${WEB_DEFAULT_PORT}): " WEB_NEW_PORT
                         WEB_NEW_PORT=${WEB_NEW_PORT:-${WEB_PORT}}
-                        if [ ${WEB_NEW_PORT} -eq ${WEB_DEFAULT_PORT} -o ${WEB_NEW_PORT} -gt 1024 -a ${WEB_NEW_PORT} -lt 65535 ] >/dev/null 2>&1 >/dev/null 2>&1 >/dev/null 2>&1; then
+                        if [ ${WEB_NEW_PORT} -eq ${WEB_DEFAULT_PORT} -o ${WEB_NEW_PORT} -gt 1 -a ${WEB_NEW_PORT} -lt 65535 ] >/dev/null 2>&1 >/dev/null 2>&1 >/dev/null 2>&1; then
                             sed -i "s/WEB_PORT=.*/WEB_PORT=${WEB_NEW_PORT}/g" ${GS_WHOLE_PATH}
                             break
                         else
-                            echo "${CWARNING}输入错误! 端口范围: 1025~65534${CEND}"
+                            echo "${CWARNING}输入错误! 端口范围: 1~65534${CEND}"
                         fi
                     done
                 fi
@@ -229,6 +229,7 @@ setconfig_rebuild() {
                 break
             fi
         done
+        echo -e "${CYELLOW}请稍等，正在写入配置信息……${CEND}\r"
         \cp -rf ${GS_WHOLE_PATH} /usr/local/bin/.env &&
             \cp -rf ${GS_WHOLE_PATH} /root/.tlgame/.env
         chattr +i ${GS_WHOLE_PATH}
@@ -237,14 +238,16 @@ setconfig_rebuild() {
         exit 1
     fi
     # 先停止容器，再将容器删除，重新根据镜像文件以及配置文件，通过docker-compose重新生成容器环境
-    docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q)
+    docker stop $(docker ps -a -q) &&
+        docker rm -f $(docker ps -a -q) &&
+        rm -rf /tlgame/gsmysql
 }
 
 # 备份数据
 setconfig_backup() {
     echo -ne "正在备份版本数据请稍候……\r"
     cd /tlgame && tar zcf tlbb-setconfig-backup.tar.gz tlbb &&
-        docker exec -it gsmysql /bin/sh /var/lib/mysql/gsmysqlBackup.sh
+        docker exec -it gsmysql /bin/sh /usr/local/bin/gsmysqlBackup.sh
 }
 
 # 还原数据
@@ -255,7 +258,7 @@ setconfig_restore() {
     fi
 
     if [ -f "/tlgame/gsmysql/*.sql" ]; then
-        docker exec -it gsmysql /bin/sh /var/lib/mysql/gsmysqlRestore.sh
+        docker exec -it gsmysql /bin/sh /usr/local/bin/gsmysqlRestore.sh
     fi
 
 }
@@ -276,6 +279,8 @@ main() {
         if [[ ! ${IS_MODIFY} =~ ^[y,n]$ ]]; then
             echo "${CWARNING}输入错误! 请输入 y 或者 n ${CEND}"
         else
+            . /root/.gs/.env
+            source /root/.gs/.env
             if [ "${IS_MODIFY}" == 'y' ]; then
                 # 备份数据
                 setconfig_backup &&

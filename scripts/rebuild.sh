@@ -18,6 +18,26 @@ else
   . /usr/local/bin/color
 fi
 
+# 备份数据
+setconfig_backup() {
+  echo -ne "正在备份版本数据请稍候……\r"
+  cd /tlgame && tar zcf tlbb-setconfig-backup.tar.gz tlbb &&
+    docker exec -it gsmysql /bin/sh /usr/local/bin/gsmysqlBackup.sh
+}
+
+# 还原数据
+setconfig_restore() {
+  echo -ne "正在还原修改参数之前的数据库与版本请稍候……\r"
+  if [ -f "/tlgame/tlbb-setconfig-backup.tar.gz" ]; then
+    cd /tlgame && tar zxf tlbb-setconfig-backup.tar.gz && rm -rf /tlgame/tlbb-setconfig-backup.tar.gz
+  fi
+
+  if [ -f "/tlgame/gsmysql/*.sql" ]; then
+    docker exec -it gsmysql /bin/sh /usr/local/bin/gsmysqlRestore.sh
+  fi
+
+}
+
 while :; do
   echo
   for ((time = 5; time >= 0; time--)); do
@@ -29,6 +49,7 @@ while :; do
   #重构前，先备份数据库以及版本数据。
   docker stop $(docker ps -a -q) &&
     docker rm $(docker ps -a -q) &&
+    setconfig_backup &&
     rm -rf /tlgame/tlbb/* &&
     cd ${ROOT_PATH}/${GSDIR} &&
     docker-compose up -d
