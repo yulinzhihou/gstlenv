@@ -311,7 +311,7 @@ docker_run() {
 # fi
 docker ps --format "{{.Names}}" | grep gsserver
 if [ $? -eq 0 ] || [ -f "${ROOT_PATH}/${GSDIR}/gs.lock" ]; then
-    curgs && gs
+    curgs
 else
     if [ ! -d ${ROOT_PATH}/${GSDIR} ]; then
         download
@@ -325,6 +325,6 @@ else
     fi
 
     init_config &&
-        docker_run && curgs && gs
+        docker_run && curgs
 fi
-echo -e "${CYELLOW}GS专用环境容器已经被初始化，如果需要重新初始化，请执行【setconfig】命令！${CEND}"
+echo -e "${CYELLOW}GS专用环境容器已经被初始化，如果需要重新初始化，请执行【setconfig】命令！获取命令帮助请使用 [gs] 命令${CEND}"
