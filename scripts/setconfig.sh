@@ -274,7 +274,7 @@ main() {
         echo
         echo -e "${CYELLOW}请选择是否需要保留原来的版本与数据库${CEND}"
         echo -e "${CYELLOW}如果是刚刚搭建环境成功，则不需要保留原来版本和数据。请选择[n]${CEND}"
-        read -e -p "${CYELLOW}保留请输入[y],不保留请输入[n],默认是保留[y]${CEND}[y/n](默认: y): " IS_MODIFY
+        read -e -p "${CYELLOW}保留请输入[y],不保留请输入[n],默认是保留[y]:${CEND} " IS_MODIFY
         IS_MODIFY=${IS_MODIFY:-'y'}
         if [[ ! ${IS_MODIFY} =~ ^[y,n]$ ]]; then
             echo "${CWARNING}输入错误! 请输入 y 或者 n ${CEND}"

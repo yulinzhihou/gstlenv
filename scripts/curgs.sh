@@ -5,20 +5,22 @@
 # Date :  2021-10-04
 # Notes:  GS_TL_Env for CentOS/RedHat 7+ Debian 10+ and Ubuntu 18+
 # comment: 查看当前配置项信息。需要在没人的时候查看，不然别人容易查看到你的关键信息
-# 引入全局参数
-if [ -f /root/.gs/.env ]; then
-  . /root/.gs/.env
-else
-  . /usr/local/bin/.env
-fi
-# 颜色代码
-if [ -f ./color.sh ]; then
-  . ${GS_PROJECT}/scripts/color.sh
-else
-  . /usr/local/bin/color
-fi
+docker ps --format "{{.Names}}" | grep gsserver >/dev/null
+if [ $? -eq 0 ]; then
+  # 引入全局参数
+  if [ -f /root/.gs/.env ]; then
+    . /root/.gs/.env
+  else
+    . /usr/local/bin/.env
+  fi
+  # 颜色代码
+  if [ -f ./color.sh ]; then
+    . ${GS_PROJECT}/scripts/color.sh
+  else
+    . /usr/local/bin/color
+  fi
 
-cat <<EOF
+  cat <<EOF
 ${CGREEN}
 ※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※
 此命令只用于查看当前配置信息，不作任何修改。如需要重新设置，请执行【setconfig】命令
@@ -35,3 +37,7 @@ ${CGREEN}
 ※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※
 ${CEND}
 EOF
+else
+  echo "${CRED}环境毁坏，需要重新安装或者移除现有的环境重新安装！！！${CEND}"
+  exit 1
+fi

@@ -48,13 +48,12 @@ run_step_2() {
 }
 
 run_step_3() {
-    arr=('Login' 'Login8' 'Login_fix')
-    for i in $(seq 0 1 ${#arr[*]})
-    do
+    arr=('Login' 'Login8' 'Login_fix' 'Login1')
+    for i in $(seq 0 1 ${#arr[*]}); do
         index=$i
         if [ -f "/home/tlbb/Server/${arr[index]}" ]; then
             cd /home/tlbb/Server && ./${arr[index]}
-            break;
+            break
         fi
     done
     #   cd /home/tlbb/Server && ./Login
@@ -66,13 +65,12 @@ run_step_3() {
 }
 
 run_step_4() {
-    arr=('World' 'World8' 'World_fix')
-    for i in $(seq 0 1 ${#arr[*]})
-    do
+    arr=('World' 'World8' 'World_fix' 'World1')
+    for i in $(seq 0 1 ${#arr[*]}); do
         index=$i
         if [ -f "/home/tlbb/Server/${arr[index]}" ]; then
             cd /home/tlbb/Server && ./${arr[index]}
-            break;
+            break
         fi
     done
     #   cd /home/tlbb/Server && ./World
@@ -84,13 +82,12 @@ run_step_4() {
 }
 
 run_step_5() {
-    arr=('Server' 'Server8' 'Server_fix' 'ServerTest')
-    for i in $(seq 0 1 ${#arr[*]})
-    do
+    arr=('Server' 'Server8' 'Server_fix' 'ServerTest' 'Server1')
+    for i in $(seq 0 1 ${#arr[*]}); do
         index=$i
         if [ -f "/home/tlbb/Server/${arr[index]}" ]; then
             cd /home/tlbb/Server && ./${arr[index]}
-            break;
+            break
         fi
     done
     if [ $? -eq 0 ]; then
@@ -100,28 +97,53 @@ run_step_5() {
     fi
 }
 
-echo -e "${CRED}注意：执行此命令前，建议重启服务器，避免一些不必要的问题！${CEND}"
-echo -e "${CYYAN}使用此命令需要手动创建多窗口，点当前容器标签右键---克隆/复制容器---会基于当前容器创建一个全新的容器。每个容器输入一个命令，一共需要4个窗口${CEND}"
-echo -e "${CYELLOW}如果有问题：可以加客服QQ1303588722，进行反馈${CEND}"
-while :; do echo
-echo -e "
+if [ -d "/home/tlbb" ] && [ -d "/home/billing" ]; then
+    echo -e "${CRED}注意：执行此命令前，建议重启服务器，避免一些不必要的问题！${CEND}"
+    echo -e "${CYYAN}使用此命令需要手动创建多窗口，点当前容器标签右键---克隆/复制容器---会基于当前容器创建一个全新的容器。每个容器输入一个命令，一共需要4个窗口${CEND}"
+    echo -e "${CYELLOW}如果有问题：可以加客服QQ1303588722，进行反馈${CEND}"
+    while :; do
+        echo
+        echo -e "
 ※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※
+◎ 请在容器外使用runtop命令查看开启了哪些进程
 ◎ 请不要重复启动，重复启动没有任何意义，也达到启动不了的效果。
+◎ 使用 exit 退出容器操作命令行，使用 link 进入容器操作命令行
 ◎ 步骤[1]：启动 [BILLING] 服务
 ◎ 步骤[2]：启动 [ShareMemory] 服务
 ◎ 步骤[3]：启动 [Login] 服务
 ◎ 步骤[4]：启动 [World] 服务
 ◎ 步骤[5]：启动 [Server] 服务
 ※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※\r\n"
-echo -e "\r\n"
-echo -e "\r\n"
-read -p "请选择功能 输入序号并回车：" num
-    case "$num" in
-        [1]) run_step_1;break ;;
-        [2]) run_step_2;break ;;
-        [3]) run_step_3;break ;;
-        [4]) run_step_4;break ;;
-        [5]) run_step_5;break ;;
+        echo -e "\r\n"
+        echo -e "\r\n"
+        read -p "请选择功能 输入序号并回车：" num
+        case "$num" in
+        [1])
+            run_step_1
+            break
+            ;;
+        [2])
+            run_step_2
+            break
+            ;;
+        [3])
+            run_step_3
+            break
+            ;;
+        [4])
+            run_step_4
+            break
+            ;;
+        [5])
+            run_step_5
+            break
+            ;;
         *) echo -e "输入错误！！" ;;
-    esac
-done
+        esac
+    done
+else
+    echo -e "${CRED}请进入容器里面使用此命令，link 命令可以进入！${CEND}"
+    echo -e "${CRED}使用此命令需要手动创建多窗口，点当前容器标签右键---克隆/复制容器---会基于当前容器创建一个全新的容器。每个容器输入一个命令，一共需要4个窗口${CEND}"
+    echo -e "${CRED}如果有问题：可以加客服QQ1303588722，进行反馈${CEND}"
+    exit 1
+fi
