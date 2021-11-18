@@ -26,6 +26,8 @@ if [ $? -eq 0 ]; then
     # 配置是游戏注册还是登录器注册
     while :; do
       echo
+      echo -e "${CRED}正在开发中……，请关注论坛与群的动态${CEND}"
+      exit 1
       read -e -p "当前【域名】为${CBLUE}["0.0.0.0"]${CEND}，是否需要修改【0.0.0.0=使用服务器外网IP+端口访问】 [y/n](默认: n): " IS_MODIFY
       IS_MODIFY=${IS_MODIFY:-'n'}
       if [[ ! ${IS_MODIFY} =~ ^[y,n]$ ]]; then
@@ -157,6 +159,6 @@ EOF
   owConf
   getUserInput
 else
-  echo "${CRED}环境毁坏，需要重新安装或者移除现有的环境重新安装！！！${CEND}"
+  echo -e "${CRED}环境毁坏，需要重新安装或者移除现有的环境重新安装！！！${CEND}"
   exit 1
 fi

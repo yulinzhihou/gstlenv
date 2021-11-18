@@ -24,6 +24,7 @@ if [ $? -eq 0 ]; then
   # 游戏内注册=0，登录器注册=1
   if [ ${IS_DLQ} -eq 0 ]; then
     docker exec -d gsserver /home/billing/billing up -d
+    sleep 3
   fi
 
   chmod -R 777 /tlgame &&

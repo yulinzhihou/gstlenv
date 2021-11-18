@@ -21,7 +21,7 @@ if [ $? -eq 0 ]; then
   fi
   # 换端前，先备份版本与数据库
   function backup_tlbb() {
-    backup
+    backup all
   }
 
   function main() {
@@ -34,10 +34,10 @@ if [ $? -eq 0 ]; then
       setini &&
       runtlbb
     if [ $? -eq 0 ]; then
-      echo -e "${CSUCCESS} 换端成功，请耐心等待几分钟后，建议使用：【runtop】查看开服的情况！${CEND}"
+      echo -e "${CSUCCESS}换端成功，请耐心等待几分钟后，建议使用：【runtop】查看开服的情况！${CEND}"
       exit 0
     else
-      echo -e "${CRED} 换端失败！请检查配置！${CEND}"
+      echo -e "${CRED}换端失败！请检查配置！${CEND}"
       exit 1
     fi
   }
@@ -50,7 +50,7 @@ if [ $? -eq 0 ]; then
     done
     echo -ne "\n\r"
     echo -ne "${CYELLOW}正在重构环境，换版本…………${CEND}"
-    main
+    backup_tlbb && main
   done
 else
   echo "${CRED}环境毁坏，需要重新安装或者移除现有的环境重新安装！！！${CEND}"

@@ -32,7 +32,7 @@ if [ $? -eq 0 ]; then
         # 先判断目录是否存在
         if [ -d ${TLBB_PATH}"/Server/Log" ]; then
             # 存在目录则进行打印监听，通过传入的 login ShareMemory world等进程的参数进行查看
-            for ((time = 3; time >= 0; time--)); do
+            for ((time = 2; time >= 0; time--)); do
                 echo -ne "\r正准备查看日志动态！！,请使用完一定记得关闭（命令【rmlog】）。不然日志可能会挤爆服务器硬盘！${CEND}"
                 sleep 1
             done

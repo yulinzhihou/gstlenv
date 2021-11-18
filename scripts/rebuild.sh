@@ -22,14 +22,14 @@ if [ $? -eq 0 ]; then
 
   # 备份数据
   setconfig_backup() {
-    echo -ne "正在备份版本数据请稍候……\r"
+    echo -ne "正在备份版本数据请稍候……\r\n"
     cd /tlgame && tar zcf tlbb-setconfig-backup.tar.gz tlbb &&
       docker exec -it gsmysql /bin/sh /usr/local/bin/gsmysqlBackup.sh
   }
 
   # 还原数据
   setconfig_restore() {
-    echo -ne "正在还原修改参数之前的数据库与版本请稍候……\r"
+    echo -ne "正在还原修改参数之前的数据库与版本请稍候……\r\n"
     if [ -f "/tlgame/tlbb-setconfig-backup.tar.gz" ]; then
       cd /tlgame && tar zxf tlbb-setconfig-backup.tar.gz && rm -rf /tlgame/tlbb-setconfig-backup.tar.gz
     fi
