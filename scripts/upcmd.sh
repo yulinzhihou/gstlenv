@@ -51,6 +51,9 @@ if [ $? -eq 0 ]; then
   download
   if [ $? -eq 0 ]; then
     set_command
+    # 复制配置文件
+    docker cp /root/.tlgame/include/alter_point.sql gsmysql:/usr/local/bin/alter_point.sql
+    docker cp /root/.tlgame/include/gsset.sh gsmysql:/usr/local/bin/gsset.sh
     if [ $? -eq 0 ]; then
       echo -e "${CSUCCESS} 命令重新生成成功，如果需要了解详情，可以运行 【gs】命令进行帮助查询！！${CEND}"
       exit 0

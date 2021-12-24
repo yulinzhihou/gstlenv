@@ -305,6 +305,17 @@ ${CEND}
 EOF
   }
 
+  #    23:setpoint
+  setpoint_help() {
+    cat <<EOF
+${CRED}setpoint${CEND} ${CGREEN}作用: 修复注册账号送默认充值点
+      条件: 设置默认充值点，从即刻起，注册新账号会有默认的充值点
+      参数: 请输入0-21亿内的整数
+      说明: 如有问题，可以向客服反馈
+${CEND}
+EOF
+  }
+
   # 执行
   if [ -n $1 ]; then
     case "$1" in
@@ -373,6 +384,9 @@ EOF
       ;;
     '22' | 'curgs')
       curgs_help
+      ;;
+    '23' | 'setpoint')
+      setpoint_help
       ;;
     '0' | '00' | 'q' | 'Q')
       break
@@ -457,6 +471,9 @@ EOF
           ;;
         '22' | 'curgs')
           curgs_help
+          ;;
+        '23' | '`setpoint``')
+          setpoint_help
           ;;
         '0' | '00' | 'q' | 'Q')
           break

@@ -1,0 +1,1 @@
+alter table account alter column point set default 0

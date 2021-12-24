@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+# Author: yulinzhihou <yulinzhihou@gmail.com>
+# Forum:  https://gsgamesahre.com
+# Project: https://github.com/yulinzhihou/gstlenv.git
+# Date :  2021-12-25
+# Notes:  GS_TL_Env for CentOS/RedHat 7+ Debian 10+ and Ubuntu 18+
+# comment: 设置默认充值点数
+
+docker ps --format "{{.Names}}" | grep gsserver >/dev/null
+if [ $? -eq 0 ]; then
+  if [ -f /root/.gs/.env ]; then
+    . /root/.gs/.env
+  else
+    . /usr/local/bin/.env
+  fi
+  # 颜色代码
+  if [ -f ./color.sh ]; then
+    . ${GS_PROJECT}/scripts/color.sh
+  else
+    . /usr/local/bin/color
+  fi
+
+  if [ $# -eq 0 ]; then
+    docker exec gsmysql /bin/bash /usr/local/bin/gsset.sh 0
+  else
+    if [[ $1 =~ ^|0-9|+$ ]] && [ $1 -ge 0 ] && [ $1 -lt 2100000000 ]; then
+      docker exec gsmysql /bin/bash /usr/local/bin/gsset.sh $1
+      echo -e "${CYELLOW}修改成功:现在开始，新注册账号上线默认送{$1}充值点${CEND}"
+    fi
+    echo -e "${CRED}错误:输入有误!!${CEND}"
+  fi
+else
+  echo "${CRED}环境毁坏，需要重新安装或者移除现有的环境重新安装!!!${CEND}"
+  exit 1
+fi
