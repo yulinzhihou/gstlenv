@@ -49,7 +49,7 @@ if [ $? -eq 0 ]; then
     fi
 
     if [ $? -eq 0 ]; then
-      echo -e "${CSUCCESS} 数据清除成功，请重新安装环境!!! 可以重新输入 【curl -sOL https://gsgameshare.com/gsenv; /bin/bash gsenv】进行重新安装!!!${CEND}"
+      echo -e "${CSUCCESS} 数据清除成功，请重新安装环境!!! 可以重新输入 【 curl -sSL https://gsgameshare.com/gsenv | bash 】进行重新安装!!!${CEND}"
       exit 0
     else
       echo -e "${CRED} 数据清除失败！可能需要重装系统或者环境了！${CEND}"
