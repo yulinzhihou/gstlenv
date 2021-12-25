@@ -23,21 +23,22 @@ if [ $? -eq 0 ]; then
 
   # 更新命令
   download() {
-    wget -q https://gitee.com/yulinzhihou/gstlenv/repository/archive/${VERSION}.tar.gz -O ${TMP_PATH}/${VERSION}.tar.gz
+    wget -q https://gitee.com/yulinzhihou/gstlenv/repository/archive/${COMMAND_VERSION}.tar.gz -O ${TMP_PATH}/${COMMAND_VERSION}.tar.gz
     # gs env 服务器环境 ，组件
     # wget -q https://gsgameshare.com/${WHOLE_NAME} -O ${TMP_PATH}/${WHOLE_NAME}
-    if [ ! -d ${TMP_PATH}/${VERSION} ]; then
-      mkdir -p ${TMP_PATH}/${VERSION}
+    if [ ! -d ${TMP_PATH}/${COMMAND_VERSION} ]; then
+      mkdir -p ${TMP_PATH}/${COMMAND_VERSION}
     fi
     cd ${TMP_PATH} &&
       # 解压目录
-      tar zxf ${VERSION}.tar.gz -C $VERSION && cd ${VERSION} && mv * ${VERSION} && \cp -rf ${VERSION}/* $GS_PROJECT/
+      tar zxf ${COMMAND_VERSION}.tar.gz -C $COMMAND_VERSION && cd ${COMMAND_VERSION} && mv * ${COMMAND_VERSION} && \cp -rf ${COMMAND_VERSION}/* $GS_PROJECT/
     if [ $? -eq 0 ]; then
-      rm -rf ${TMP_PATH}/${VERSION}.tar.gz &&
-        rm -rf ${TMP_PATH}/${VERSION}
+      rm -rf ${TMP_PATH}/${COMMAND_VERSION}.tar.gz &&
+        rm -rf ${TMP_PATH}/${COMMAND_VERSION}
     fi
   }
 
+  # 设置最新命令
   set_command() {
     ls -l ${GS_PROJECT}/scripts/ | awk '{print $9}' >/tmp/command.txt
     for VAR in $(cat /tmp/command.txt); do
@@ -48,12 +49,21 @@ if [ $? -eq 0 ]; then
     rm -rf /tmp/command.txt
   }
 
+  # 复制命令到容器里面
+  copy_to_gssmysql() {
+    # 复制配置文件
+    docker cp /root/.tlgame/include/*.sql gsmysql:/usr/local/bin/
+    docker cp /root/.tlgame/include/*.sh gsmysql:/usr/local/bin/
+  }
+
+  # 复制命令到容器里面
+  copy_to_gsserver() {
+    docker cp /root/.tlgame/scripts/step.sh gsserver:/usr/local/bin/step
+  }
+
   download
   if [ $? -eq 0 ]; then
-    set_command
-    # 复制配置文件
-    docker cp /root/.tlgame/include/alter_point.sql gsmysql:/usr/local/bin/alter_point.sql
-    docker cp /root/.tlgame/include/gsset.sh gsmysql:/usr/local/bin/gsset.sh
+    set_command && copy_to_gssmysql && copy_to_gsserver
     if [ $? -eq 0 ]; then
       echo -e "${CSUCCESS} 命令重新生成成功，如果需要了解详情，可以运行 【gs】命令进行帮助查询！！${CEND}"
       exit 0

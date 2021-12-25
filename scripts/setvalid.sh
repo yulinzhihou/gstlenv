@@ -4,7 +4,7 @@
 # Project: https://github.com/yulinzhihou/gstlenv.git
 # Date :  2021-12-25
 # Notes:  GS_TL_Env for CentOS/RedHat 7+ Debian 10+ and Ubuntu 18+
-# comment: 设置默认充值点数
+# comment: 封号，解封号
 
 docker ps --format "{{.Names}}" | grep gsserver >/dev/null
 if [ $? -eq 0 ]; then
@@ -20,15 +20,25 @@ if [ $? -eq 0 ]; then
     . /usr/local/bin/color
   fi
 
-  if [ $# -eq 0 ]; then
-    docker exec gsmysql /bin/bash /usr/local/bin/gsset.sh 0
+  if [ -n $1 ]; then
+    # 判断第一个参数是否为空
+    echo -e "${CRED}请输入需要解封或者封号的账号！${CEND}"
+    exit 1
   else
-    if [[ $1 =~ ^[0-9]+$ ]] && [ $1 -ge 0 ] && [ $1 -lt 2100000000 ]; then
-      docker exec gsmysql /bin/bash /usr/local/bin/gsset.sh $1
-      echo -e "${CSUCCESS}设置成功:现在开始，新注册账号上线默认送【$1】充值点，请不要设置过高，一些版本可以会显示为负数${CEND}"
-      exit 0
+    # 判断是否有第二个参数输入
+    if [ -n $2 ]; then
+      # 表示是解封
+      docker exec -it gsmysql /bin/bash /usr/local/bin/gssetvalid $1
+    else
+      # 判断是否输入的是1，如果是1表示为封号
+      if [ $2 -eq 1 ]; then
+        docker exec -it gsmysql /bin/bash /usr/local/bin/gssetvalid $1 1
+      else
+        echo -e "${CRED}输入错误：如果需要封号，请在账号后面使用数字1即可封号！${CEND}"
+        exit 1
+      fi
     fi
-    echo -e "${CRED}错误:输入有误,充值点数格式不正确，请输入0-21亿之间的整数!!${CEND}"
+
   fi
 else
   echo "${CRED}环境毁坏，需要重新安装或者移除现有的环境重新安装!!!${CEND}"

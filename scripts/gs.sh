@@ -50,6 +50,9 @@ ${CYELLOW}###########################################
 #    20:gslog      查看日志               #
 #    21:rmlog      删除日志               #
 #    22:curgs      查看配置               #
+#    23:setpoint   设置默认充值点数       #
+#    24:reset      删档数据库             #
+#    25:setvalid   解/封号                #
 #    0:q 退出,或者按 CTRL+C               #
 ###########################################${CEND}
 EFF
@@ -103,11 +106,11 @@ EOF
     cat <<EOF
 ${CRED}link${CEND} ${CGREEN}作用: 进行服务端所在的容器里面，此容器里面，以上所有命令都无法使用，要使用则需要退出容器，使用 exit 指令即可退出
       条件: 初始化容器后使用，用于进入容器，查看服务端的具体情况，或者是分步调试
-      参数: gsserver 连接主服务器容器
-            gsmysql 连接数据库容器
-            gsnginx 连接网站容器
-            gsphp   连接php容器
-            gsredis 连接redis容器  
+      参数: gsserver|server 连接主服务器容器
+            gsmysql|mysql 连接数据库容器
+            gsnginx|nginx 连接网站容器
+            gsphp|php   连接php容器
+            gsredis|redis 连接redis容器  
       说明: 如有问题，可以向客服反馈
 ${CEND}
 EOF
@@ -309,8 +312,33 @@ EOF
   setpoint_help() {
     cat <<EOF
 ${CRED}setpoint${CEND} ${CGREEN}作用: 修复注册账号送默认充值点
+      使用: setpoint point_num
       条件: 设置默认充值点，从即刻起，注册新账号会有默认的充值点
-      参数: 请输入0-21亿内的整数
+      参数: point_num 请输入0-21亿内的整数
+      说明: 如有问题，可以向客服反馈
+${CEND}
+EOF
+  }
+
+  #    24:reset
+  reset_help() {
+    cat <<EOF
+${CRED}reset${CEND} ${CGREEN}作用: 删档数据库
+      使用: reset
+      条件: 清空账号数据库，角色数据库数据。使用前请一定要备份好，如有误删本环境概不负责
+      参数: 无
+      说明: 如有问题，可以向客服反馈
+${CEND}
+EOF
+  }
+
+  #    25:setvalid
+  setvalid_help() {
+    cat <<EOF
+${CRED}reset${CEND} ${CGREEN}作用: 封号/解封号
+      使用: setvalid account [1]
+      条件: 封号 setvalid account 1 解封 setvalid account
+      参数: account 即游戏注册的账号，如 test@game.sohu.com
       说明: 如有问题，可以向客服反馈
 ${CEND}
 EOF
@@ -387,6 +415,12 @@ EOF
       ;;
     '23' | 'setpoint')
       setpoint_help
+      ;;
+    '24' | 'reset')
+      reset_help
+      ;;
+    '25' | 'setvalid')
+      setvalid_help
       ;;
     '0' | '00' | 'q' | 'Q')
       break
@@ -472,8 +506,14 @@ EOF
         '22' | 'curgs')
           curgs_help
           ;;
-        '23' | '`setpoint``')
+        '23' | 'setpoint')
           setpoint_help
+          ;;
+        '24' | 'reset')
+          reset_help
+          ;;
+        '25' | 'setvalid')
+          setvalid_help
           ;;
         '0' | '00' | 'q' | 'Q')
           break

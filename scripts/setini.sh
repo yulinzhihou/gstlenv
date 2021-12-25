@@ -64,8 +64,8 @@ if [ $? -eq 0 ]; then
     docker cp ${BASE_PATH}/odbc.ini gsserver:/etc
     docker cp /root/.tlgame/scripts/step.sh gsserver:/usr/local/bin/step
     # 复制配置文件 
-    docker cp /root/.tlgame/include/alter_point.sql gsmysql:/usr/local/bin/alter_point.sql
-    docker cp /root/.tlgame/include/gsset.sh gsmysql:/usr/local/bin/gsset.sh
+    docker cp /root/.tlgame/include/*.sql gsmysql:/usr/local/bin/
+    docker cp /root/.tlgame/include/*.sh gsmysql:/usr/local/bin/
     
     #每次更新后，先重置更改过的文件
     #sed -i 's/^else$/else\n  \/home\/billing\/billing up -d/g' ${GS_PROJECT_PATH}/tlbb/run.sh && \
@@ -81,6 +81,6 @@ if [ $? -eq 0 ]; then
         exit 1
     fi
 else
-    echo "${CRED}环境毁坏，需要重新安装或者移除现有的环境重新安装！！！${CEND}"
+    echo -e "${CRED}环境毁坏，需要重新安装或者移除现有的环境重新安装！！！${CEND}"
     exit 1
 fi
