@@ -11,7 +11,7 @@ if [ $# -ne 0 ]; then
         # 封号
         INVALID_SQL_FILE='change_invalid'
     fi
-    sed -i "s/accname = .*/accname = $1/g" /usr/local/bin/${INVALID_SQL_FILE}.sql
+    sed -i "s/accname = .*/accname = '$1'/g" /usr/local/bin/${INVALID_SQL_FILE}.sql
 fi
 
 mysql -uroot -p"${MYSQL_ROOT_PASSWORD}" tlbbdb </usr/local/bin/${INVALID_SQL_FILE}.sql

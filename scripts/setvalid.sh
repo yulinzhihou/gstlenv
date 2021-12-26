@@ -20,19 +20,19 @@ if [ $? -eq 0 ]; then
     . /usr/local/bin/color
   fi
 
-  if [ -n $1 ]; then
+  if [ -z $1 ]; then
     # 判断第一个参数是否为空
     echo -e "${CRED}请输入需要解封或者封号的账号！${CEND}"
     exit 1
   else
     # 判断是否有第二个参数输入
-    if [ -n $2 ]; then
+    if [ -z $2 ]; then
       # 表示是解封
-      docker exec -it gsmysql /bin/bash /usr/local/bin/gssetvalid $1
+      docker exec -it gsmysql /bin/bash /usr/local/bin/gssetvalid.sh $1
     else
       # 判断是否输入的是1，如果是1表示为封号
       if [ $2 -eq 1 ]; then
-        docker exec -it gsmysql /bin/bash /usr/local/bin/gssetvalid $1 1
+        docker exec -it gsmysql /bin/bash /usr/local/bin/gssetvalid.sh $1 1
       else
         echo -e "${CRED}输入错误：如果需要封号，请在账号后面使用数字1即可封号！${CEND}"
         exit 1

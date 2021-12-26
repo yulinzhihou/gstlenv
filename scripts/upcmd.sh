@@ -52,8 +52,12 @@ if [ $? -eq 0 ]; then
   # 复制命令到容器里面
   copy_to_gssmysql() {
     # 复制配置文件
-    docker cp /root/.tlgame/include/*.sql gsmysql:/usr/local/bin/
-    docker cp /root/.tlgame/include/*.sh gsmysql:/usr/local/bin/
+    docker cp /root/.tlgame/include/alter_point.sql gsmysql:/usr/local/bin/alter_point.sql
+    docker cp /root/.tlgame/include/change_valid.sql gsmysql:/usr/local/bin/change_valid.sql
+    docker cp /root/.tlgame/include/change_invalid.sql gsmysql:/usr/local/bin/change_invalid.sql
+    docker cp /root/.tlgame/include/gsmysqlRestore.sh gsmysql:/usr/local/bin/gsmysqlRestore.sh
+    docker cp /root/.tlgame/include/gsset.sh gsmysql:/usr/local/bin/gsset.sh
+    docker cp /root/.tlgame/include/gssetvalid.sh gsmysql:/usr/local/bin/gssetvalid.sh
   }
 
   # 复制命令到容器里面
