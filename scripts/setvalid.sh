@@ -29,10 +29,14 @@ if [ $? -eq 0 ]; then
     if [ -z $2 ]; then
       # 表示是解封
       docker exec -it gsmysql /bin/bash /usr/local/bin/gssetvalid.sh $1
+      echo -e "${CSUCCESS}解封[$1]账号成功：登录游戏查看，如果未实现请退出游戏再执行一次${CEND}"
+      exit 0
     else
       # 判断是否输入的是1，如果是1表示为封号
-      if [ $2 -eq 1 ]; then
+      if [[ $2 -eq 1 ]]; then
         docker exec -it gsmysql /bin/bash /usr/local/bin/gssetvalid.sh $1 1
+        echo -e "${CSUCCESS}封[$1]账号成功：登录游戏查看，如果未实现请退出游戏再执行一次${CEND}"
+        exit 0
       else
         echo -e "${CRED}输入错误：如果需要封号，请在账号后面使用数字1即可封号！${CEND}"
         exit 1

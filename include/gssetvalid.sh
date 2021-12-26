@@ -7,7 +7,7 @@
 # comment: 设置解号封号
 INVALID_SQL_FILE='change_valid'
 if [ $# -ne 0 ]; then
-    if [ $2 -eq '1' ]; then
+    if [ -z $2 ] && [[ $2 -eq 1 ]]; then
         # 封号
         INVALID_SQL_FILE='change_invalid'
     fi
