@@ -42,6 +42,11 @@ if [ $? -eq 0 ]; then
     fi
   }
 
+  if [ ! -f /root/tlbb.tar.gz ] && [ ! -f /root/tlbb.zip ]; then
+    echo "${CRED}新服务端版本文件不存在，请先上传服务端 tlbb.tar.gz 或者 tlbb.zip 到 /root 目录下再执行换端操作！${CEND}"
+    exit 1
+  fi
+
   while :; do
     echo
     for ((time = 5; time >= 0; time--)); do

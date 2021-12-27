@@ -65,6 +65,7 @@ EFF
   untar_help() {
     cat <<EOF
 ${CRED}untar${CEND} ${CGREEN}作用: 解压服务端压缩包，暂时只支持 tlbb.tar.gz 和 tlbb.zip 压缩包
+      用法：untar
       条件: 服务端压缩包必须上传到 /root 目录下
       参数: 无
       说明: 如有问题，可以向客服反馈
@@ -75,6 +76,7 @@ EOF
   setini_help() {
     cat <<EOF
 ${CRED}setini${CEND} ${CGREEN}作用: 自动设置服务器配置文件，3个【ini】文件，以及数据库连接和 billing 文件
+      用法: setini
       条件: 必须要解压了服务端压缩包后执行
       参数: 无
       说明: 如有问题，可以向客服反馈
@@ -86,6 +88,7 @@ EOF
   runtlbb_help() {
     cat <<EOF
 ${CRED}runtlbb${CEND} ${CGREEN}作用: 运行一键服务端命令，会调用服务端 run.sh 脚本，如果运行不成功，则可能是服务端 run.sh 有问题
+      用法: runtlbb
       条件: 必须在 setini / restart 命令后执行，或者重启服务器后
       参数: 无
       说明: 如有问题，可以向客服反馈
@@ -97,6 +100,7 @@ EOF
   runtop_help() {
     cat <<EOF
 ${CRED}runtop${CEND} ${CGREEN}作用: 查看开服是否成功，查看是否有 ShareMemory, Login , World, Server 等进程稳定在线
+      用法: runtop
       条件: 无
       参数: 无
       说明: 如有问题，可以向客服反馈
@@ -108,6 +112,7 @@ EOF
   link_help() {
     cat <<EOF
 ${CRED}link${CEND} ${CGREEN}作用: 进行服务端所在的容器里面，此容器里面，以上所有命令都无法使用，要使用则需要退出容器，使用 exit 指令即可退出
+      用法: link server
       条件: 初始化容器后使用，用于进入容器，查看服务端的具体情况，或者是分步调试
       参数: gsserver|server 连接主服务器容器
             gsmysql|mysql 连接数据库容器
@@ -123,6 +128,7 @@ EOF
   swap_help() {
     cat <<EOF
 ${CRED}swap${CEND} ${CGREEN}作用: 增加云服务器或者虚拟机系统的虚拟内存，默认增加 4GB 虚拟内存。只是占用硬盘空间，不需要多次执行，但此命令是临时生效，重启服务器后需要再次执行
+      用法: swap
       条件: 小于或等于 5GB 内存的虚拟机或者服务器配置，需要使用
       参数: 无 
       说明: 如有问题，可以向客服反馈
@@ -134,6 +140,7 @@ EOF
   rebuild_help() {
     cat <<EOF
 ${CRED}rebuild${CEND} ${CGREEN}作用: 删除当前所有容器，当前物理机所存储的数据，相当于重构了环境。
+      用法: rebuild
       条件: 相当于刚刚安装好环境的初始化状态
       参数: 无 
       说明: 如有问题，可以向客服反馈
@@ -145,6 +152,7 @@ EOF
   remove_help() {
     cat <<EOF
 ${CRED}remove${CEND} ${CGREEN}作用: 删除所有已经构建好的数据，需要重新安装环境和配置文件
+      用法: remove
       条件: 服务器环境错乱了，相当于重装系统
       参数: 无 
       说明: 如有问题，可以向客服反馈
@@ -156,6 +164,7 @@ EOF
   setconfig_help() {
     cat <<EOF
 ${CRED}setconfig${CEND} ${CGREEN}作用: 会删除当前服务端版本里面的所有数据，重新配置端口，数据库密码，
+      用法: setconfig
       条件: 重新配置命令参数，按提示进行设置，设置完成后，需要配合 setini 命令才会生效
       参数: 无 
       说明: 如有问题，可以向客服反馈
@@ -167,6 +176,7 @@ EOF
   change_help() {
     cat <<EOF
 ${CRED}change${CEND} ${CGREEN}作用: 执行此命令，即可完成更换服务端操作，数据库不会清除，原服务端版本的数据还会存在。建议不要使用相同账号进入，可能会报错
+      用法: change
       条件: 新的服务端压缩包 【tlbb.tar.gz】或者 【tlbb.zip】必须上传到 /root 目录下
       参数: 无 
       说明: 如有问题，可以向客服反馈
@@ -177,8 +187,9 @@ EOF
   #    11:restart
   restart_help() {
     cat <<EOF
-${CRED}restart${CEND} ${CGREEN}作用: 重启环境，不会清空数据，只是相当于重启服务端	
-      条件: 前提是容器开启状态中
+${CRED}restart${CEND} ${CGREEN}作用: 只是相当于重启服务端，不会清空数据，使用后需要重新使用 runtlbb 进行开服操作
+      用法: restart
+      条件: 前提是服务端开启状态中
       参数: 无 
       说明: 如有问题，可以向客服反馈
 ${CEND}
@@ -189,8 +200,9 @@ EOF
   gsbak_help() {
     cat <<EOF
 ${CRED}gsbak${CEND} ${CGREEN}作用: 开启定时备份，默认是半小时备份一次版本，半小时备份一次数据库，保存7天的文件
-      条件: 暂时不支持定制时间
-      参数: 无 
+      用法: gsbak 1
+      条件: 暂时只支持一次性设置 N 小时定时备份一次
+      参数: 1-23
       说明: 如有问题，可以向客服反馈
 ${CEND}
 EOF
@@ -199,7 +211,8 @@ EOF
   #    13:upcmd
   upcmd_help() {
     cat <<EOF
-${CRED}upcmd${CEND} ${CGREEN}作用: 更新命令，更新上述所有命令。
+${CRED}upcmd${CEND} ${CGREEN}作用: 更新命令，更新上述所有命令，更新命令到最新版本
+      用法: upcmd
       条件: 无
       参数: 无 
       说明: 如有问题，可以向客服反馈
@@ -211,6 +224,7 @@ EOF
   upgm_help() {
     cat <<EOF
 ${CRED}upgm${CEND} ${CGREEN}作用: 增加GM网站，暂时只支持GS游享网定制的在线GM管理系统
+      用法: upgm
       条件: 无
       参数: 无 
       说明: 如有问题，可以向客服反馈
@@ -222,6 +236,7 @@ EOF
   upow_help() {
     cat <<EOF
 ${CRED}upow${CEND} ${CGREEN}作用: 增加官方网站，游戏官网，首页index.html、index.htm。
+      用法: upow
       条件: 无
       参数: 无 
       说明: 如有问题，可以向客服反馈
@@ -232,9 +247,10 @@ EOF
   #    16:step
   step_help() {
     cat <<EOF
-${CRED}step${CEND} ${CGREEN}作用: 分步调试命令脚本，需要配合参数使用。用来调试服务端，主要用于改版本使用。可以即时发现问题
+${CRED}step${CEND} ${CGREEN}作用: 分步调试命令脚本，需要配合参数使用。用来调试服务端，主要用于修改版本使用。可以即时发现问题
+      用法: step 1
       条件: 需要复制或者克隆多个SSH容器
-      参数: 1，2，3，4 分别代表启动四个不同的进程。
+      参数: 1，2，3，4，5 分别代表启动五个不同的进程。
       说明: 如有问题，可以向客服反馈
 ${CEND}
 EOF
@@ -243,7 +259,8 @@ EOF
   #    17:gstl
   gstl_help() {
     cat <<EOF
-${CRED}gstl${CEND} ${CGREEN}作用: 环境初始化命令，根据提示进行安装。如果已经安装过，则会自动检测退出
+${CRED}gstl${CEND} ${CGREEN}[已废弃]作用: 环境初始化命令，根据提示进行安装。如果已经安装过，则会自动检测退出
+      用法: gstl
       条件: 无
       参数: 无
       说明: 如有问题，可以向客服反馈
@@ -254,7 +271,8 @@ EOF
   #    18:backup
   backup_help() {
     cat <<EOF
-${CRED}backup${CEND} ${CGREEN}作用: 手动备份版本，数据库版本。
+${CRED}backup${CEND} ${CGREEN}作用: 手动执行备份服务端版本，数据库。 备份目录在 /tlgame/backup 目录下
+      用法: backup
       条件: 无
       参数: 无
       说明: 如有问题，可以向客服反馈
@@ -266,6 +284,7 @@ EOF
   close_help() {
     cat <<EOF
 ${CRED}close${CEND} ${CGREEN}作用: 关闭服务端
+      用法: close
       条件: 无
       参数: 无
       说明: 如有问题，可以向客服反馈
@@ -276,7 +295,7 @@ EOF
   #    20:gslog
   gslog_help() {
     cat <<EOF
-${CRED}gslog${CEND} ${CGREEN}作用: 查看调试日志
+${CRED}gslog${CEND} ${CGREEN}作用: 查看调试日志，开启后，/tlgame/tlbb/Server/Log 目录会开启，里面存放服务端运行的所有日志
       条件: ◎ [1]：查看 [BILLING] 日志,只有用本服务器billing才能查看
             ◎ [2]：查看 [ShareMemory] 日志
             ◎ [3]：查看 [Login] 日志
@@ -292,7 +311,8 @@ EOF
   #    21:rmlog
   rmlog_help() {
     cat <<EOF
-${CRED}rmlog${CEND} ${CGREEN}作用: 删除调试日志
+${CRED}rmlog${CEND} ${CGREEN}作用: 删除调试日志，全清除 /tlgame/tlbb/Server/Log 目录
+      用法: rmlog
       条件: 无
       参数: 无
       说明: 如有问题，可以向客服反馈
@@ -303,7 +323,8 @@ EOF
   #    22:curgs
   curgs_help() {
     cat <<EOF
-${CRED}curgs${CEND} ${CGREEN}作用: 查看配置信息
+${CRED}curgs${CEND} ${CGREEN}作用: 查看配置信息，包括端口号，账号密码等
+      用法: curgs
       条件: 请不要在大众面前使用，因为服务器的配置信息容易暴露
       参数: 无
       说明: 如有问题，可以向客服反馈
@@ -339,7 +360,7 @@ EOF
   setvalid_help() {
     cat <<EOF
 ${CRED}reset${CEND} ${CGREEN}作用: 封号/解封号
-      使用: setvalid account [1]
+      使用: setvalid account 1
       条件: 封号 setvalid account 1 解封 setvalid account
       参数: account 即游戏注册的账号，如 test@game.sohu.com
       说明: 如有问题，可以向客服反馈
@@ -348,7 +369,7 @@ EOF
   }
 
   # 执行
-  if [ -n $1 ]; then
+  if [ ! -z $1 ]; then
     case "$1" in
     '01' | '1' | 'untar')
       untar_help

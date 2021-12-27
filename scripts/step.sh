@@ -116,7 +116,7 @@ if [ -d "/home/tlbb" ] && [ -d "/home/billing" ]; then
 ※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※\r\n"
         echo -e "\r\n"
         echo -e "\r\n"
-        read -p "请选择功能 输入序号并回车：" num
+        read -e -p "请选择功能 输入序号并回车：" num
         case "$num" in
         [1])
             run_step_1

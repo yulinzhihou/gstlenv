@@ -36,7 +36,7 @@ if [ $? -eq 0 ]; then
         if [ "${IS_MODIFY}" == 'y' ]; then
           while :; do
             echo
-            read -p "请输入【IP地址或者解析过来的域名】(默认: [0.0.0.0]): " DOMAIN_IP
+            read -e -p "请输入【IP地址或者解析过来的域名】(默认: [0.0.0.0]): " DOMAIN_IP
             DOMAIN_IP=${DOMAIN_IP:-"0.0.0.0"}
             if [ ${DOMAIN_IP} ]; then
               sed -i "s/server_name  .*/server_name  ${DOMAIN_IP}/g" /tlgame/conf.d/ow.conf
