@@ -69,7 +69,7 @@ if [ $? -eq 0 ]; then
     docker cp /root/.tlgame/include/change_invalid.sql gsmysql:/usr/local/bin/change_invalid.sql
     docker cp /root/.tlgame/include/gsmysqlRestore.sh gsmysql:/usr/local/bin/gsmysqlRestore.sh
     docker cp /root/.tlgame/include/gsset.sh gsmysql:/usr/local/bin/gsset.sh
-    docker cp /root/.tlgame/include/gsssetvalid.sh gsmysql:/usr/local/bin/gsssetvalid.sh
+    docker cp /root/.tlgame/include/gssetvalid.sh gsmysql:/usr/local/bin/gssetvalid.sh
 
     #每次更新后，先重置更改过的文件
     #sed -i 's/^else$/else\n  \/home\/billing\/billing up -d/g' ${GS_PROJECT_PATH}/tlbb/run.sh && \
