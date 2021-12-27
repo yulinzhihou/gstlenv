@@ -23,6 +23,7 @@ if [ $? -eq 0 ]; then
 
   # 更新命令
   download() {
+    [ -z ${COMMAND_VERSION} ] ? COMMAND_VERSION=${COMMAND_VERSION} : COMMAND_VERSION=${VERSION}
     wget -q https://gitee.com/yulinzhihou/gstlenv/repository/archive/${COMMAND_VERSION}.tar.gz -O ${TMP_PATH}/${COMMAND_VERSION}.tar.gz
     # gs env 服务器环境 ，组件
     # wget -q https://gsgameshare.com/${WHOLE_NAME} -O ${TMP_PATH}/${WHOLE_NAME}

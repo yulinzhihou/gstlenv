@@ -42,11 +42,11 @@ if [ $? -eq 0 ]; then
         sed -i "s/DBPassword=123456/DBPassword=${TL_MYSQL_PASSWORD}/g" ${BASE_PATH}/LoginInfo.ini
         sed -i "s/DBPassword=123456/DBPassword=${TL_MYSQL_PASSWORD}/g" ${BASE_PATH}/ShareMemInfo.ini
         sed -i "s/123456/${TL_MYSQL_PASSWORD}/g" ${BASE_PATH}/odbc.ini
-        sed -i "s/123456/${TL_MYSQL_PASSWORD}/g" ${BASE_PATH}/config.json
+        sed -i "s/123456/${TL_MYSQL_PASSWORD}/g" ${BASE_PATH}/config.yaml
     fi
 
     if [ ${BILLING_PORT} != "21818" ]; then
-        sed -i "s/21818/${BILLING_PORT}/g" ${BASE_PATH}/config.json
+        sed -i "s/21818/${BILLING_PORT}/g" ${BASE_PATH}/config.yaml
         sed -i "s/Port0=21818/Port0=${BILLING_PORT}/g" ${BASE_PATH}/ServerInfo.ini
     fi
 
@@ -59,7 +59,7 @@ if [ $? -eq 0 ]; then
     fi
 
     #复制到已经修改好的文件到指定容器
-    \cp -rf ${BASE_PATH}/config.json ${GS_PROJECT_PATH}/billing/
+    \cp -rf ${BASE_PATH}/config.yaml ${GS_PROJECT_PATH}/billing/
     \cp -rf ${BASE_PATH}/LoginInfo.ini ${BASE_PATH}/ShareMemInfo.ini ${BASE_PATH}/ServerInfo.ini ${GS_PROJECT_PATH}/tlbb/Server/Config/
     docker cp ${BASE_PATH}/odbc.ini gsserver:/etc
     docker cp /root/.tlgame/scripts/step.sh gsserver:/usr/local/bin/step
@@ -75,7 +75,7 @@ if [ $? -eq 0 ]; then
     #sed -i 's/^else$/else\n  \/home\/billing\/billing up -d/g' ${GS_PROJECT_PATH}/tlbb/run.sh && \
     sed -i 's/exit$/tail -f \/dev\/null/g' ${GS_PROJECT_PATH}/tlbb/run.sh &&
         cd ${BASE_PATH}/ &&
-        rm -rf ${BASE_PATH}/*.ini ${BASE_PATH}/config.json ${BASE_PATH}/billing
+        rm -rf ${BASE_PATH}/*.ini ${BASE_PATH}/config.yaml ${BASE_PATH}/billing
     chown -R root:root ${GS_PROJECT_PATH} && chmod -R 777 ${GS_PROJECT_PATH}
     if [ $? -eq 0 ]; then
         echo -e "${CSUCCESS}配置文件已经写入成功，可以执行【runtlbb】进行开服操作！！${CEND}"
