@@ -48,7 +48,7 @@ if [ $? -eq 0 ]; then
         break
       fi
     done
-
+    docker restart gsnginx
   }
 
   # 创建目录，生成配置文件
