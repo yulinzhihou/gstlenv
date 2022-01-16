@@ -22,7 +22,7 @@ if [ $# -eq 0 ]; then
     fi
 else
     # 表示有参数传入，可能是删档
-    if [ $1 -eq 'reset' ]; then
+    if [ $1 = 'reset' ]; then
         mysql -uroot -p"${MYSQL_ROOT_PASSWORD}" web </docker-entrypoint-initdb.d/web.sql
         mysql -uroot -p"${MYSQL_ROOT_PASSWORD}" tlbbdb </docker-entrypoint-initdb.d/tlbbdb.sql
         exit 0
