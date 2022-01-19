@@ -28,7 +28,7 @@ if [ $? -eq 0 ]; then
       echo
       echo -e "${CRED}正在开发中……，请关注论坛与群的动态${CEND}"
       exit 1
-      read -e -p "当前【域名】为${CBLUE}["0.0.0.0"]${CEND}，是否需要修改【0.0.0.0=使用服务器外网IP+端口访问】 [y/n](默认: n): " IS_MODIFY
+      read -e -p "当前【域名】为${CYELLOW}["0.0.0.0"]${CEND}，是否需要修改【0.0.0.0=使用服务器外网IP+端口访问】 [y/n](默认: n): " IS_MODIFY
       IS_MODIFY=${IS_MODIFY:-'n'}
       if [[ ! ${IS_MODIFY} =~ ^[y,n]$ ]]; then
         echo "${CWARNING}输入错误! 请输入 y 或者 n ${CEND}"

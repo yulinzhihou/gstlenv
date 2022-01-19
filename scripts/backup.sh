@@ -65,7 +65,7 @@ if [ $? -eq 0 ]; then
     while :; do
       echo
       echo -e "${CYELLOW}请选择需要备份的类型，0=备份版本+数据库，1=只备份版本，2=只备份数据库。默认为[0]备份所有.备份目录[/tlgame/backup]${CEND}"
-      read -e -p "${CBLUE}请输入[0]=备份版本+数据库,[1]=只备份版本,[2]=只备份数据库[0、1、2](默认: 0):${CEND} " IS_MODIFY
+      read -e -p "${CYELLOW}请输入[0]=备份版本+数据库,[1]=只备份版本,[2]=只备份数据库[0、1、2](默认: 0):${CEND} " IS_MODIFY
       IS_MODIFY=${IS_MODIFY:-'0'}
       case ${IS_MODIFY} in
       0)

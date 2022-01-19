@@ -29,7 +29,7 @@ setconfig_rebuild() {
         chattr -i ${GS_WHOLE_PATH}
         while :; do
             echo
-            read -e -p "当前【服务器】为${CBLUE}["${IS_DLQ}"]${CEND}，是否需要修改【1=W机+L机，0=单L机】 [y/n](默认: n): " IS_MODIFY
+            read -e -p "当前【服务器】为${CYELLOW}["${IS_DLQ}"]${CEND}，是否需要修改【1=W机+L机，0=单L机】 [y/n](默认: n): " IS_MODIFY
             IS_MODIFY=${IS_MODIFY:-'n'}
             if [[ ! ${IS_MODIFY} =~ ^[y,n]$ ]]; then
                 echo "${CWARNING}输入错误! 请输入 y 或者 n ${CEND}"
@@ -83,7 +83,7 @@ setconfig_rebuild() {
         # 配置BILLING_PORT
         while :; do
             echo
-            read -e -p "当前【Billing验证端口】为：${CBLUE}[${BILLING_PORT}]${CEND}，是否需要修改【Billing验证端口】 [y/n](默认: n): " IS_MODIFY
+            read -e -p "当前【Billing验证端口】为：${CYELLOW}[${BILLING_PORT}]${CEND}，是否需要修改【Billing验证端口】 [y/n](默认: n): " IS_MODIFY
             IS_MODIFY=${IS_MODIFY:-'n'}
             if [[ ! ${IS_MODIFY} =~ ^[y,n]$ ]]; then
                 echo "${CWARNING}输入错误! 请输入 'y' 或者 'n' ${CEND}"
@@ -108,7 +108,7 @@ setconfig_rebuild() {
         # 修改MYSQL_PORT
         while :; do
             echo
-            read -e -p "当前【mysql端口】为：${CBLUE}[${TL_MYSQL_PORT}]${CEND}，是否需要修改【mysql端口】 [y/n](默认: n): " IS_MODIFY
+            read -e -p "当前【mysql端口】为：${CYELLOW}[${TL_MYSQL_PORT}]${CEND}，是否需要修改【mysql端口】 [y/n](默认: n): " IS_MODIFY
             IS_MODIFY=${IS_MODIFY:-'n'}
             if [[ ! ${IS_MODIFY} =~ ^[y,n]$ ]]; then
                 echo "${CWARNING}输入错误! 请输入 'y' 或者 'n',当前【mysql端口】为：[${TL_MYSQL_PORT}]${CEND}"
@@ -133,7 +133,7 @@ setconfig_rebuild() {
         # 修改登录端口 LOGIN_PORT
         while :; do
             echo
-            read -e -p "当前【登录端口】为：${CBLUE}[${LOGIN_PORT}]${CEND}，是否需要修改【登录端口】 [y/n](默认: n): " IS_MODIFY
+            read -e -p "当前【登录端口】为：${CYELLOW}[${LOGIN_PORT}]${CEND}，是否需要修改【登录端口】 [y/n](默认: n): " IS_MODIFY
             IS_MODIFY=${IS_MODIFY:-'n'}
             if [[ ! ${IS_MODIFY} =~ ^[y,n]$ ]]; then
                 echo "${CWARNING}输入错误! 请输入 'y' 或者 'n',当前【登录端口】为：[${LOGIN_PORT}]${CEND}"
@@ -158,7 +158,7 @@ setconfig_rebuild() {
         # 修改GAME_PORT
         while :; do
             echo
-            read -e -p "当前【游戏端口】为：${CBLUE}[${SERVER_PORT}]${CEND}，是否需要修改【游戏端口】 [y/n](默认: n): " IS_MODIFY
+            read -e -p "当前【游戏端口】为：${CYELLOW}[${SERVER_PORT}]${CEND}，是否需要修改【游戏端口】 [y/n](默认: n): " IS_MODIFY
             IS_MODIFY=${IS_MODIFY:-'n'}
             if [[ ! ${IS_MODIFY} =~ ^[y,n]$ ]]; then
                 echo "${CWARNING}输入错误! 请输入 'y' 或者 'n',当前【游戏端口】为：[${SERVER_PORT}]${CEND}"
@@ -183,7 +183,7 @@ setconfig_rebuild() {
         # 修改 WEB_PORT
         while :; do
             echo
-            read -e -p "当前【网站端口】为：${CBLUE}[${WEB_PORT}]${CEND}，是否需要修改【网站端口】 [y/n](默认: n): " IS_MODIFY
+            read -e -p "当前【网站端口】为：${CYELLOW}[${WEB_PORT}]${CEND}，是否需要修改【网站端口】 [y/n](默认: n): " IS_MODIFY
             IS_MODIFY=${IS_MODIFY:-'n'}
             if [[ ! ${IS_MODIFY} =~ ^[y,n]$ ]]; then
                 echo "${CWARNING}输入错误! 请输入 'y' 或者 'n',当前【网站端口】为：[${WEB_PORT}]${CEND}"
@@ -208,7 +208,7 @@ setconfig_rebuild() {
         # 修改数据库密码
         while :; do
             echo
-            read -e -p "当前【数据库密码】为：${CBLUE}[${TL_MYSQL_PASSWORD}]${CEND}，是否需要修改【数据库密码】 [y/n](默认: n): " IS_MODIFY
+            read -e -p "当前【数据库密码】为：${CYELLOW}[${TL_MYSQL_PASSWORD}]${CEND}，是否需要修改【数据库密码】 [y/n](默认: n): " IS_MODIFY
             IS_MODIFY=${IS_MODIFY:-'n'}
             if [[ ! ${IS_MODIFY} =~ ^[y,n]$ ]]; then
                 echo "${CWARNING}输入错误! 请输入 'y' 或者 'n',当前【数据库密码】为：[${TL_MYSQL_PASSWORD}]${CEND}"

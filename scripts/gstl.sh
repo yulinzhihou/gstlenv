@@ -102,7 +102,7 @@ else
     if [ -f ${WHOLE_PATH} ]; then
         . ${WHOLE_PATH}
     else
-        echo -e "${CBLUE}GS专用环境容器还没下载下来，请重新执行【$0】命令！${CEND}"
+        echo -e "${CYELLOW}GS专用环境容器还没下载下来，请重新执行【$0】命令！${CEND}"
         exit 1
     fi
 

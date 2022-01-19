@@ -51,7 +51,7 @@ if [ $? -eq 0 ]; then
 
   # 数据备份
   data_backup() {
-    echo -e "${CGREEN}开始设置定时数据备份，目前为【${TIME}】小时备份一次数据库和版本！备份到 /tlgame/backup/ 目录下${CEND}"
+    echo -e "${CYELLOW}开始设置定时数据备份，目前为【${TIME}】小时备份一次数据库和版本！备份到 /tlgame/backup/ 目录下${CEND}"
     #备份数据库
     crontabCount=$(crontab -l | grep 'docker exec -it gsmysql' | grep -v grep | wc -l)
     # crontabCount=`crontab -l | grep docker exec -it gsmysql | grep -v grep | wc -l`

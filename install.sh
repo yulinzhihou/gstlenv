@@ -27,7 +27,7 @@ pushd ${GSTL_DIR} >/dev/null
 
 # 系统组件安装
 sys_plugins_install() {
-    echo -e "${CGREEN}开始安装系统常用组件 !!!${CEND}"
+    echo -e "${CYELLOW}开始安装系统常用组件 !!!${CEND}"
     # 安装 wget gcc curl git python
     # [ "${PM}" == 'apt-get' ] && apt-get -y update
     # [ "${PM}" == 'yum' ] && yum clean all && yum -y update
@@ -40,7 +40,7 @@ sys_plugins_install() {
 
 # 安装docker docker-compose
 do_install_docker() {
-    echo -e "${CGREEN}开始安装环境核心组件 Docker + docker-compose !!!${CEND}"
+    echo -e "${CYELLOW}开始安装环境核心组件 Docker + docker-compose !!!${CEND}"
     egrep "^docker" /etc/group >&/dev/null
     if [ $? -ne 0 ]; then
         sudo groupadd docker
@@ -68,14 +68,14 @@ EOF
         [ "${OS}" == "CentOS" ] && sudo systemctl daemon-reload && sudo systemctl restart docker && systemctl enable docker
 
     else
-        echo -e "${CBLUE}环境 Docker 安装成功 !!!${CEND}"
+        echo -e "${CYELLOW}环境 Docker 安装成功 !!!${CEND}"
     fi
 
     curl -L https://get.daocloud.io/docker/compose/releases/download/${DOCKER_COMPOSER_VERSION}/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
     chmod +x /usr/local/bin/docker-compose
     docker-compose --version >&/dev/null
     if [ $? -eq 0 ]; then
-        echo -e "${CBLUE}容器编排工具 docker-compose 安装成功 !!! ${CEND}"
+        echo -e "${CYELLOW}容器编排工具 docker-compose 安装成功 !!! ${CEND}"
     else
         echo -e "${CRED}容器编排工具 docker-compose 安装失败 !!! ${CEND}"
         exit 1
@@ -84,7 +84,7 @@ EOF
 
 # 配置常用命令到系统中
 set_command() {
-    echo -e "${CGREEN}开始设置全局命令 !!!${CEND}"
+    echo -e "${CYELLOW}开始设置全局命令 !!!${CEND}"
     ls -l ${GS_PROJECT}/scripts/ | awk '{print $9}' >/tmp/command.txt
     for VAR in $(cat /tmp/command.txt); do
         if [ -n ${VAR} ]; then
@@ -96,7 +96,7 @@ set_command() {
 
 # 设置服务器时间
 set_timezone() {
-    echo -e "${CGREEN}开始设置时区 !!!${CEND}"
+    echo -e "${CYELLOW}开始设置时区 !!!${CEND}"
     rm -rf /etc/localtime
     ln -sf /usr/share/zoneinfo/${TZ} /etc/localtime
     # 复制一份到docker镜像里面。可以在制作docker镜像时添加
@@ -105,17 +105,17 @@ set_timezone() {
 # 安装整合
 do_install() {
     set_timezone
-    [ $? -eq 0 ] && echo -e "${CBLUE}设置时区成功!! ${CEND}" || {
+    [ $? -eq 0 ] && echo -e "${CYELLOW}设置时区成功!! ${CEND}" || {
         echo -e "${CRED}设置时区失败!! ;${CEND}"
         exit 1
     }
     do_install_docker
-    [ $? -eq 0 ] && echo -e "${CBLUE}环境核心组件安装成功！！ ${CEND}" || {
+    [ $? -eq 0 ] && echo -e "${CYELLOW}环境核心组件安装成功！！ ${CEND}" || {
         echo -e "${CRED}环境核心组件安装失败!! ;${CEND}"
         exit 1
     }
     set_command
-    [ $? -eq 0 ] && echo -e "${CBLUE}设置全局命令成功！！${CEND}" || {
+    [ $? -eq 0 ] && echo -e "${CYELLOW}设置全局命令成功！！${CEND}" || {
         echo -e "${CRED}设置全局命令失败！！${CEND}"
         exit 1
     }

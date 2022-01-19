@@ -43,7 +43,7 @@ if [ $? -eq 0 ]; then
   while :; do
     echo
     for ((time = 5; time >= 0; time--)); do
-      echo -ne "\r在准备正行重构操作！！，剩余 ${CBLUE}$time${CEND} 秒，可以在计时结束前，按 CTRL+C 退出！\r"
+      echo -ne "\r在准备正行重构操作！！，剩余 ${CYELLOW}$time${CEND} 秒，可以在计时结束前，按 CTRL+C 退出！\r"
       sleep 1
     done
     echo -ne "\n\r"
