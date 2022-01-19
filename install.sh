@@ -29,8 +29,8 @@ pushd ${GSTL_DIR} >/dev/null
 sys_plugins_install() {
     echo -e "${CGREEN}开始安装系统常用组件 !!!${CEND}"
     # 安装 wget gcc curl git python
-    [ "${PM}" == 'apt-get' ] && apt-get -y update
-    [ "${PM}" == 'yum' ] && yum clean all && yum -y update
+    # [ "${PM}" == 'apt-get' ] && apt-get -y update
+    # [ "${PM}" == 'yum' ] && yum clean all && yum -y update
     ${PM} -y install wget gcc curl python git jq vim
     [ "${CentOS_ver}" == '8' ] && {
         yum -y install python36 gcc wget curl git jq vim
@@ -40,7 +40,7 @@ sys_plugins_install() {
 
 # 安装docker docker-compose
 do_install_docker() {
-    echo -e "${CGREEN}开始安装环境核心组件 !!!${CEND}"
+    echo -e "${CGREEN}开始安装环境核心组件 Docker + docker-compose !!!${CEND}"
     egrep "^docker" /etc/group >&/dev/null
     if [ $? -ne 0 ]; then
         sudo groupadd docker
@@ -75,7 +75,10 @@ EOF
     chmod +x /usr/local/bin/docker-compose
     docker-compose --version >&/dev/null
     if [ $? -eq 0 ]; then
-        echo -e "${CBLUE}容器工具 docker-compose 安装成功 !!! ${CEND}"
+        echo -e "${CBLUE}容器编排工具 docker-compose 安装成功 !!! ${CEND}"
+    else
+        echo -e "${CRED}容器编排工具 docker-compose 安装失败 !!! ${CEND}"
+        exit 1
     fi
 }
 
@@ -118,32 +121,10 @@ do_install() {
     }
 }
 
-# 安装完成提示信息
-show_install_msg() {
-    printf "${CCYAN}
-  #######################################################################
-  #       GS_TL_Env 支持： CentOS/RedHat 7+  Ubuntu 18+ Debian 10+
-  #       GS游享网 [https://gsgameshare.com] 专用环境安装成功!
-  #       安装环境需要移步论坛注册账号才能正常安装，只需要注册账号即可
-  #       1.论坛客服QQ:\t1303588722
-  #       2.论坛有对应的环境教程，有不懂的可以进论坛--原创教程
-  #       3.技术交流群:\t826717146,如果搜索不到群，请加客服QQ,备注进群即可
-  #       4.环境即将安装完成，请手动执行 gstl
-  #######################################################################
-    ${CEND}"
-    endTime=$(date +%s)
-    ((outTime = ($endTime - $startTime) / 60))
-    echo -e "总耗时:\e[44m $outTime \e[0m 分钟!"
-}
-
 ##################################################################
 # 调用系统组件
 sys_plugins_install
 clear
 # 开始安装
 do_install && gstl
-# if [ $? -eq 0 ]; then
-#     gstl && show_install_msg
-# else
-#     echo -e "${CRED}环境即将安装完成，请手动执行 gstl${CEND}"
-# fi
+

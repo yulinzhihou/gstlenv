@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 # Author: yulinzhihou <yulinzhihou@gmail.com>
 # Forum:  https://gsgamesahre.com
 # Project: https://github.com/yulinzhihou/gs_tl_env.git
@@ -8,14 +8,14 @@
 
 if [ $# -eq 0 ]; then
     # 表示没有输出任何参数，进行还原备份
-    WEBDBFILE=$(ls -t /var/lib/mysql | grep "web-" | head -n1 | awk '{print $0}')
+    WEBDBFILE=`ls -t /var/lib/mysql | grep "web-" | head -n1 | awk '{print $0}'`
 
     if [ ! -n "${WEBDBFILE}" ]; then
         cd /var/lib/mysql &&
             mysql -uroot -p"${MYSQL_ROOT_PASSWORD}" web <./${WEBDBFILE}
     fi
 
-    TLBBDBFILE=$(ls -t /var/lib/mysql | grep "tlbbdb-" | head -n1 | awk '{print $0}')
+    TLBBDBFILE=`ls -t /var/lib/mysql | grep "tlbbdb-" | head -n1 | awk '{print $0}'`
     if [ ! -n "${TLBBDBFILE}" ]; then
         cd /var/lib/mysql &&
             mysql -uroot -p"${MYSQL_ROOT_PASSWORD}" tlbbdb <./${TLBBDBFILE}

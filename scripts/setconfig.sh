@@ -288,10 +288,10 @@ main() {
                     setconfig_rebuild &&
                     # 开环境
                     cd ${ROOT_PATH}/${GSDIR} && docker-compose up -d &&
-                    # 替换参数
-                    setini &&
                     # 还原数据
-                    setconfig_restore
+                    setconfig_restore &&
+                    # 替换参数
+                    setini 
             else
                 # 设置参数
                 setconfig_rebuild &&
