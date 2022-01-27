@@ -24,12 +24,12 @@ FILE_PATH="/root/.gs/"
 # 设置配置参数
 setconfig_rebuild() {
     if [ -f ${GS_WHOLE_PATH} ]; then
-        echo -e "${CRED}如果选择了W机+L机模式，则本服务器不要开启 [billing] 服务！！！\r"
+        echo -e "${CMAGENTA}如果选择了W机+L机模式，则本服务器不要开启 [billing] 服务！！！${CEND}\r"
         echo -e "${CYELLOW}即将设置服务器环境配置荐，请仔细！！注意：W机=Windows服务器，L机=Linux服务器${CEND}"
         chattr -i ${GS_WHOLE_PATH}
         while :; do
             echo
-            read -e -p "当前【服务器】为${CYELLOW}["${IS_DLQ}"]${CEND}，是否需要修改【1=W机+L机，0=单L机】 [y/n](默认: n): " IS_MODIFY
+            read -e -p "当前【服务器】选择为${CYELLOW}["${IS_DLQ}"]${CEND}，是否需要修改【1=W机+L机，0=单L机】 [y/n](默认: n): " IS_MODIFY
             IS_MODIFY=${IS_MODIFY:-'n'}
             if [[ ! ${IS_MODIFY} =~ ^[y,n]$ ]]; then
                 echo "${CWARNING}输入错误! 请输入 y 或者 n ${CEND}"
@@ -67,15 +67,21 @@ setconfig_rebuild() {
                 BILLING_NEW2_SERVER_IPADDR=${BILLING_NEW2_SERVER_IPADDR:-${BILLING_DEFAULT_SERVER_IPADDR}}
                 # 正则验证是否有效IP
                 regex="\b(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[1-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[1-9])\b"
-                [[ ${BILLING_NEW_SERVER_IPADDR} == ${BILLING_NEW2_SERVER_IPADDR} ]]
-                ckstep1=$?
+
+                [ ${BILLING_NEW_SERVER_IPADDR} = ${BILLING_NEW2_SERVER_IPADDR} ] && ckStep1=0 || ckStep1=1
                 ckStep2=$(echo $BILLING_NEW_SERVER_IPADDR | egrep $regex | wc -l)
                 ckStep3=$(echo $BILLING_NEW2_SERVER_IPADDR | egrep $regex | wc -l)
-                if [[ $ckStep1 -eq 0 && $ckStep2 -eq 1 && $ckStep3 -eq 1 ]]; then
+                if [[ ${ckStep2} -eq 0 ]] || [[ ${ckStep3} -eq 0 ]]; then
+                    echo -e "${CRED}服务器IP地址输入有误，请重新输入${CEND}"
+                    exit 1
+                fi
+
+                if [[ ${ckStep1} -eq 0 ]]; then
                     sed -i "s/BILLING_SERVER_IPADDR=.*/BILLING_SERVER_IPADDR=${BILLING_NEW_SERVER_IPADDR}/g" ${GS_WHOLE_PATH}
                     break
                 else
-                    echo "服务器IP地址输入有误或者两次输入的不相同!，请重新输入"
+                    echo -e "${CRED}两次输入的IP不一致，请重新输入${CEND}"
+                    exit 1
                 fi
             done
         fi
@@ -87,6 +93,7 @@ setconfig_rebuild() {
             IS_MODIFY=${IS_MODIFY:-'n'}
             if [[ ! ${IS_MODIFY} =~ ^[y,n]$ ]]; then
                 echo "${CWARNING}输入错误! 请输入 'y' 或者 'n' ${CEND}"
+                exit 1
             else
                 if [ "${IS_MODIFY}" == 'y' ]; then
                     while :; do
@@ -98,6 +105,7 @@ setconfig_rebuild() {
                             break
                         else
                             echo "${CWARNING}输入错误! 端口范围: 1025~65534${CEND}"
+                            exit 1
                         fi
                     done
                 fi
@@ -111,7 +119,7 @@ setconfig_rebuild() {
             read -e -p "当前【mysql端口】为：${CYELLOW}[${TL_MYSQL_PORT}]${CEND}，是否需要修改【mysql端口】 [y/n](默认: n): " IS_MODIFY
             IS_MODIFY=${IS_MODIFY:-'n'}
             if [[ ! ${IS_MODIFY} =~ ^[y,n]$ ]]; then
-                echo "${CWARNING}输入错误! 请输入 'y' 或者 'n',当前【mysql端口】为：[${TL_MYSQL_PORT}]${CEND}"
+                echo "${CRED}输入错误! 请输入 'y' 或者 'n',当前【mysql端口】为：[${TL_MYSQL_PORT}]${CEND}"
             else
                 if [ "${IS_MODIFY}" == 'y' ]; then
                     while :; do
@@ -122,7 +130,8 @@ setconfig_rebuild() {
                             sed -i "s/TL_MYSQL_PORT=.*/TL_MYSQL_PORT=${TL_MYSQL_NEW_PORT}/g" ${GS_WHOLE_PATH}
                             break
                         else
-                            echo "${CWARNING}输入错误! 端口范围: 1025~65534${CEND}"
+                            echo "${CRED}输入错误! 端口范围: 1025~65534${CEND}"
+                            exit 1
                         fi
                     done
                 fi
@@ -147,7 +156,8 @@ setconfig_rebuild() {
                             sed -i "s/LOGIN_PORT=.*/LOGIN_PORT=${LOGIN_NEW_PORT}/g" ${GS_WHOLE_PATH}
                             break
                         else
-                            echo "${CWARNING}输入错误! 端口范围: 1025~65534${CEND}"
+                            echo "${CRED}输入错误! 端口范围: 1025~65534${CEND}"
+                            exit 1
                         fi
                     done
                 fi
@@ -172,7 +182,8 @@ setconfig_rebuild() {
                             sed -i "s/SERVER_PORT=.*/SERVER_PORT=${SERVER_NEW_PORT}/g" ${GS_WHOLE_PATH}
                             break
                         else
-                            echo "${CWARNING}输入错误! 端口范围: 1025~65534${CEND}"
+                            echo -e "${CRED}输入错误! 端口范围: 1025~65534${CEND}"
+                            exit 1
                         fi
                     done
                 fi
@@ -197,7 +208,8 @@ setconfig_rebuild() {
                             sed -i "s/WEB_PORT=.*/WEB_PORT=${WEB_NEW_PORT}/g" ${GS_WHOLE_PATH}
                             break
                         else
-                            echo "${CWARNING}输入错误! 端口范围: 1~65534${CEND}"
+                            echo -e "${CRED}输入错误! 端口范围: 1~65534${CEND}"
+                            exit 1
                         fi
                     done
                 fi
@@ -222,7 +234,8 @@ setconfig_rebuild() {
                             sed -i "s/TL_MYSQL_PASSWORD=.*/TL_MYSQL_PASSWORD=${TL_MYSQL_NEW_PASSWORD}/g" ${GS_WHOLE_PATH}
                             break
                         else
-                            echo "${CWARNING}密码最少要6个字符! ${CEND}"
+                            echo "${CRED}密码最少要6个字符! ${CEND}"
+                            exit 1
                         fi
                     done
                 fi
@@ -234,7 +247,7 @@ setconfig_rebuild() {
             \cp -rf ${GS_WHOLE_PATH} /root/.tlgame/.env
         chattr +i ${GS_WHOLE_PATH}
     else
-        echo -e "GS专用环境容器还没下载下来，请重新执行【gstl】命令！"
+        echo -e "GS专用环境容器还没下载下来，请重新执行【curl -sSL https://gsgameshare.com/gsenv | bash 】命令！"
         exit 1
     fi
     # 先停止容器，再将容器删除，重新根据镜像文件以及配置文件，通过docker-compose重新生成容器环境
@@ -291,7 +304,7 @@ main() {
                     # 还原数据
                     setconfig_restore &&
                     # 替换参数
-                    setini 
+                    setini
             else
                 # 设置参数
                 setconfig_rebuild &&
