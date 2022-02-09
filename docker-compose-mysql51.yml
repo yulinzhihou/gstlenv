@@ -19,7 +19,7 @@ services:
       - gsphp:gsphp
       - gsredis:gsredis
   # Database
-  gsmysql51:
+  gsmysql:
     image: ${HUB_ALIYUN}gs_mysql51:latest
     container_name: gsmysql
     volumes:
