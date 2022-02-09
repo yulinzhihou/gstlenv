@@ -20,7 +20,7 @@ services:
       - gsredis:gsredis
   # Database
   gsmysql51:
-    image: ${HUB_ALIYUN}gs_mysql_51:latest
+    image: ${HUB_ALIYUN}gs_mysql51:latest
     container_name: gsmysql
     volumes:
       - "${SHARED_DIR}/gsmysql/:/var/lib/mysql"
