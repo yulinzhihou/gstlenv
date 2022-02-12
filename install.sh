@@ -121,10 +121,14 @@ do_install() {
     }
 }
 
+# mysql 5.1 初始化
+init_mysql51() {
+    docker exec -it gsmysql /bin/sh /usr/local/bin/init_db.sh
+}
+
 ##################################################################
 # 调用系统组件
 sys_plugins_install
 clear
 # 开始安装
-do_install && gstl
-
+do_install && gstl && init_mysql51
