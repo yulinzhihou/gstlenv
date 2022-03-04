@@ -25,6 +25,7 @@ if [ ! -d /tlgame ] && [ ! -d /root/.gs ] && [ ! -d /root/.tlgame ]; then
         \cp -rf env.sample .env &&
         \cp -rf ./* /root/.tlgame &&
         \cp -rf /root/.tlgame/env.sample /root/.tlgame/.env &&
+        \cp -rf /root/.tlgame/env.sample /root/.gs/.env &&
         \cp -rf ./docker-compose.yml /root/.gs/docker-compose.yml &&
         . /root/.tlgame/.env &&
         chmod -R 777 /root/.tlgame &&
