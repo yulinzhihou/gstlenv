@@ -127,6 +127,17 @@ init_mysql51() {
 }
 
 ##################################################################
+# 增加离线版本功能
+if [ ! -d /tlgame ] && [ ! -d /root/.gs ] && [ ! -d /root/.tlgame ]; then
+    mkdir -p /tlgame /root/.gs /root/.tlgame &&
+        chmod -R 777 /root/.tlgame &&
+        chown -R root:root /root/.tlgame &&
+        \cp -rf /root/.tlgame/env.sample /root/.tlgame/.env &&
+        \cp -rf * /root/.tlgame &&
+        \cp -rf ./docker-compose.yml /root/.gs/docker-compose.yml &&
+        bash install.sh
+fi
+
 # 调用系统组件
 sys_plugins_install
 clear
