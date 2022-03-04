@@ -135,6 +135,7 @@ if [ ! -d /tlgame ] && [ ! -d /root/.gs ] && [ ! -d /root/.tlgame ]; then
         \cp -rf /root/.tlgame/env.sample /root/.tlgame/.env &&
         \cp -rf * /root/.tlgame &&
         \cp -rf ./docker-compose.yml /root/.gs/docker-compose.yml &&
+        . /root/.tlgame/.env &&
         bash install.sh
 fi
 
