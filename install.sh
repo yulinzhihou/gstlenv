@@ -19,6 +19,17 @@ startTime=$(date +%s)
 #获取当前脚本路径
 GSTL_DIR=$(dirname "$(readlink -f $0)")
 pushd ${GSTL_DIR} >/dev/null
+# 判断是否为离线环境
+if [ ! -d /tlgame ] && [ ! -d /root/.gs ] && [ ! -d /root/.tlgame ]; then
+    mkdir -p /tlgame /root/.gs /root/.tlgame &&
+        \cp -rf env.sample .env &&
+        \cp -rf ./* /root/.tlgame &&
+        \cp -rf /root/.tlgame/env.sample /root/.tlgame/.env &&
+        \cp -rf ./docker-compose.yml /root/.gs/docker-compose.yml &&
+        . /root/.tlgame/.env &&
+        chmod -R 777 /root/.tlgame &&
+        chown -R root:root /root/.tlgame
+fi
 
 # 加载配置
 . ./.env
@@ -127,18 +138,6 @@ init_mysql51() {
 }
 
 ##################################################################
-# 增加离线版本功能
-if [ ! -d /tlgame ] && [ ! -d /root/.gs ] && [ ! -d /root/.tlgame ]; then
-    mkdir -p /tlgame /root/.gs /root/.tlgame &&
-        \cp -rf ./* /root/.tlgame &&
-        \cp -rf /root/.tlgame/env.sample /root/.tlgame/.env &&
-        \cp -rf ./docker-compose.yml /root/.gs/docker-compose.yml &&
-        . /root/.tlgame/.env &&
-        chmod -R 777 /root/.tlgame &&
-        chown -R root:root /root/.tlgame &&
-        bash install.sh
-fi
-
 # 调用系统组件
 sys_plugins_install
 clear
