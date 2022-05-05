@@ -20,7 +20,7 @@ startTime=$(date +%s)
 GSTL_DIR=$(dirname "$(readlink -f $0)")
 pushd ${GSTL_DIR} >/dev/null
 # 判断是否为离线环境
-if [ ! -d /tlgame ] && [ ! -d /root/.gs ] && [ ! -d /root/.tlgame ]; then
+if [ $# != 0 ] && [ $1 == 'local' ]; then
     mkdir -p /tlgame /root/.gs /root/.tlgame &&
         \cp -rf env.sample .env &&
         \cp -rf ./* /root/.tlgame &&
