@@ -58,6 +58,7 @@ ${CYELLOW}###########################################
 #    23:setpoint   设置默认充值点数       #
 #    24:reset      删档数据库             #
 #    25:setvalid   解/封号                #
+#    26:restore    还原数据库             #
 #    0:q 退出,或者按 CTRL+C               #
 ###########################################${CEND}
 EFF
@@ -203,6 +204,7 @@ EOF
     cat <<EOF
 ${CRED}gsbak${CEND} ${CGREEN}作用: 开启定时备份，默认是半小时备份一次版本，半小时备份一次数据库，保存7天的文件
       用法: gsbak 1
+      描述: 表示会自动1小时进行备份操作
       条件: 暂时只支持一次性设置 N 小时定时备份一次
       参数: 1-23
       说明: 如有问题，可以向客服反馈
@@ -286,7 +288,8 @@ EOF
   close_help() {
     cat <<EOF
 ${CRED}close${CEND} ${CGREEN}作用: 关闭服务端
-      用法: close
+      用法: close 作用同 restart
+      描述: 因为之前close方式关闭服务端，会出现长时间进程卡死情况，无法完全关闭，所以直接使用restart命令替代
       条件: 无
       参数: 无
       说明: 如有问题，可以向客服反馈
@@ -304,6 +307,7 @@ ${CRED}gslog${CEND} ${CGREEN}作用: 查看调试日志，开启后，/tlgame/tl
             ◎ [4]：查看 [World] 日志
             ◎ [0]：查看 [error] 日志
             ◎ [q]：退出按 q 或者 Q，也可以按 CTRL+C 退出！
+      描述: 也可自行去 /tlgame/tlbb/Server/Log 目录里面自行查看更多调试日志文件
       参数: 无
       说明: 如有问题，可以向客服反馈
 ${CEND}
@@ -327,6 +331,7 @@ EOF
     cat <<EOF
 ${CRED}curgs${CEND} ${CGREEN}作用: 查看配置信息，包括端口号，账号密码等
       用法: curgs
+      描述: 显示当前服务器的配置信息
       条件: 请不要在大众面前使用，因为服务器的配置信息容易暴露
       参数: 无
       说明: 如有问题，可以向客服反馈
@@ -338,9 +343,10 @@ EOF
   setpoint_help() {
     cat <<EOF
 ${CRED}setpoint${CEND} ${CGREEN}作用: 修复注册账号送默认充值点
-      使用: setpoint point_num
+      使用: setpoint 888
+      描述: 表示从设置此命令起，注册的账号会自动赠送888的充值点数
       条件: 设置默认充值点，从即刻起，注册新账号会有默认的充值点
-      参数: point_num 请输入0-21亿内的整数
+      参数: 1个 请输入0-21亿内的整数
       说明: 如有问题，可以向客服反馈
 ${CEND}
 EOF
@@ -362,9 +368,25 @@ EOF
   setvalid_help() {
     cat <<EOF
 ${CRED}reset${CEND} ${CGREEN}作用: 封号/解封号
-      使用: setvalid account 1
-      条件: 封号 setvalid account 1 解封 setvalid account
-      参数: account 即游戏注册的账号，如 test@game.sohu.com
+      使用: setvalid test@game.sohu.com 1
+      条件: 封号 setvalid test@game.sohu.com 1； 解封 setvalid test@game.sohu.com
+      参数: 1个或2个
+      参数1: 游戏注册的账号，如 test@game.sohu.com
+      参数2: 1 表示封号，不输入表示解封。
+      说明: 如有问题，可以向客服反馈
+${CEND}
+EOF
+  }
+
+  #    11:restart
+  restore_help() {
+    cat <<EOF
+${CRED}restore${CEND} ${CGREEN}作用: 使用命令行进行数据库还原操作
+      用法: restore web /tlgame/backup/web-2022-05-05-15-15-15.sql
+      条件: 前提是服务端开启状态中
+      参数: 2个
+      参数1: 需要还原的数据库，web 或者 tlbbdb 
+      参数2: 数据库文件的绝对路径， /tlgame/backup/web-2022-05-05-15-15-15.sql
       说明: 如有问题，可以向客服反馈
 ${CEND}
 EOF
@@ -447,6 +469,9 @@ EOF
       ;;
     '25' | 'setvalid')
       setvalid_help
+      ;;
+    '26' | 'restore')
+      restore_help
       ;;
     '0' | '00' | 'q' | 'Q')
       break
@@ -540,6 +565,9 @@ EOF
           ;;
         '25' | 'setvalid')
           setvalid_help
+          ;;
+        '26' | 'restore')
+          restore_help
           ;;
         '0' | '00' | 'q' | 'Q')
           break

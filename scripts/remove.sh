@@ -5,6 +5,14 @@
 # Date :  2021-02-01
 # Notes:  GS_TL_Env for CentOS/RedHat 7+ Debian 10+ and Ubuntu 18+
 # comment: 删除所有数据
+remove_user_define_cmd() {
+  for VAR in $(ls -l ${GS_PROJECT}/scripts/ | awk '{print $9}'); do
+    if [ -n ${VAR} ]; then
+      rm -rf /usr/local/bin/${VAR%%.*}
+    fi
+  done
+}
+
 docker ps --format "{{.Names}}" | grep gsserver >/dev/null
 if [ $? -eq 0 ]; then
   # 引入全局参数
@@ -28,25 +36,17 @@ if [ $? -eq 0 ]; then
     done
     echo -ne "\n\r"
     echo -ne "${CYELLOW}正在进行清除操作…………${CEND}"
-    if [ -e ${ROOT_PATH}/${GSDIR} ]; then
-      docker stop $(docker ps -a -q) &&
-        docker rm -f $(docker ps -a -q) &&
-        docker rmi -f $(docker images -q) &&
-        mv /tlgame /tlgame-$(date +%Y%m%d%H%I%S) &&
-        chattr -i ${GS_WHOLE_PATH} &&
-        rm -rf ${GS_PROJECT} &&
-        rm -rf ${ROOT_PATH}/${GSDIR} &&
-        rm -rf /usr/local/bin/.env
-    else
-      docker stop $(docker ps -a -q) &&
-        docker rm -f $(docker ps -a -q) &&
-        docker rmi -f $(docker images -q) &&
-        chattr -i ${GS_WHOLE_PATH} &&
-        rm -rf ${GS_PROJECT} &&
-        rm -rf ${ROOT_PATH}/${GSDIR} &&
-        mv /tlgame /tlgame-$(date +%Y%m%d%H%I%S) &&
-        rm -rf /usr/local/bin/.env
-    fi
+
+    # bug:移除本环境的docker镜像与容器。还有写入系统的命令
+    docker stop gsmysql gsnginx gsredis gsphp gsserver &&
+      docker rm -f gsmysql gsnginx gsredis gsphp gsserver &&
+      docker rmi -f ${HUB_ALIYUN}gs_mysql ${HUB_ALIYUN}gs_mysql51 ${HUB_ALIYUN}gs_php ${HUB_ALIYUN}gs_redis ${HUB_ALIYUN}gs_server ${HUB_ALIYUN}gs_nginx &&
+      mv /tlgame /tlgame-$(date +%Y%m%d%H%I%S) &&
+      chattr -i ${GS_WHOLE_PATH} &&
+      rm -rf ${GS_PROJECT} &&
+      rm -rf ${ROOT_PATH}/${GSDIR} &&
+      rm -rf /usr/local/bin/.env &&
+      remove_user_define_cmd
 
     if [ $? -eq 0 ]; then
       echo -e "${CSUCCESS} 数据清除成功，请重新安装环境!!! 可以重新输入 【 curl -sSL https://gsgameshare.com/gsenv | bash 】进行重新安装!!!${CEND}"

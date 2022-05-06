@@ -29,23 +29,6 @@ SUFFIX='.tar.gz'
 # 容器完整包名称
 WHOLE_NAME=${DOCKERNAME}${SUFFIX}
 
-# 授权
-login() {
-    # 实现shell请求登录接口
-    URL='http://grav.test'
-    printf "Username: "
-    read username
-    printf "Password: "
-    stty -echo
-    read pass
-    printf "\n"
-    stty echo
-    RESULT=${pass} | sed -e "s/^/-u ${username}:/" | curl --url "${url}" -K-
-    unset username
-    unset pass
-    echo $RESULT
-}
-
 # 下载容器参数
 download() {
     # gs docker 镜像
@@ -80,10 +63,21 @@ docker_run() {
         exit 1
     fi
     # 开始根据编排工具安装
-    cd ${ROOT_PATH}/${GSDIR} && docker-compose up -d
+    if [ -e ${OFFLINE_TAR} ]; then
+        tar zxf ${OFFLINE_TAR} -C /root/gstlenv &&
+            cd /root/gs_tl_offline
+        [ -e gsmysql51.tar.gz ] && docker import gsmysql51.tar.gz
+        [ -e gsredis.tar.gz ] && docker import gsredis.tar.gz
+        [ -e gsnginx.tar.gz ] && docker import gsnginx.tar.gz
+        [ -e gsphp.tar.gz ] && docker import gsphp.tar.gz
+        [ -e gsserver.tar.gz ] && docker import gsserver.tar.gz
+    else
+        cd ${ROOT_PATH}/${GSDIR} && docker-compose up -d
+    fi
+
     if [ $? -eq 0 ]; then
         echo "success" >${ROOT_PATH}/${GSDIR}/gs.lock
-        echo -e "${CGREEN}环境安装成功，配置文件已经初始化。如果不需要使用默认参数，请使用[setconfig]命令进行所有端口与密码的修改！！！${CEND}"
+        echo -e "${CGREEN}环境安装成功！！，配置文件已初始化为默认配置。如不想使用默认参数，请使用[setconfig]命令进行所有端口与密码的修改！！！${CEND}"
     else
         echo -e "${CRED}环境安装失败，配置文件已经初始化。更多命令执行 【gs】查看${CRED}"
     fi
@@ -109,4 +103,4 @@ else
     init_config &&
         docker_run && curgs && swap
 fi
-echo -e "${CYELLOW}GS游享网专用环境已经被初始化，如果需要重新配置参数，请执行【setconfig】命令！获取命令帮助请使用 [gs] 命令${CEND}"
+echo -e "${CYELLOW}【GS游享网】环境已初始化配置参数，如上所示，请保管好参数，如需重新配置，请执行【setconfig】命令！获取命令帮助请使用 [gs] 命令${CEND}"

@@ -29,8 +29,8 @@ if [ $? -eq 0 ]; then
   }
 
   function main() {
-    docker stop $(docker ps -a -q) &&
-      docker rm $(docker ps -a -q) &&
+    docker stop gsmysql gsnginx gsredis gsphp gsserver &&
+      docker rm gsmysql gsnginx gsredis gsphp gsserver &&
       rm -rf /tlgame/tlbb/* &&
       untar &&
       cd ${ROOT_PATH}/${GSDIR} &&

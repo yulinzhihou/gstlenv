@@ -37,9 +37,9 @@ if [ $? -eq 0 ]; then
       mv tlbb-*.tar.gz ${FILEPATH}
     #判断是否备份成功
     if [ $? -eq 0 ]; then
-      echo -e "${CSUCCESS}$(date '+%Y-%m-%d-%H-%M-%S')\ttlbb-${FILENAME}.tar.gz\t备份成功!!${CEND}" | tee -a ${FILEPATH}${LOG_FILE}
+      echo "${CSUCCESS}$(date '+%Y-%m-%d-%H-%M-%S')\ttlbb-${FILENAME}.tar.gz\t备份成功!!${CEND}" | tee -a ${FILEPATH}${LOG_FILE}
     else
-      echo -e "${CRED}$(date '+%Y-%m-%d-%H-%M-%S')\ttlbb-${FILENAME}.tar.gz\t备份失败${CEND}" | tee -a ${FILEPATH}${LOG_FILE}
+      echo "${CRED}$(date '+%Y-%m-%d-%H-%M-%S')\ttlbb-${FILENAME}.tar.gz\t备份失败${CEND}" | tee -a ${FILEPATH}${LOG_FILE}
     fi
 
     #清理7天前的，也就是保留7天的数据
@@ -52,9 +52,9 @@ if [ $? -eq 0 ]; then
       mv /tlgame/gsmysql/*.sql ${FILEPATH}
     #判断是否备份成功
     if [ $? -eq 0 ]; then
-      echo -e "${CSUCCESS}$(date '+%Y-%m-%d-%H-%M-%S')\tgsmysqlBackup\t备份成功!!${CEND}" | tee -a ${FILEPATH}${LOG_FILE}
+      echo "${CSUCCESS}$(date '+%Y-%m-%d-%H-%M-%S')\tgsmysqlBackup\t备份成功!!${CEND}" | tee -a ${FILEPATH}${LOG_FILE}
     else
-      echo -e "${CRED}$(date '+%Y-%m-%d-%H-%M-%S')\tgsmysqlBackup\t备份失败${CEND}" | tee -a ${FILEPATH}${LOG_FILE}
+      echo "${CRED}$(date '+%Y-%m-%d-%H-%M-%S')\tgsmysqlBackup\t备份失败${CEND}" | tee -a ${FILEPATH}${LOG_FILE}
     fi
     #清理7天前的，也就是保留7天的数据
     find /tlgame/backup/ -name "*.sql" -type f -mtime +7 -exec rm -rf {} \; >/dev/null 2>&1

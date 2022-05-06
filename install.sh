@@ -16,11 +16,18 @@ startTime=$(date +%s)
     echo "${CFAILURE}错误: 你必须使用ROOT用户${CEND}"
     exit 1
 }
+# 展示信息
+INFO=$(cat ./info.txt)
+
+show() {
+    echo -e "\e[1;35m${INFO}\033[0m"
+}
 #获取当前脚本路径
 GSTL_DIR=$(dirname "$(readlink -f $0)")
 pushd ${GSTL_DIR} >/dev/null
 # 判断是否为离线环境
 if [ $# != 0 ] && [ $1 == 'local' ]; then
+    show
     mkdir -p /tlgame /root/.gs /root/.tlgame &&
         \cp -rf env.sample .env &&
         \cp -rf ./* /root/.tlgame &&
@@ -83,7 +90,9 @@ EOF
         echo -e "${CYELLOW}环境 Docker 安装成功 !!!${CEND}"
     fi
 
-    curl -L https://get.daocloud.io/docker/compose/releases/download/${DOCKER_COMPOSER_VERSION}/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+    if [ ! -f /usr/local/bin/docker-compose ]; then
+        curl -L https://get.daocloud.io/docker/compose/releases/download/${DOCKER_COMPOSER_VERSION}/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+    fi
     chmod +x /usr/local/bin/docker-compose
     docker-compose --version >&/dev/null
     if [ $? -eq 0 ]; then

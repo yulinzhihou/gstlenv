@@ -251,16 +251,18 @@ setconfig_rebuild() {
         exit 1
     fi
     # 先停止容器，再将容器删除，重新根据镜像文件以及配置文件，通过docker-compose重新生成容器环境
-    docker stop $(docker ps -a -q) &&
-        docker rm -f $(docker ps -a -q) &&
+    docker stop gsmysql gsnginx gsredis gsphp gsserver &&
+        docker rm -f gsmysql gsnginx gsredis gsphp gsserver &&
         rm -rf /tlgame/gsmysql
 }
 
 # 备份数据
 setconfig_backup() {
     echo -ne "正在备份版本数据请稍候……\r"
+    [ ! -d /tlgame/backup ] && mkdir /tlgame/backup
     cd /tlgame && tar zcf tlbb-setconfig-backup.tar.gz tlbb &&
-        docker exec -it gsmysql /bin/sh /usr/local/bin/gsmysqlBackup.sh
+        docker exec -it gsmysql /bin/sh /usr/local/bin/gsmysqlBackup.sh &&
+        \cp -rf /tlgame/gsmysql/*.sql /tlgame/backup
 }
 
 # 还原数据
@@ -302,9 +304,7 @@ main() {
                     # 开环境
                     cd ${ROOT_PATH}/${GSDIR} && docker-compose up -d &&
                     # 还原数据
-                    setconfig_restore &&
-                    # 替换参数
-                    setini
+                    setconfig_restore
             else
                 # 设置参数
                 setconfig_rebuild &&

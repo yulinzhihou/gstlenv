@@ -11,15 +11,15 @@ WEB_LOG_PATH='/var/lib/mysql/web_backup.log'
 mysqldump -uroot -p"${MYSQL_ROOT_PASSWORD}" tlbbdb >/var/lib/mysql/tlbbdb-${FILENAME}.sql
 #判断是否备份成功
 if [ $? -eq 0 ]; then
-    echo -e "$(date "+%Y-%m-%d-%H-%M-%S")\ttlbbdb-${FILENAME}.sql\t备份成功!!" >>$TLBBDB_LOG_PATH
+    echo "$(date "+%Y-%m-%d-%H-%M-%S")\ttlbbdb-${FILENAME}.sql\t备份成功!!" | tee -a $TLBBDB_LOG_PATH
 else
-    echo -e "$(date "+%Y-%m-%d-%H-%M-%S")\ttlbbdb-${FILENAME}.sql\t备份失败" >>$TLBBDB_LOG_PATH
+    echo "$(date "+%Y-%m-%d-%H-%M-%S")\ttlbbdb-${FILENAME}.sql\t备份失败" | tee -a $TLBBDB_LOG_PATH
 fi
 
 mysqldump -uroot -p"${MYSQL_ROOT_PASSWORD}" web >/var/lib/mysql/web-${FILENAME}.sql
 #判断是否备份成功
 if [ $? -eq 0 ]; then
-    echo -e "$(date "+%Y-%m-%d-%H-%M-%S")\tweb-${FILENAME}.sql\t备份成功" >>$WEB_LOG_PATH
+    echo "$(date "+%Y-%m-%d-%H-%M-%S")\tweb-${FILENAME}.sql\t备份成功" | tee -a $WEB_LOG_PATH
 else
-    echo -e "$(date "+%Y-%m-%d-%H-%M-%S")\tweb-${FILENAME}.sql\t备份失败" >>$WEB_LOG_PATH
+    echo "$(date "+%Y-%m-%d-%H-%M-%S")\tweb-${FILENAME}.sql\t备份失败" | tee -a $WEB_LOG_PATH
 fi
