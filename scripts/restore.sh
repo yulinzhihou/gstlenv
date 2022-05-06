@@ -43,7 +43,7 @@ if [ $? -eq 0 ]; then
                 # 再复制需要备份的文件到容器里面
                 docker cp $2 gsmysql:/tmp/${FILENAME}
                 # 再调用脚本还原
-                docker exec -it gsmysql /bin/sh /usr/local/bin/gsmysqlBackup.sh $1 "/tmp/${FILENAME}"
+                docker exec -it gsmysql /bin/sh /usr/local/bin/gsmysqlRestore.sh $1 /tmp/${FILENAME}
 
                 if [ $? -eq 0 ]; then
                     echo -e "${CSUCCESS} 数据还原成功！！如有疑问可查看【/tlgame/backup】有还原前的备份，可尝试手动使用工具导入${CEND}"

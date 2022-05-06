@@ -17,7 +17,7 @@ startTime=$(date +%s)
     exit 1
 }
 # 展示信息
-INFO=$(cat info.txt)
+INFO=$(cat ${PWD}/info.txt)
 
 show() {
     echo -e "\e[1;35m${INFO}\033[0m"

@@ -37,9 +37,9 @@ if [ $? -eq 0 ]; then
       mv tlbb-*.tar.gz ${FILEPATH}
     #判断是否备份成功
     if [ $? -eq 0 ]; then
-      echo "${CSUCCESS}$(date '+%Y-%m-%d-%H-%M-%S')\ttlbb-${FILENAME}.tar.gz\t备份成功!!${CEND}" | tee -a ${FILEPATH}${LOG_FILE}
+      echo -ne "${CSUCCESS}$(date '+%Y-%m-%d-%H-%M-%S')\ttlbb-${FILENAME}.tar.gz\t备份成功!!${CEND}" | tee -a ${FILEPATH}${LOG_FILE}
     else
-      echo "${CRED}$(date '+%Y-%m-%d-%H-%M-%S')\ttlbb-${FILENAME}.tar.gz\t备份失败${CEND}" | tee -a ${FILEPATH}${LOG_FILE}
+      echo -ne "${CRED}$(date '+%Y-%m-%d-%H-%M-%S')\ttlbb-${FILENAME}.tar.gz\t备份失败${CEND}" | tee -a ${FILEPATH}${LOG_FILE}
     fi
 
     #清理7天前的，也就是保留7天的数据
@@ -52,9 +52,9 @@ if [ $? -eq 0 ]; then
       mv /tlgame/gsmysql/*.sql ${FILEPATH}
     #判断是否备份成功
     if [ $? -eq 0 ]; then
-      echo "${CSUCCESS}$(date '+%Y-%m-%d-%H-%M-%S')\tgsmysqlBackup\t备份成功!!${CEND}" | tee -a ${FILEPATH}${LOG_FILE}
+      echo -ne "${CSUCCESS}$(date '+%Y-%m-%d-%H-%M-%S')\tgsmysqlBackup\t备份成功!!${CEND}" | tee -a ${FILEPATH}${LOG_FILE}
     else
-      echo "${CRED}$(date '+%Y-%m-%d-%H-%M-%S')\tgsmysqlBackup\t备份失败${CEND}" | tee -a ${FILEPATH}${LOG_FILE}
+      echo -ne "${CRED}$(date '+%Y-%m-%d-%H-%M-%S')\tgsmysqlBackup\t备份失败${CEND}" | tee -a ${FILEPATH}${LOG_FILE}
     fi
     #清理7天前的，也就是保留7天的数据
     find /tlgame/backup/ -name "*.sql" -type f -mtime +7 -exec rm -rf {} \; >/dev/null 2>&1
@@ -88,16 +88,18 @@ if [ $? -eq 0 ]; then
       esac
     done
   else
-    if [ $1 == 'all' ]; then
-      backup_tlbb &&
-        backup_mysql
-    fi
+    [ $1 == 'all' ] && {backup_tlbb backup_mysql}
+    [ $1 -eq 0 ] && {backup_tlbb backup_mysql}
+    [ $1 -eq 1 ] && backup_tlbb
+    [ $1 -eq 2 ] && backup_mysql
   fi
 
   if [ $? -eq 0 ]; then
     echo -e "${CSUCCESS}已经成功备份完成，备份文件在 [/tlgame/backup] 目录下${CEND}"
+    exit 0
   else
     echo -e "${CRED}备份失败！${CEND}"
+    exit 1
   fi
 else
   echo "${CRED}环境毁坏，需要重新安装或者移除现有的环境重新安装！！！${CEND}"
