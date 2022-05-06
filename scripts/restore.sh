@@ -29,7 +29,7 @@ if [ $? -eq 0 ]; then
         echo "${CRED}参数不正确，请输入【restore web web.sql】参数1：数据库名，参数2：需要还原的数据库文件的绝对路径 ${CEND}"
         exit 1
     else
-        if [ $1 -eq 'web' ] || [ $1 -eq 'tlbbdb' ]; then
+        if [ $1 == 'web' ] || [ $1 == 'tlbbdb' ]; then
             echo "${CRED}参数1不正确，请输入 【web】 或者 【tlbbdb】 ${CEND}"
             exit 1
         else
@@ -37,7 +37,7 @@ if [ $? -eq 0 ]; then
                 echo "${CRED}参数2，数据库文件不存在或者路径不正确，请输入正确文件路径。如：【/tlgame/backup/web-2022-05-06.sql】 ${CEND}"
                 exit 1
             else
-                FILENAME=basename $2
+                FILENAME=$(basename $2)
                 # 先执行备份
                 backup all
                 # 再复制需要备份的文件到容器里面

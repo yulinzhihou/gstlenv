@@ -27,6 +27,6 @@ if [ ! -f /usr/swap/swapfile ]; then
   echo -e "${CSUCCESS}虚拟缓存提升到 ($(free -hm | awk -F " " 'NR==2{print $2}') + 4.0G) 成功！ 并且成功增加到开机自动加载！！${CEND}"
   exit 0
 else
-  echo -e "${CYELLOW}虚拟缓存已经提升到 ($(free -hm | awk -F " " 'NR==3{print $2}') ${CEND}"
+  echo -e "${CYELLOW}虚拟缓存已经提升到 ($(free -hm | awk -F " " 'NR==3{print $2}')) ${CEND}"
   exit 1
 fi
