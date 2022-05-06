@@ -43,10 +43,10 @@ if [ $? -eq 0 ]; then
       docker rmi -f ${HUB_ALIYUN}gs_mysql ${HUB_ALIYUN}gs_mysql51 ${HUB_ALIYUN}gs_php ${HUB_ALIYUN}gs_redis ${HUB_ALIYUN}gs_server ${HUB_ALIYUN}gs_nginx &&
       mv /tlgame /tlgame-$(date +%Y%m%d%H%I%S) &&
       chattr -i ${GS_WHOLE_PATH} &&
-      rm -rf ${GS_PROJECT} &&
-      rm -rf ${ROOT_PATH}/${GSDIR} &&
+      remove_user_define_cmd &&
       rm -rf /usr/local/bin/.env &&
-      remove_user_define_cmd
+      rm -rf ${ROOT_PATH}/${GSDIR} &&
+      rm -rf ${GS_PROJECT}
 
     if [ $? -eq 0 ]; then
       echo -e "${CSUCCESS} 数据清除成功，请重新安装环境!!! 可以重新输入 【 curl -sSL https://gsgameshare.com/gsenv | bash 】进行重新安装!!!${CEND}"
