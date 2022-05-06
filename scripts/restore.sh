@@ -29,7 +29,7 @@ if [ $? -eq 0 ]; then
         echo "${CRED}参数不正确，请输入【restore web web.sql】参数1：数据库名，参数2：需要还原的数据库文件的绝对路径 ${CEND}"
         exit 1
     else
-        if [ $1 == 'web' ] || [ $1 == 'tlbbdb' ]; then
+        if [ $1 != 'web' ] && [ $1 != 'tlbbdb' ]; then
             echo "${CRED}参数1不正确，请输入 【web】 或者 【tlbbdb】 ${CEND}"
             exit 1
         else
@@ -39,11 +39,11 @@ if [ $? -eq 0 ]; then
             else
                 FILENAME=$(basename $2)
                 # 先执行备份
-                backup all
+                backup 2
                 # 再复制需要备份的文件到容器里面
                 docker cp $2 gsmysql:/tmp/${FILENAME}
                 # 再调用脚本还原
-                docker exec -it gsmysql /bin/sh /usr/local/bin/gsmysqlBackup.sh $1 /tmp/${FILENAME}
+                docker exec -it gsmysql /bin/sh /usr/local/bin/gsmysqlBackup.sh $1 "/tmp/${FILENAME}"
 
                 if [ $? -eq 0 ]; then
                     echo -e "${CSUCCESS} 数据还原成功！！如有疑问可查看【/tlgame/backup】有还原前的备份，可尝试手动使用工具导入${CEND}"

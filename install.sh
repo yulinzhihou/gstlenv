@@ -17,7 +17,7 @@ startTime=$(date +%s)
     exit 1
 }
 # 展示信息
-INFO=$(cat ./info.txt)
+INFO=$(cat info.txt)
 
 show() {
     echo -e "\e[1;35m${INFO}\033[0m"
@@ -28,8 +28,11 @@ pushd ${GSTL_DIR} >/dev/null
 # 判断是否为离线环境
 if [ $# != 0 ] && [ $1 == 'local' ]; then
     show
-    mkdir -p /tlgame /root/.gs /root/.tlgame &&
-        \cp -rf env.sample .env &&
+    [ ! -d /tlgame ] && mkdir -p /tlgame
+    [ ! -d /root/.gs ] && mkdir -p /root/.gs
+    [ ! -d /root/.tlgame ] && mkdir -p /root/.tlgame
+
+    \cp -rf env.sample .env &&
         \cp -rf ./* /root/.tlgame &&
         \cp -rf /root/.tlgame/env.sample /root/.tlgame/.env &&
         \cp -rf /root/.tlgame/env.sample /root/.gs/.env &&

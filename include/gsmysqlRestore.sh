@@ -21,17 +21,12 @@ if [ $# -eq 0 ]; then
             mysql -uroot -p"${MYSQL_ROOT_PASSWORD}" tlbbdb <./${TLBBDBFILE}
     fi
 elif [ $# -eq 2 ]; then
-    if [ $1 -ne 'web' ] || [ $1 -ne 'tlbbdb' ]; then
-        echo "${CRED}参数1不正确，请输入 【web】 或者 【tlbbdb】 ${CEND}"
+    if [ ! -f $2 ]; then
+        echo "参数2，数据库文件不存在或者路径不正确，请输入正确文件路径。如：【/tlgame/backup/web-2022-05-06.sql】"
         exit 1
     else
-        if [ ! -f $2 ]; then
-            echo "参数2，数据库文件不存在或者路径不正确，请输入正确文件路径。如：【/tlgame/backup/web-2022-05-06.sql】"
-            exit 1
-        else
-            mysql -uroot -p"${MYSQL_ROOT_PASSWORD}" $1 <$2
-            exit 1
-        fi
+        mysql -uroot -p"${MYSQL_ROOT_PASSWORD}" $1 <$2
+        [ $? -eq 0 ] && exit 0 || exit 1
     fi
 else
     # 表示有参数传入，可能是删档
