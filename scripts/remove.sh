@@ -5,14 +5,6 @@
 # Date :  2021-02-01
 # Notes:  GS_TL_Env for CentOS/RedHat 7+ Debian 10+ and Ubuntu 18+
 # comment: 删除所有数据
-remove_user_define_cmd() {
-  for VAR in $(ls -l ${GS_PROJECT}/scripts/ | awk '{print $9}'); do
-    if [ -n ${VAR} ]; then
-      rm -rf /usr/local/bin/${VAR%%.*}
-    fi
-  done
-}
-
 docker ps --format "{{.Names}}" | grep gsserver >/dev/null
 if [ $? -eq 0 ]; then
   # 引入全局参数
@@ -43,7 +35,6 @@ if [ $? -eq 0 ]; then
       docker rmi -f ${HUB_ALIYUN}gs_mysql ${HUB_ALIYUN}gs_mysql51 ${HUB_ALIYUN}gs_php ${HUB_ALIYUN}gs_redis ${HUB_ALIYUN}gs_server ${HUB_ALIYUN}gs_nginx &&
       mv /tlgame /tlgame-$(date +%Y%m%d%H%I%S) &&
       chattr -i ${GS_WHOLE_PATH} &&
-      remove_user_define_cmd &&
       rm -rf /usr/local/bin/.env &&
       rm -rf ${ROOT_PATH}/${GSDIR} &&
       rm -rf ${GS_PROJECT}

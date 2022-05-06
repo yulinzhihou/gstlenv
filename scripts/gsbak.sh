@@ -58,7 +58,7 @@ if [ $? -eq 0 ]; then
     if [ $crontabCount -eq 0 ]; then
       # (echo "0 */1 * * * sh docker exec -it `docker ps --format "{{.Names}}" | grep "gsmysql"``docker ps --format "{{.Names}}" | grep "gsmysql"` /bin/bash -c './gsmysqlBackup.sh' > /dev/null 2>&1 &"; crontab -l) | crontab
       (
-        echo "0 */${TIME} * * * sh docker exec -it gsmysql /bin/bash /var/lib/mysql/gsmysqlBackup.sh > /dev/null 2>&1 &"
+        echo "0 */${TIME} * * * sh docker exec -it gsmysql /bin/bash /usr/local/bin/gsmysqlBackup.sh > /dev/null 2>&1 &"
         crontab -l
       ) | crontab
     fi

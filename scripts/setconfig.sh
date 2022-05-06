@@ -305,6 +305,13 @@ main() {
                     cd ${ROOT_PATH}/${GSDIR} && docker-compose up -d &&
                     # 还原数据
                     setconfig_restore
+
+                if [ ! -d /tlgame/tlbb/Server/Config ]; then
+                    echo -e "${CSUCCESS}未发现版本，请上传版本后依次执行 【untar】【setini】【runtlbb】进行开服！！${CEND}"
+                    exit 0
+                else
+                    setini
+                fi
             else
                 # 设置参数
                 setconfig_rebuild &&

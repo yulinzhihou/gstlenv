@@ -52,9 +52,9 @@ if [ $? -eq 0 ]; then
       mv /tlgame/gsmysql/*.sql ${FILEPATH}
     #判断是否备份成功
     if [ $? -eq 0 ]; then
-      echo -ne "${CSUCCESS}$(date '+%Y-%m-%d-%H-%M-%S')\tgsmysqlBackup\t备份成功!!${CEND}" | tee -a ${FILEPATH}${LOG_FILE}
+      echo -ne "${CSUCCESS}$(date '+%Y-%m-%d-%H-%M-%S')\t web和tlbbdb库 \t备份成功!!${CEND}" | tee -a ${FILEPATH}${LOG_FILE}
     else
-      echo -ne "${CRED}$(date '+%Y-%m-%d-%H-%M-%S')\tgsmysqlBackup\t备份失败${CEND}" | tee -a ${FILEPATH}${LOG_FILE}
+      echo -ne "${CRED}$(date '+%Y-%m-%d-%H-%M-%S')\t web和tlbbdb库 \t备份失败${CEND}" | tee -a ${FILEPATH}${LOG_FILE}
     fi
     #清理7天前的，也就是保留7天的数据
     find /tlgame/backup/ -name "*.sql" -type f -mtime +7 -exec rm -rf {} \; >/dev/null 2>&1
@@ -88,10 +88,17 @@ if [ $? -eq 0 ]; then
       esac
     done
   else
-    [ $1 == 'all' ] && {backup_tlbb backup_mysql}
-    [ $1 -eq 0 ] && {backup_tlbb backup_mysql}
-    [ $1 -eq 1 ] && backup_tlbb
-    [ $1 -eq 2 ] && backup_mysql
+    if [ $1 == 'all' ] || [ $1 -eq 0 ]; then
+      backup_tlbb && backup_mysql
+    elif [ $1 -eq 1 ]; then
+      backup_tlbb
+    elif [ $1 -eq 2 ]; then
+      backup_mysql
+    else
+      echo -e "${CRED}参数错误！backup 后面跟 all,0,1,2这4个参数中的任意一个${CEND}"
+      exit 1
+    fi
+
   fi
 
   if [ $? -eq 0 ]; then
