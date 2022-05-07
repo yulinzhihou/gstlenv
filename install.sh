@@ -3,7 +3,7 @@
 # Forum:  https://gsgamesahre.com
 # Project: https://github.com/yulinzhihou/gstlenv.git
 # Date :  2021-07-19
-# Notes:  GS_TL_Env for CentOS/RedHat 7+ Debian 10+ and Ubuntu 18+
+# Notes:  gstlenv for CentOS/RedHat 7+ Debian 10+ and Ubuntu 18+
 
 # 第一步：更新系统组件，安装docker,docker-composer
 # 第二步：下载GS相关命令到系统
@@ -20,7 +20,7 @@ startTime=$(date +%s)
 GSTL_DIR=$(dirname "$(readlink -f $0)")
 pushd ${GSTL_DIR} >/dev/null
 # 判断是否为离线环境
-if [ $# != 0 ] && [ $1 == 'local' ]; then
+if [ -f /root/gstlenv_offline.tar.gz ]; then
     [ ! -d /root/.gs ] && mkdir -p /root/.gs
     if [ ! -f /root/.gs/.env ]; then
         \cp -rf env.sample /root/.gs/.env

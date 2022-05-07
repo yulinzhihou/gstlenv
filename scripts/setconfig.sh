@@ -3,7 +3,7 @@
 # Forum:  https://gsgamesahre.com
 # Project: https://github.com/yulinzhihou/gstlenv.git
 # Date :  2021-07-05
-# Notes:  GS_TL_Env for CentOS/RedHat 7+ Debian 10+ and Ubuntu 18+
+# Notes:  gstlenv for CentOS/RedHat 7+ Debian 10+ and Ubuntu 18+
 # comment: 当用户需要重新生成数据库端口，密码时，则使用此命令进行重装写入配置，注意，执行完成后需要重启服务器再进行配置。否则需要使用 upenv.d 让数据临时生效
 # 修改billing参数
 # 引入全局参数

@@ -3,7 +3,7 @@
 # Forum:  https://gsgamesahre.com
 # Project: https://github.com/yulinzhihou/gstlenv.git
 # Date :  2021-06-30
-# Notes:  GS_TL_Env for CentOS/RedHat 7+ Debian 10+ and Ubuntu 18+
+# Notes:  gstlenv for CentOS/RedHat 7+ Debian 10+ and Ubuntu 18+
 # 检测是不是root用户。不是则退出
 if [ -f /usr/local/bin/color ]; then
     . /usr/local/bin/color

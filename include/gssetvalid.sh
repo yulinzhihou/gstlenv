@@ -3,7 +3,7 @@
 # Forum:  https://gsgamesahre.com
 # Project: https://github.com/yulinzhihou/gstlenv.git
 # Date :  2021-12-24
-# Notes:  GS_TL_Env for CentOS/RedHat 7+ Debian 10+ and Ubuntu 18+
+# Notes:  gstlenv for CentOS/RedHat 7+ Debian 10+ and Ubuntu 18+
 # comment: 设置解号封号
 INVALID_SQL_FILE='change_valid'
 if [ $# -ne 0 ]; then

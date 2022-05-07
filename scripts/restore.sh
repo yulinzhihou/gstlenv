@@ -3,7 +3,7 @@
 # Forum:  https://gsgamesahre.com
 # Project: https://github.com/yulinzhihou/gstlenv.git
 # Date :  2022-05-07
-# Notes:  GS_TL_Env for CentOS/RedHat 7+ Debian 10+ and Ubuntu 18+
+# Notes:  gstlenv for CentOS/RedHat 7+ Debian 10+ and Ubuntu 18+
 # comment: 还原数据库
 # 指定需要恢复的数据库名称。
 # 指定需要恢复的数据库文件

@@ -3,7 +3,7 @@
 # Forum:  https://gsgamesahre.com
 # Project: https://github.com/yulinzhihou/gstlenv.git
 # Date :  2021-02-01
-# Notes:  GS_TL_Env for CentOS/RedHat 7+ Debian 10+ and Ubuntu 18+
+# Notes:  gstlenv for CentOS/RedHat 7+ Debian 10+ and Ubuntu 18+
 # comment: 分步调试命令，手动创建新窗口，step 1,step 2,step 3,step 4
 # 引入全局参数 -- 暂时没有含义，因为不能用一条命令直接看到对应容器的调试信息与结果
 echo=echo

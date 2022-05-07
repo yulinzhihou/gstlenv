@@ -3,7 +3,7 @@
 # Forum:  https://gsgamesahre.com
 # Project: https://github.com/yulinzhihou/gstlenv.git
 # Date :  2021-10-04
-# Notes:  GS_TL_Env for CentOS/RedHat 7+ Debian 10+ and Ubuntu 18+
+# Notes:  gstlenv for CentOS/RedHat 7+ Debian 10+ and Ubuntu 18+
 # comment: 查看当前配置项信息。需要在没人的时候查看，不然别人容易查看到你的关键信息
 docker ps --format "{{.Names}}" | grep gsserver >/dev/null
 if [ $? -eq 0 ]; then

@@ -3,7 +3,7 @@
 # Forum:  https://gsgamesahre.com
 # Project: https://github.com/yulinzhihou/gstlenv.git
 # Date :  2021-02-01
-# Notes:  GS_TL_Env for CentOS/RedHat 7+ Debian 10+ and Ubuntu 18+
+# Notes:  gstlenv for CentOS/RedHat 7+ Debian 10+ and Ubuntu 18+
 # comment: 容器里面备份数据库功能和打包服务端
 FILENAME=$(date "+%Y-%m-%d-%H-%M-%S")
 TLBBDB_LOG_PATH='/var/lib/mysql/tlbbdb_backup.log'

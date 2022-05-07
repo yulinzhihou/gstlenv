@@ -3,18 +3,18 @@
 # Forum:  https://gsgamesahre.com
 # Project: https://github.com/yulinzhihou/gstlenv.git
 # Date :  2021-02-01
-# Notes:  GS_TL_Env for CentOS/RedHat 7+ Debian 10+ and Ubuntu 18+
+# Notes:  gstlenv for CentOS/RedHat 7+ Debian 10+ and Ubuntu 18+
 # comment: 颜色代码
-_red(){
-    printf '\033[1;31;31m%b\033[0m' "$1"
+_red() {
+  printf '\033[1;31;31m%b\033[0m' "$1"
 }
 
-_green(){
-    printf '\033[1;31;32m%b\033[0m' "$1"
+_green() {
+  printf '\033[1;31;32m%b\033[0m' "$1"
 }
 
-_yellow(){
-    printf '\033[1;31;33m%b\033[0m' "$1"
+_yellow() {
+  printf '\033[1;31;33m%b\033[0m' "$1"
 }
 
 echo=echo
