@@ -68,12 +68,11 @@ docker_run() {
 
         for file in $(ls -l /root/gs_tl_offline | awk '{print $9}'); do
             if [ -n ${file} ]; then
-                docker import ${file}
+                docker import ${file} ${HUB_ALIYUN}${file%%.*}:latest
             fi
         done
-    else
-        cd ${ROOT_PATH}/${GSDIR} && docker-compose up -d
     fi
+    cd ${ROOT_PATH}/${GSDIR} && docker-compose up -d
 
     if [ $? -eq 0 ]; then
         echo "success" >${ROOT_PATH}/${GSDIR}/gs.lock
