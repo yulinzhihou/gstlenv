@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 # Author: yulinzhihou <yulinzhihou@gmail.com>
 # Forum:  https://gsgamesahre.com
-# Project: https://github.com/yulinzhihou/gs_tl_env.git
+# Project: https://github.com/yulinzhihou/gstlenv.git
 # Date :  2022-05-07
 # Notes:  GS_TL_Env for CentOS/RedHat 7+ Debian 10+ and Ubuntu 18+
 # comment: 还原数据库

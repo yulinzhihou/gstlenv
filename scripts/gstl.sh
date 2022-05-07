@@ -64,9 +64,9 @@ docker_run() {
     if [ -f ${OFFLINE_TAR} ]; then
         cd /root &&
             tar zxf ${OFFLINE_TAR} -C /root &&
-            cd /root/gs_tl_offline
+            cd /root/gstlenv_offline
 
-        for file in $(ls -l /root/gs_tl_offline | awk '{print $9}'); do
+        for file in $(ls -l /root/gstlenv_offline | awk '{print $9}'); do
             if [ -n ${file} ]; then
                 docker load <${file}
             fi
