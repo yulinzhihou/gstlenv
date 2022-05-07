@@ -34,7 +34,7 @@ services:
   #     MYSQL_DATABASE_GSGM: "gsgm"
   #     MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
   #   restart: ${RESTART}
-  
+
   # Database mysql5.1
   gsmysql:
     image: ${HUB_ALIYUN}gs_mysql51:latest
