@@ -8,8 +8,6 @@
 # 引入全局参数
 if [ -f /root/.gs/.env ]; then
   . /root/.gs/.env
-else
-  . /usr/local/bin/.env
 fi
 # 颜色代码
 if [ -f ./color.sh ]; then

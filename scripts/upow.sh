@@ -11,8 +11,6 @@ docker ps --format "{{.Names}}" | grep gsserver >/dev/null
 if [ $? -eq 0 ]; then
   if [ -f /root/.gs/.env ]; then
     . /root/.gs/.env
-  else
-    . /usr/local/bin/.env
   fi
   # 颜色代码
   if [ -f ./color.sh ]; then

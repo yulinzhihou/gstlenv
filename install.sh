@@ -10,6 +10,12 @@
 # 第三步：在线下载打包好的镜像或者导入离线版本的镜像
 PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 export PATH
+
+# 加载配置
+. ./env.sample
+. ./scripts/color.sh
+. ./include/check_os.sh
+
 startTime=$(date +%s)
 # 检测是不是root用户。不是则退出
 [ $(id -u) != "0" ] && {
@@ -25,9 +31,6 @@ pushd ${GSTL_DIR} >/dev/null
 if [ ! -f /root/.gs/.env ]; then
     \cp -rf env.sample /root/.gs/.env
 fi
-. ../.gs/.env
-. /root/.gs/.env
-source /root/.gs/.env
 
 if [ -f /root/gstlenv_offline.tar.gz ]; then
     [ ! -d ${SHARED_DIR} ] && mkdir -p ${SHARED_DIR}
@@ -39,10 +42,6 @@ if [ -f /root/gstlenv_offline.tar.gz ]; then
         chmod -R 777 ${GS_PROJECT} &&
         chown -R root:root ${GS_PROJECT}
 fi
-chattr +i ${GS_WHOLE_PATH}
-# 加载配置
-. ./scripts/color.sh
-. ./include/check_os.sh
 
 # 系统组件安装
 sys_plugins_install() {
