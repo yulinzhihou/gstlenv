@@ -36,6 +36,13 @@ if [ -f /root/gstlenv_offline.tar.gz ]; then
         chown -R root:root ${GS_PROJECT}
 
     chattr +i ${GS_WHOLE_PATH}
+else
+    # 如果是在线环境
+    if [ -f /root/.tlgame ] && [ -f /root/.tlgame/env.sample ]; then
+        [ ! -d /root/.gs ] && mkdir -p /root/.gs
+        \cp -rf env.sample /root/.gs/.env
+        . /root/.gs/.env
+    fi
 fi
 
 # 加载配置
@@ -69,7 +76,7 @@ do_install_docker() {
     if [ $? -ne 0 ]; then
         # 制作的国内镜像安装脚本
         curl -sSL https://gsgameshare.com/gsdocker | bash -s docker --mirror Aliyun
-        if [ ! -e "/etc/docker" ]; then
+        if [ ! -d "/etc/docker" ]; then
             sudo mkdir -p /etc/docker
             sudo tee /etc/docker/daemon.json <<EOF
 {
@@ -87,8 +94,8 @@ EOF
 
     if [ ! -f /usr/local/bin/docker-compose ]; then
         curl -L https://get.daocloud.io/docker/compose/releases/download/${DOCKER_COMPOSER_VERSION}/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+        chmod +x /usr/local/bin/docker-compose
     fi
-    chmod +x /usr/local/bin/docker-compose
     docker-compose --version >&/dev/null
     if [ $? -eq 0 ]; then
         echo -e "${CYELLOW}容器编排工具 docker-compose 安装成功 !!! ${CEND}"
