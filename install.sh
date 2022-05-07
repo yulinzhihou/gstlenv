@@ -10,13 +10,6 @@
 # 第三步：在线下载打包好的镜像或者导入离线版本的镜像
 PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 export PATH
-
-# 加载配置
-. ./.env
-. ./env.sample
-. ./scripts/color.sh
-. ./include/check_os.sh
-
 startTime=$(date +%s)
 # 检测是不是root用户。不是则退出
 [ $(id -u) != "0" ] && {
@@ -26,13 +19,25 @@ startTime=$(date +%s)
 #获取当前脚本路径
 GSTL_DIR=$(dirname "$(readlink -f $0)")
 pushd ${GSTL_DIR} >/dev/null
+echo "当前位置：$PWD"
+sleep 3
+# 加载配置
+. ./env.sample
+. ./scripts/color.sh
+. ./include/check_os.sh
 
 # 判断是否为离线环境
-[ ! -d /root/.gs ] && mkdir -p /root/.gs
+if [ ! -d /root/.gs ]; then
+    mkdir -p /root/.gs
+fi
+
 if [ ! -f /root/.gs/.env ]; then
     \cp -rf env.sample /root/.gs/.env
+    \cp -rf docker-compose.yml /root/.gs
 fi
+# 加载配置
 . /root/.gs/.env
+
 if [ -f /root/gstlenv_offline.tar.gz ]; then
     [ ! -d ${SHARED_DIR} ] && mkdir -p ${SHARED_DIR}
     [ ! -d ${GS_PROJECT} ] && mkdir -p ${GS_PROJECT}
