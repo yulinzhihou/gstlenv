@@ -28,7 +28,6 @@ fi
 . /root/.gs/.env
 
 if [ -f /root/gstlenv_offline.tar.gz ]; then
-
     [ ! -d ${SHARED_DIR} ] && mkdir -p ${SHARED_DIR}
     [ ! -d ${GS_PROJECT} ] && mkdir -p ${GS_PROJECT}
 
