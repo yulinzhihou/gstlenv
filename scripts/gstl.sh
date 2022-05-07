@@ -44,8 +44,6 @@ download() {
 
 # 配置容器启动的参数
 init_config() {
-    \cp -rf ${WHOLE_PATH} /usr/local/bin/.env &&
-        \cp -rf ${WHOLE_PATH} /root/.tlgame/.env
     chattr +i ${WHOLE_PATH}
 }
 
@@ -67,11 +65,12 @@ docker_run() {
         cd /root &&
             tar zxf ${OFFLINE_TAR} -C /root &&
             cd /root/gs_tl_offline
-        [ -e gsmysql51.tar.gz ] && docker import gsmysql51.tar.gz
-        [ -e gsredis.tar.gz ] && docker import gsredis.tar.gz
-        [ -e gsnginx.tar.gz ] && docker import gsnginx.tar.gz
-        [ -e gsphp.tar.gz ] && docker import gsphp.tar.gz
-        [ -e gsserver.tar.gz ] && docker import gsserver.tar.gz
+        [ -f gsmysql51.tar.gz ] && docker import gsmysql51.tar.gz
+        [ -f gsmysql.tar.gz ] && docker import gsmysql.tar.gz
+        [ -f gsredis.tar.gz ] && docker import gsredis.tar.gz
+        [ -f gsnginx.tar.gz ] && docker import gsnginx.tar.gz
+        [ -f gsphp.tar.gz ] && docker import gsphp.tar.gz
+        [ -f gsserver.tar.gz ] && docker import gsserver.tar.gz
     else
         cd ${ROOT_PATH}/${GSDIR} && docker-compose up -d
     fi

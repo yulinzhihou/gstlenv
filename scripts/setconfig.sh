@@ -26,10 +26,12 @@ setconfig_rebuild() {
     if [ -f ${GS_WHOLE_PATH} ]; then
         echo -e "${CMAGENTA}如果选择了W机+L机模式，则本服务器不要开启 [billing] 服务！！！${CEND}\r"
         echo -e "${CYELLOW}即将设置服务器环境配置荐，请仔细！！注意：W机=Windows服务器，L机=Linux服务器${CEND}"
+        echo -e "${CYELLOW}0=单L机验证，Linux服务器做验证机器，即只需要一台服务器即可${CEND}"
+        echo -e "${CYELLOW}1=W机验证+L机，Windows服务器做验证机器,L机不要开验证服务${CEND}"
         chattr -i ${GS_WHOLE_PATH}
         while :; do
             echo
-            read -e -p "当前【服务器】选择为${CYELLOW}["${IS_DLQ}"]${CEND}，是否需要修改【1=W机+L机，0=单L机】 [y/n](默认: n): " IS_MODIFY
+            read -e -p "当前【服务器】选择为${CYELLOW}["${IS_DLQ}"]${CEND}，是否需要修改【1=W机验证+L机，0=单L机验证】 [y/n](默认: n): " IS_MODIFY
             IS_MODIFY=${IS_MODIFY:-'n'}
             if [[ ! ${IS_MODIFY} =~ ^[y,n]$ ]]; then
                 echo "${CWARNING}输入错误! 请输入 y 或者 n ${CEND}"
@@ -37,7 +39,7 @@ setconfig_rebuild() {
                 if [ "${IS_MODIFY}" == 'y' ]; then
                     while :; do
                         echo
-                        read -e -p "请输入【服务器,1=W机+L机验证，0=单L机验证】(默认: [${IS_DEFAULT_DLQ}]): " IS_NEW_DLQ
+                        read -e -p "请输入【服务器,1=W机验证+L机，0=单L机验证】(默认: [${IS_DEFAULT_DLQ}]): " IS_NEW_DLQ
                         IS_NEW_DLQ=${IS_NEW_DLQ:-${IS_DEFAULT_DLQ}}
                         case ${IS_NEW_DLQ} in
                         0 | 1)
@@ -45,7 +47,7 @@ setconfig_rebuild() {
                             break
                             ;;
                         *)
-                            echo "${CWARNING}输入错误! 服务器：1=W机+L机，0=单L机${CEND}"
+                            echo "${CWARNING}输入错误! 服务器：1=W机验证+L机，0=单L机${CEND}"
                             break
                             ;;
                         esac

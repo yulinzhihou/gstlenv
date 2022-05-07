@@ -21,18 +21,20 @@ GSTL_DIR=$(dirname "$(readlink -f $0)")
 pushd ${GSTL_DIR} >/dev/null
 # 判断是否为离线环境
 if [ $# != 0 ] && [ $1 == 'local' ]; then
-    [ ! -d /tlgame ] && mkdir -p /tlgame
+    [ ! -d ${SHARED_DIR} ] && mkdir -p ${SHARED_DIR}
     [ ! -d /root/.gs ] && mkdir -p /root/.gs
-    [ ! -d /root/.tlgame ] && mkdir -p /root/.tlgame
+    [ ! -d ${GS_PROJECT} ] && mkdir -p ${GS_PROJECT}
+    chattr -i ${GS_WHOLE_PATH}
 
     \cp -rf env.sample .env &&
-        \cp -rf ./* /root/.tlgame &&
-        \cp -rf /root/.tlgame/env.sample /root/.tlgame/.env &&
-        \cp -rf /root/.tlgame/env.sample /root/.gs/.env &&
+        \cp -rf ./* ${GS_PROJECT} &&
+        \cp -rf ${GS_PROJECT}/env.sample ${GS_WHOLE_PATH} &&
         \cp -rf ./docker-compose.yml /root/.gs/docker-compose.yml &&
-        . /root/.tlgame/.env &&
-        chmod -R 777 /root/.tlgame &&
-        chown -R root:root /root/.tlgame
+        . ${GS_WHOLE_PATH} &&
+        chmod -R 777 ${GS_PROJECT} &&
+        chown -R root:root ${GS_PROJECT}
+
+    chattr +i ${GS_WHOLE_PATH}
 fi
 
 # 加载配置
