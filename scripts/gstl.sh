@@ -63,8 +63,9 @@ docker_run() {
         exit 1
     fi
     # 开始根据编排工具安装
-    if [ -e ${OFFLINE_TAR} ]; then
-        tar zxf ${OFFLINE_TAR} -C /root/gstlenv &&
+    if [ -f ${OFFLINE_TAR} ]; then
+        cd /root &&
+            tar zxf ${OFFLINE_TAR} -C /root &&
             cd /root/gs_tl_offline
         [ -e gsmysql51.tar.gz ] && docker import gsmysql51.tar.gz
         [ -e gsredis.tar.gz ] && docker import gsredis.tar.gz

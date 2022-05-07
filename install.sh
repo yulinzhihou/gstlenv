@@ -16,18 +16,11 @@ startTime=$(date +%s)
     echo "${CFAILURE}错误: 你必须使用ROOT用户${CEND}"
     exit 1
 }
-# 展示信息
-INFO=$(cat ${PWD}/info.txt)
-
-show() {
-    echo -e "\e[1;35m${INFO}\033[0m"
-}
 #获取当前脚本路径
 GSTL_DIR=$(dirname "$(readlink -f $0)")
 pushd ${GSTL_DIR} >/dev/null
 # 判断是否为离线环境
 if [ $# != 0 ] && [ $1 == 'local' ]; then
-    show
     [ ! -d /tlgame ] && mkdir -p /tlgame
     [ ! -d /root/.gs ] && mkdir -p /root/.gs
     [ ! -d /root/.tlgame ] && mkdir -p /root/.tlgame
@@ -84,10 +77,7 @@ EOF
         fi
 
         [ "${OS}" == "Debian" ] || [ "${OS}" == "Ubuntu" ] && sudo apt-get services docker start && systemctl enable docker
-        [ "${OS}" == "CentOS" ] && sudo systemctl daemon-reload && sudo systemctl restart docker && systemctl enable docker
-        # 安装 docker-compose
-        [ "${OS}" == "Debian" ] || [ "${OS}" == "Ubuntu" ] && sudo apt-get services docker start && systemctl enable docker
-        [ "${OS}" == "CentOS" ] && sudo systemctl daemon-reload && sudo systemctl restart docker && systemctl enable docker
+        [ "${OS}" == "CentOS" ] && sudo systemctl daemon-reload && sudo systemctl start docker && systemctl enable docker
 
     else
         echo -e "${CYELLOW}环境 Docker 安装成功 !!!${CEND}"

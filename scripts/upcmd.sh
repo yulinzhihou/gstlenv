@@ -23,19 +23,14 @@ if [ $? -eq 0 ]; then
 
   # 更新命令
   download() {
-    [ ! -z ${COMMAND_VERSION} ] && COMMAND_VERSION=${COMMAND_VERSION} || COMMAND_VERSION=${VERSION}
-    wget -q https://gitee.com/yulinzhihou/gstlenv/repository/archive/${COMMAND_VERSION}.tar.gz -O ${TMP_PATH}/${COMMAND_VERSION}.tar.gz
-    # gs env 服务器环境 ，组件
-    # wget -q https://gsgameshare.com/${WHOLE_NAME} -O ${TMP_PATH}/${WHOLE_NAME}
-    if [ ! -d ${TMP_PATH}/${COMMAND_VERSION} ]; then
-      mkdir -p ${TMP_PATH}/${COMMAND_VERSION}
-    fi
+    # [ ! -z ${COMMAND_VERSION} ] && COMMAND_VERSION=${COMMAND_VERSION} || COMMAND_VERSION=${VERSION}
+    wget -q https://gitee.com/yulinzhihou/gstlenv/repository/archive/master.zip -O /tmp/master.tar.gz
     cd ${TMP_PATH} &&
       # 解压目录
-      tar zxf ${COMMAND_VERSION}.tar.gz -C $COMMAND_VERSION && cd ${COMMAND_VERSION} && mv * ${COMMAND_VERSION} && \cp -rf ${COMMAND_VERSION}/* $GS_PROJECT/
+      tar zxf master.tar.gz && cd ${TMP_PATH}/gstlenv-master && \cp -rf * ${GS_PROJECT}/
     if [ $? -eq 0 ]; then
-      rm -rf ${TMP_PATH}/${COMMAND_VERSION}.tar.gz &&
-        rm -rf ${TMP_PATH}/${COMMAND_VERSION}
+      rm -rf ${TMP_PATH}/master.tar.gz &&
+        rm -rf ${TMP_PATH}/gstlenv-master
     fi
   }
 
@@ -53,17 +48,24 @@ if [ $? -eq 0 ]; then
   # 复制命令到容器里面
   copy_to_gssmysql() {
     # 复制配置文件
-    docker cp /root/.tlgame/include/alter_point.sql gsmysql:/usr/local/bin/alter_point.sql
-    docker cp /root/.tlgame/include/change_valid.sql gsmysql:/usr/local/bin/change_valid.sql
-    docker cp /root/.tlgame/include/change_invalid.sql gsmysql:/usr/local/bin/change_invalid.sql
-    docker cp /root/.tlgame/include/gsmysqlRestore.sh gsmysql:/usr/local/bin/gsmysqlRestore.sh
-    docker cp /root/.tlgame/include/gsset.sh gsmysql:/usr/local/bin/gsset.sh
-    docker cp /root/.tlgame/include/gssetvalid.sh gsmysql:/usr/local/bin/gssetvalid.sh
+    ls -l ${GS_PROJECT}/scripts/ | awk '{print $9}' >/tmp/command.txt
+    for VAR in $(cat /tmp/command.txt); do
+      if [ -n ${VAR} ]; then
+        docker cp ${GS_PROJECT}/include/${VAR} gsmysql:/usr/local/bin/${VAR}
+      fi
+    done
+    rm -rf /tmp/command.txt
+    # docker cp /root/.tlgame/include/alter_point.sql gsmysql:/usr/local/bin/alter_point.sql
+    # docker cp /root/.tlgame/include/change_valid.sql gsmysql:/usr/local/bin/change_valid.sql
+    # docker cp /root/.tlgame/include/change_invalid.sql gsmysql:/usr/local/bin/change_invalid.sql
+    # docker cp /root/.tlgame/include/gsmysqlRestore.sh gsmysql:/usr/local/bin/gsmysqlRestore.sh
+    # docker cp /root/.tlgame/include/gsset.sh gsmysql:/usr/local/bin/gsset.sh
+    # docker cp /root/.tlgame/include/gssetvalid.sh gsmysql:/usr/local/bin/gssetvalid.sh
   }
 
   # 复制命令到容器里面
   copy_to_gsserver() {
-    docker cp /root/.tlgame/scripts/step.sh gsserver:/usr/local/bin/step
+    docker cp ${GS_PROJECT}/scripts/step.sh gsserver:/usr/local/bin/step
   }
 
   download
