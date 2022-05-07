@@ -39,8 +39,11 @@ if [ -f /root/gstlenv_offline.tar.gz ]; then
 else
     # 如果是在线环境
     if [ -f /root/.tlgame ] && [ -f /root/.tlgame/env.sample ]; then
-        [ ! -d /root/.gs ] && mkdir -p /root/.gs
-        \cp -rf env.sample /root/.gs/.env
+        [ ! -d /root/.gs ] && {
+            mkdir -p /root/.gs
+            cd /root/.tlgame
+            \cp -rf env.sample /root/.gs/.env
+        }
         . /root/.gs/.env
     fi
 fi
