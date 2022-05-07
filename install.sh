@@ -12,6 +12,7 @@ PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 export PATH
 
 # 加载配置
+. ./.env
 . ./env.sample
 . ./scripts/color.sh
 . ./include/check_os.sh
@@ -31,7 +32,7 @@ pushd ${GSTL_DIR} >/dev/null
 if [ ! -f /root/.gs/.env ]; then
     \cp -rf env.sample /root/.gs/.env
 fi
-
+. /root/.gs/.env
 if [ -f /root/gstlenv_offline.tar.gz ]; then
     [ ! -d ${SHARED_DIR} ] && mkdir -p ${SHARED_DIR}
     [ ! -d ${GS_PROJECT} ] && mkdir -p ${GS_PROJECT}
@@ -87,7 +88,7 @@ EOF
     fi
 
     if [ ! -f /usr/local/bin/docker-compose ]; then
-        curl -L https://get.daocloud.io/docker/compose/releases/download/${DOCKER_COMPOSER_VERSION}/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+        curl -L https://get.daocloud.io/docker/compose/releases/download/${DOCKER_COMPOSER_VERSION:-1.29.2}/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
         chmod +x /usr/local/bin/docker-compose
     fi
     docker-compose --version >&/dev/null
