@@ -68,7 +68,7 @@ docker_run() {
 
         for file in $(ls -l /root/gs_tl_offline | awk '{print $9}'); do
             if [ -n ${file} ]; then
-                docker import ${file} ${HUB_ALIYUN}${file%%.*}:latest
+                docker load <${file}
             fi
         done
     fi
@@ -102,4 +102,4 @@ else
     init_config &&
         docker_run && curgs && swap
 fi
-echo -e "${CYELLOW}【GS游享网】环境已初始化配置参数，如上所示，请保管好参数，如需重新配置，请执行【setconfig】命令！获取命令帮助请使用 [gs] 命令${CEND}"
+echo "${CYELLOW}【GS游享网】环境已初始化配置参数，如上所示，请保管好参数，如需重新配置，请执行【setconfig】命令！获取命令帮助请使用 [gs] 命令${CEND}"
