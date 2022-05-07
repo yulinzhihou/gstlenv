@@ -25,7 +25,9 @@ pushd ${GSTL_DIR} >/dev/null
 if [ ! -f /root/.gs/.env ]; then
     \cp -rf env.sample /root/.gs/.env
 fi
+. ../.gs/.env
 . /root/.gs/.env
+source /root/.gs/.env
 
 if [ -f /root/gstlenv_offline.tar.gz ]; then
     [ ! -d ${SHARED_DIR} ] && mkdir -p ${SHARED_DIR}
