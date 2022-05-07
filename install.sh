@@ -22,7 +22,9 @@ pushd ${GSTL_DIR} >/dev/null
 # 判断是否为离线环境
 if [ $# != 0 ] && [ $1 == 'local' ]; then
     [ ! -d /root/.gs ] && mkdir -p /root/.gs
-    \cp -rf env.sample /root/.gs/.env
+    if [ ! -f /root/.gs/.env ]; then
+        \cp -rf env.sample /root/.gs/.env
+    fi
     . /root/.gs/.env
     [ ! -d ${SHARED_DIR} ] && mkdir -p ${SHARED_DIR}
     [ ! -d ${GS_PROJECT} ] && mkdir -p ${GS_PROJECT}

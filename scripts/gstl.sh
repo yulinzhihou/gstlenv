@@ -65,12 +65,12 @@ docker_run() {
         cd /root &&
             tar zxf ${OFFLINE_TAR} -C /root &&
             cd /root/gs_tl_offline
-        [ -f gsmysql51.tar.gz ] && docker import gsmysql51.tar.gz
-        [ -f gsmysql.tar.gz ] && docker import gsmysql.tar.gz
-        [ -f gsredis.tar.gz ] && docker import gsredis.tar.gz
-        [ -f gsnginx.tar.gz ] && docker import gsnginx.tar.gz
-        [ -f gsphp.tar.gz ] && docker import gsphp.tar.gz
-        [ -f gsserver.tar.gz ] && docker import gsserver.tar.gz
+
+        for file in $(ls -l /root/gs_tl_offline | awk '{print $9}'); do
+            if [ -n ${file} ]; then
+                docker import ${file}
+            fi
+        done
     else
         cd ${ROOT_PATH}/${GSDIR} && docker-compose up -d
     fi
