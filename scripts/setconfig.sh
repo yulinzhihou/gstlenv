@@ -245,8 +245,8 @@ setconfig_rebuild() {
             fi
         done
         echo -e "${CYELLOW}请稍等，正在写入配置信息……${CEND}\r"
-        \cp -rf ${GS_WHOLE_PATH} /usr/local/bin/.env &&
-            \cp -rf ${GS_WHOLE_PATH} /root/.tlgame/.env
+        # \cp -rf ${GS_WHOLE_PATH} /usr/local/bin/.env &&
+        # \cp -rf ${GS_WHOLE_PATH} /root/.tlgame/.env
         chattr +i ${GS_WHOLE_PATH}
     else
         echo -e "GS专用环境容器还没下载下来，请重新执行【curl -sSL https://gsgameshare.com/gsenv | bash 】命令！"

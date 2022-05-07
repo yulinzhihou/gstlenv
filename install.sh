@@ -21,14 +21,13 @@ GSTL_DIR=$(dirname "$(readlink -f $0)")
 pushd ${GSTL_DIR} >/dev/null
 # 判断是否为离线环境
 if [ $# != 0 ] && [ $1 == 'local' ]; then
-    [ ! -d ${SHARED_DIR} ] && mkdir -p ${SHARED_DIR}
     [ ! -d /root/.gs ] && mkdir -p /root/.gs
+    \cp -rf env.sample /root/.gs/.env
+    . /root/.gs/.env
+    [ ! -d ${SHARED_DIR} ] && mkdir -p ${SHARED_DIR}
     [ ! -d ${GS_PROJECT} ] && mkdir -p ${GS_PROJECT}
-    chattr -i ${GS_WHOLE_PATH}
 
-    \cp -rf env.sample .env &&
-        \cp -rf ./* ${GS_PROJECT} &&
-        \cp -rf ${GS_PROJECT}/env.sample ${GS_WHOLE_PATH} &&
+    \cp -rf ./* ${GS_PROJECT} &&
         \cp -rf ./docker-compose.yml /root/.gs/docker-compose.yml &&
         . ${GS_WHOLE_PATH} &&
         chmod -R 777 ${GS_PROJECT} &&
@@ -38,7 +37,6 @@ if [ $# != 0 ] && [ $1 == 'local' ]; then
 fi
 
 # 加载配置
-. ./.env
 . ./scripts/color.sh
 . ./include/check_os.sh
 
