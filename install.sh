@@ -38,9 +38,9 @@ else
     # 如果是在线环境
     if [ -f /root/.tlgame ] && [ -f /root/.tlgame/env.sample ]; then
         if [ ! -d /root/.gs ]; then
-            mkdir -p /root/.gs &&
-                \cp -rf /root/.tlgame/env.sample /root/.gs/.env
+            mkdir -p /root/.gs
         fi
+        \cp -rf /root/.tlgame/env.sample /root/.gs/.env
         . /root/.gs/.env
     else
         echo -e "${CRED}环境源码下载失败，请联系客服 !!!${CEND}"
