@@ -19,33 +19,24 @@ startTime=$(date +%s)
 #获取当前脚本路径
 GSTL_DIR=$(dirname "$(readlink -f $0)")
 pushd ${GSTL_DIR} >/dev/null
+
 # 判断是否为离线环境
+[ ! -d /root/.gs ] && mkdir -p /root/.gs
+if [ ! -f /root/.gs/.env ]; then
+    \cp -rf env.sample /root/.gs/.env
+fi
+. /root/.gs/.env
+
 if [ -f /root/gstlenv_offline.tar.gz ]; then
-    [ ! -d /root/.gs ] && mkdir -p /root/.gs
-    if [ ! -f /root/.gs/.env ]; then
-        \cp -rf env.sample /root/.gs/.env
-    fi
-    . /root/.gs/.env
+
     [ ! -d ${SHARED_DIR} ] && mkdir -p ${SHARED_DIR}
     [ ! -d ${GS_PROJECT} ] && mkdir -p ${GS_PROJECT}
 
     \cp -rf ./* ${GS_PROJECT} &&
-        \cp -rf ./docker-compose.yml /root/.gs/docker-compose.yml &&
+        \cp -rf docker-compose.yml /root/.gs/docker-compose.yml &&
         . ${GS_WHOLE_PATH} &&
         chmod -R 777 ${GS_PROJECT} &&
         chown -R root:root ${GS_PROJECT}
-else
-    # 如果是在线环境
-    if [ -f /root/.tlgame ] && [ -f /root/.tlgame/env.sample ]; then
-        if [ ! -d /root/.gs ]; then
-            mkdir -p /root/.gs
-        fi
-        \cp -rf /root/.tlgame/env.sample /root/.gs/.env
-        . /root/.gs/.env
-    else
-        echo -e "${CRED}环境源码下载失败，请联系客服 !!!${CEND}"
-        exit 1
-    fi
 fi
 chattr +i ${GS_WHOLE_PATH}
 # 加载配置
