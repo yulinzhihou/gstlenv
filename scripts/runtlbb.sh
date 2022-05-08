@@ -32,6 +32,7 @@ if [ $? -eq 0 ]; then
 
   if [ $? -eq 0 ]; then
     # 删除因为改版本导致引擎启动失败的dump文件
+    gsbak
     cd ${ROOT_PATH}/${GSDIR} && rm -rf core.*
     echo -e "${CSUCCESS}已经成功启动服务端，请耐心等待几分钟后，建议使用：【runtop】查看开服的情况！！${CEND}"
     exit 0
