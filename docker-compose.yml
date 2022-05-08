@@ -41,6 +41,7 @@ services:
     container_name: gsmysql
     volumes:
       - "${SHARED_DIR}/gsmysql/:/var/lib/mysql"
+      - "${SHARED_DIR}/backup/:/home/backup"
     ports:
       - "${TL_MYSQL_PORT}:3306"
     environment:

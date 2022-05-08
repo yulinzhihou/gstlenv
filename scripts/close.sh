@@ -22,10 +22,10 @@ if [ $? -eq 0 ]; then
 
   if [ -d ${ROOT_PATH}/${GSDIR} ]; then
     cd ${ROOT_PATH}/${GSDIR} &&
-      # docker exec -d gsserver /bin/bash /home/tlbb/Server/shm stop &&
-      # docker exec -d gsserver /bin/bash /home/tlbb/stop.sh
-      # docker exec -d gsserver /home/billing/billing stop
-      restart
+      docker exec -d gsserver /bin/bash /home/tlbb/Server/shm stop &&
+      docker exec -d gsserver /bin/bash /home/tlbb/stop.sh &&
+      docker exec -d gsserver /home/billing/billing stop
+    # restart
     if [ $? -eq 0 ]; then
       # 删除因为改版本导致引擎启动失败的dump文件
       cd ${ROOT_PATH}/${GSDIR} && rm -rf core.*

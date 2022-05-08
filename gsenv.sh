@@ -48,4 +48,4 @@ download() {
 
 show
 download
-cd /root/.tlgame && bash install.sh
+cd /root/.tlgame && bash install.sh | tee -a /root/.tlgame/install.log

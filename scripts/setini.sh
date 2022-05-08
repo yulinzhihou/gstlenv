@@ -56,35 +56,50 @@ if [ $? -eq 0 ]; then
         sed -i "s/Port0=15680/Port0=${SERVER_PORT}/g" ${BASE_PATH}/ServerInfo.ini
     fi
 
-    #复制到已经修改好的文件到指定容器
-    \cp -rf ${BASE_PATH}/config.yaml ${GS_PROJECT_PATH}/billing/
-    \cp -rf ${BASE_PATH}/LoginInfo.ini ${BASE_PATH}/ShareMemInfo.ini ${BASE_PATH}/ServerInfo.ini ${GS_PROJECT_PATH}/tlbb/Server/Config/
-    docker cp ${BASE_PATH}/odbc.ini gsserver:/etc
-    docker cp /root/.tlgame/scripts/step.sh gsserver:/usr/local/bin/step
-    # 复制配置文件
-    docker cp /root/.tlgame/include/alter_point.sql gsmysql:/usr/local/bin/alter_point.sql
-    docker cp /root/.tlgame/include/change_valid.sql gsmysql:/usr/local/bin/change_valid.sql
-    docker cp /root/.tlgame/include/change_invalid.sql gsmysql:/usr/local/bin/change_invalid.sql
-    docker cp /root/.tlgame/include/gsmysqlRestore.sh gsmysql:/usr/local/bin/gsmysqlRestore.sh
-    docker cp /root/.tlgame/include/gsset.sh gsmysql:/usr/local/bin/gsset.sh
-    docker cp /root/.tlgame/include/gssetvalid.sh gsmysql:/usr/local/bin/gssetvalid.sh
-
-    #每次更新后，先重置更改过的文件
-    if [ ${IS_DLQ} -eq 0 ]; then
-        sed -i 's/^else$/else\n  \/home\/billing\/billing up -d \n sleep 10 \n/g' ${GS_PROJECT_PATH}/tlbb/run.sh
-    fi
-    sed -i 's/exit$/tail -f \/dev\/null/g' ${GS_PROJECT_PATH}/tlbb/run.sh &&
-        cd ${BASE_PATH}/ &&
-        rm -rf ${BASE_PATH}/*.ini ${BASE_PATH}/config.yaml ${BASE_PATH}/billing
-    chown -R root:root ${GS_PROJECT_PATH} && chmod -R 777 ${GS_PROJECT_PATH}
-    if [ $? -eq 0 ]; then
-        echo -e "${CSUCCESS}配置文件已经写入成功，可以执行【runtlbb】进行开服操作！！${CEND}"
-        exit 0
-    else
-        echo -e "${CRED}配置文件写入失败！${CEND}"
+    if [ ! -d /tlgame/tlbb/Server ]; then
+        echo -e "${CRED}未上传服务端执行解压操作; 正确操作：上传服务端压缩包 tlbb.tar.gz或者 tlbb.zip 到 /root 目录下，执行 untar 再执行本命令${CEND}"
+        echo -e "${CRED}上传了服务端也解压了，但服务端的目录名不正确：必须是 /tlgame/tlbb 不能是 /tlgame/tlbb2, /tlgame/tlbbhj${CEND}"
         exit 1
+    else
+        #复制到已经修改好的文件到指定容器
+        \cp -rf ${BASE_PATH}/config.yaml ${GS_PROJECT_PATH}/billing/
+        \cp -rf ${BASE_PATH}/LoginInfo.ini ${BASE_PATH}/ShareMemInfo.ini ${BASE_PATH}/ServerInfo.ini ${GS_PROJECT_PATH}/tlbb/Server/Config/
+        docker cp ${BASE_PATH}/odbc.ini gsserver:/etc
+        docker cp ${GS_PROJECT}/scripts/step.sh gsserver:/usr/local/bin/step
+        # 复制配置文件
+        for file in $(ls -l ${GS_PROJECT}/include | awk '{print $9}'); do
+            if [ -n ${file} ]; then
+                docker cp ${GS_PROJECT}/include/${file} gsmysql:/usr/local/bin/${file}
+            fi
+        done
+
+        #每次更新后，先重置更改过的文件
+        if [ ${IS_DLQ} -eq 0 ]; then
+            sed -i 's/^else$/else\n  \/home\/billing\/billing up -d \n sleep 10 \n/g' ${GS_PROJECT_PATH}/tlbb/run.sh
+        fi
+        sed -i 's/exit$/tail -f \/dev\/null/g' ${GS_PROJECT_PATH}/tlbb/run.sh &&
+            cd ${BASE_PATH}/ &&
+            rm -rf ${BASE_PATH}/*.ini ${BASE_PATH}/config.yaml ${BASE_PATH}/billing
+        chown -R root:root ${GS_PROJECT_PATH} && chmod -R 777 ${GS_PROJECT_PATH}
+        if [ $? -eq 0 ]; then
+            echo -e "${CSUCCESS}配置文件已经写入成功，可以执行【runtlbb】进行开服操作！！${CEND}"
+            exit 0
+        else
+            echo -e "${CRED}配置文件写入失败！${CEND}"
+            exit 1
+        fi
     fi
+
+    # 复制配置文件
+    # docker cp ${GS_PROJECT}/include/alter_point.sql gsmysql:/usr/local/bin/alter_point.sql
+    # docker cp ${GS_PROJECT}/include/change_valid.sql gsmysql:/usr/local/bin/change_valid.sql
+    # docker cp ${GS_PROJECT}/include/change_invalid.sql gsmysql:/usr/local/bin/change_invalid.sql
+    # docker cp ${GS_PROJECT}/include/gsmysqlRestore.sh gsmysql:/usr/local/bin/gsmysqlRestore.sh
+    # docker cp ${GS_PROJECT}/include/gsset.sh gsmysql:/usr/local/bin/gsset.sh
+    # docker cp ${GS_PROJECT}/include/gssetvalid.sh gsmysql:/usr/local/bin/gssetvalid.sh
+
 else
+
     echo -e "${CRED}环境毁坏，需要重新安装或者移除现有的环境重新安装！！！${CEND}"
     exit 1
 fi

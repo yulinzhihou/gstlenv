@@ -17,9 +17,7 @@ if [ $? -eq 0 ]; then
   else
     . /usr/local/bin/color
   fi
-
-  FILENAME=$(date "+%Y-%m-%d-%H-%M-%S")
-
+  # 获取数据
   if [ $# -eq 0 ]; then
     TIME=1
   else
@@ -32,6 +30,16 @@ if [ $? -eq 0 ]; then
       ;;
     esac
   fi
+
+  FILENAME=$(date "+%Y-%m-%d-%H-%M-%S")
+  # 数据库备份
+  SQL_TASK="docker exec -d gsmysql /bin/sh /usr/local/bin/gsmysqlBackup.sh > /dev/null 2>&1 &"
+  # 版本备份
+  VERSINO_TASK="/bin/bash /usr/local/bin/backup all > /dev/null 2>&1 &"
+  # 定时清理
+  CRON_DEL_TASK="/bin/bash /usr/local/bin/crondel > /dev/null 2>&1 &"
+  # 定时任务临时备份文件
+  CRONTAB_BAK_FILE=/tmp/crontab_bak
 
   # *    *    *    *    *
   # -    -    -    -    -
@@ -47,43 +55,35 @@ if [ $? -eq 0 ]; then
   # 中杠（-）：可以用整数之间的中杠表示一个整数范围，例如“2-6”表示“2,3,4,5,6”
   # 正斜线（/）：可以用正斜线指定时间的间隔频率，例如“0-23/2”表示每两小时执行一次。同时正斜线可以和星号一起使用，例如*/10，如果用在minute字段，表示每十分钟执行一次。
 
-  # 数据备份
-  data_backup() {
+  # 定时备份
+  cron_data_back() {
     echo -e "${CYELLOW}开始设置定时数据备份，目前为【${TIME}】小时备份一次数据库和版本！备份到 /tlgame/backup/ 目录下${CEND}"
-    #备份数据库
-    crontabCount=$(crontab -l | grep 'docker exec -it gsmysql' | grep -v grep | wc -l)
-    # crontabCount=`crontab -l | grep docker exec -it gsmysql | grep -v grep | wc -l`
-    if [ $crontabCount -eq 0 ]; then
-      # (echo "0 */1 * * * sh docker exec -it `docker ps --format "{{.Names}}" | grep "gsmysql"``docker ps --format "{{.Names}}" | grep "gsmysql"` /bin/bash -c './gsmysqlBackup.sh' > /dev/null 2>&1 &"; crontab -l) | crontab
-      (
-        echo "0 */${TIME} * * * sh docker exec -it gsmysql /bin/bash /usr/local/bin/gsmysqlBackup.sh > /dev/null 2>&1 &"
-        crontab -l
-      ) | crontab
-    fi
-
-    #备份服务端
-    crontabCount=$(crontab -l | grep '/usr/local/bin/backup' | grep -v grep | wc -l)
-    if [ $crontabCount -eq 0 ]; then
-      (
-        echo "0 */${TIME} * * * /bin/bash /usr/local/bin/backup all > /dev/null 2>&1 &"
-        crontab -l
-      ) | crontab
+    crontab -l >${CRONTAB_BAK_FILE} 2>/dev/null
+    # 删除掉再有任务
+    sed -i "/.*${SQL_TASK}/d" ${CRONTAB_BAK_FILE}
+    sed -i "/.*${VERSINO_TASK}/d" ${CRONTAB_BAK_FILE}
+    echo "0 */${TIME} * * * ${SQL_TASK}" >>${CRONTAB_BAK_FILE}
+    echo "0 */${TIME} * * * ${VERSION_TASK}" >>${CRONTAB_BAK_FILE}
+    echo "0 */${TIME} * * * ${CRON_DEL_TASK}" >>${CRONTAB_BAK_FILE}
+    crontab ${CRONTAB_BAK_FILE}
+    if [ $? -eq 0 ]; then
+      echo -e "${CSUCCESS}设置定时备份成功.【${TIME}】小时备份一次数据库和版本！备份到 /tlgame/backup ${CEND}"
+    else
+      echo -e "${CRED}备份命令不完整，请更新命令[upcmd]后再执行！${CEND}"
     fi
   }
 
   # 部署备份脚本
-  if [ ! -f ${GS_PROJECT}"/include/gsmysqlBackup.sh" ]; then
-    \cp -rf ${GS_PROJECT}"/include/gsmysqlBackup.sh" /tlgame/gsmysql/
-    if [ $? -eq 0 ]; then
-      data_backup
-    else
-      echo -e "${CRED}备份命令不完整，请更新命令[upcmd]后再执行！${CEND}"
-      exit 1
-    fi
-  else
-    data_backup
+  cron_data_back
+
+  if [ $? -eq 0 ]; then
+    echo -e "${CRED}定时备份已启动，如果未生效，请重启 crond 服务，或者直接重启一下服务器！${CEND}"
     exit 0
+  else
+    echo -e "${CRED}备份命令不完整，请更新命令[upcmd]后再执行！${CEND}"
+    exit 1
   fi
+
 else
   echo "${CRED}环境毁坏，需要重新安装或者移除现有的环境重新安装！！！${CEND}"
   exit 1

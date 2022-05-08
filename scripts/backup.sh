@@ -7,6 +7,7 @@
 # comment: 手动执行备份数据库功能和打包服务端
 # 颜色代码
 docker ps --format "{{.Names}}" | grep gsserver >/dev/null
+TIME="[$(date +%Y_%m_%d_%H_%M_%S)]"
 if [ $? -eq 0 ]; then
   # 引入全局参数
   if [ -f /root/.gs/.env ]; then
@@ -93,20 +94,20 @@ if [ $? -eq 0 ]; then
     elif [ $1 -eq 2 ]; then
       backup_mysql
     else
-      echo -e "${CRED}参数错误！backup 后面跟 all,0,1,2这4个参数中的任意一个${CEND}"
+      echo -e "${CRED}${TIME}参数错误！backup 后面跟 all,0,1,2这4个参数中的任意一个${CEND}" | tee -a ${GS_PROJECT}/gs.log
       exit 1
     fi
 
   fi
 
   if [ $? -eq 0 ]; then
-    echo -e "${CSUCCESS}已经成功备份完成，备份文件在 [/tlgame/backup] 目录下${CEND}"
+    echo -e "${CSUCCESS}${TIME}已经成功备份完成，备份文件在 [/tlgame/backup] 目录下${CEND}" | tee -a ${GS_PROJECT}/gs.log
     exit 0
   else
-    echo -e "${CRED}备份失败！${CEND}"
+    echo -e "${CRED}${TIME}备份失败！${CEND}" | tee -a ${GS_PROJECT}/gs.log
     exit 1
   fi
 else
-  echo "${CRED}环境毁坏，需要重新安装或者移除现有的环境重新安装！！！${CEND}"
+  echo -e "${CRED}${TIME}环境毁坏，需要重新安装或者移除现有的环境重新安装！！！${CEND}" | tee -a ${GS_PROJECT}/gs.log
   exit 1
 fi
