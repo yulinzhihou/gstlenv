@@ -33,10 +33,13 @@ if [ $? -eq 0 ]; then
 
   FILENAME=$(date "+%Y-%m-%d-%H-%M-%S")
   # 数据库备份
+  SQL_TASK_CMD="/usr/local/bin/gsmysqlBackup.sh"
   SQL_TASK="docker exec -d gsmysql /bin/sh /usr/local/bin/gsmysqlBackup.sh > /dev/null 2>&1 &"
   # 版本备份
+  VERSINO_TASK_CMD="/usr/local/bin/backup"
   VERSINO_TASK="/bin/bash /usr/local/bin/backup all > /dev/null 2>&1 &"
   # 定时清理
+  CRON_DEL_TASK_CMD="/usr/local/bin/crondel"
   CRON_DEL_TASK="/bin/bash /usr/local/bin/crondel > /dev/null 2>&1 &"
   # 定时任务临时备份文件
   CRONTAB_BAK_FILE=/tmp/crontab_bak
@@ -57,11 +60,12 @@ if [ $? -eq 0 ]; then
 
   # 定时备份
   cron_data_back() {
-    echo -e "${CYELLOW}开始设置定时数据备份，目前为【${TIME}】小时备份一次数据库和版本！备份到 /tlgame/backup/ 目录下${CEND}"
+    echo -e "${CYELLOW}开始设置定时数据备份，目前为【${TIME}】小时备份一次数据库和版本！备份到 /tlgame/backup 目录下${CEND}"
     crontab -l >${CRONTAB_BAK_FILE} 2>/dev/null
     # 删除掉再有任务
-    sed -i "/.*${SQL_TASK}/d" ${CRONTAB_BAK_FILE}
-    sed -i "/.*${VERSINO_TASK}/d" ${CRONTAB_BAK_FILE}
+    sed -i "/.*${SQL_TASK_CMD}*./d" ${CRONTAB_BAK_FILE}
+    sed -i "/.*${VERSINO_TASK_CMD}*./d" ${CRONTAB_BAK_FILE}
+    sed -i "/.*${CRON_DEL_TASK_CMD}*./d" ${CRONTAB_BAK_FILE}
     echo "0 */${TIME} * * * ${SQL_TASK}" >>${CRONTAB_BAK_FILE}
     echo "0 */${TIME} * * * ${VERSION_TASK}" >>${CRONTAB_BAK_FILE}
     echo "0 */${TIME} * * * ${CRON_DEL_TASK}" >>${CRONTAB_BAK_FILE}
@@ -77,7 +81,7 @@ if [ $? -eq 0 ]; then
   cron_data_back
 
   if [ $? -eq 0 ]; then
-    echo -e "${CRED}定时备份已启动，如果未生效，请重启 crond 服务，或者直接重启一下服务器！${CEND}"
+    echo -e "${CRED}定时备份已启动，如果未生效，请重启 crond 服务或者直接重启一下服务器！${CEND}"
     exit 0
   else
     echo -e "${CRED}备份命令不完整，请更新命令[upcmd]后再执行！${CEND}"
