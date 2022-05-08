@@ -22,7 +22,7 @@ if [ $? -eq 0 ]; then
   # 更新命令
   download() {
     # [ ! -z ${COMMAND_VERSION} ] && COMMAND_VERSION=${COMMAND_VERSION} || COMMAND_VERSION=${VERSION}
-    wget -q https://gitee.com/yulinzhihou/gstlenv/repository/archive/master.zip -O /tmp/master.tar.gz
+    wget -q https://gitee.com/yulinzhihou/gstlenv/repository/archive/master.tar.gz -O /tmp/master.tar.gz
     cd ${TMP_PATH} &&
       # 解压目录
       tar zxf master.tar.gz && cd ${TMP_PATH}/gstlenv-master && \cp -rf * ${GS_PROJECT}/
@@ -49,7 +49,7 @@ if [ $? -eq 0 ]; then
     ls -l ${GS_PROJECT}/scripts/ | awk '{print $9}' >/tmp/command.txt
     for VAR in $(cat /tmp/command.txt); do
       if [ -n ${VAR} ]; then
-        docker cp ${GS_PROJECT}/include/${VAR} gsmysql:/usr/local/bin/${VAR}
+        docker cp ${GS_PROJECT}/scripts/${VAR} gsmysql:/usr/local/bin/${VAR}
       fi
     done
     rm -rf /tmp/command.txt
