@@ -22,7 +22,6 @@ pushd ${GSTL_DIR} >/dev/null
 # 加载配置
 . ./env.sample
 . ./scripts/color.sh
-. ./include/check_os.sh
 
 # 判断是否为离线环境
 if [ ! -d /root/.gs ]; then
@@ -35,6 +34,7 @@ if [ ! -f /root/.gs/.env ]; then
 fi
 # 加载配置
 . /root/.gs/.env
+. ./include/check_os.sh
 
 if [ -f /root/gstlenv_offline.tar.gz ]; then
     [ ! -d ${SHARED_DIR} ] && mkdir -p ${SHARED_DIR}

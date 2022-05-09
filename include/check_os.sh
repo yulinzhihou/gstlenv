@@ -17,14 +17,17 @@ if [ -e "/usr/bin/yum" ]; then
       fi
     elif [ -e "/etc/redhat-release" ]; then
       # 表示是centos Stream 9
-      PM=dnf
-      dnf -y update && sudo dnf upgrade --refresh -y &&
-        sudo dnf config-manager --set-enabled crb
-
-      sudo dnf install \
-        https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm \
-        https://dl.fedoraproject.org/pub/epel/epel-next-release-latest-9.noarch.rpm
-
+      OS_TMP=$(cat /etc/redhat-release)
+      if [ "${OS_TMP}" == "CentOS Stream release 9" ]; then
+        PM=dnf
+        dnf -y update && sudo dnf upgrade --refresh -y &&
+          sudo dnf config-manager --set-enabled crb
+        sudo dnf install \
+          https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm \
+          https://dl.fedoraproject.org/pub/epel/epel-next-release-latest-9.noarch.rpm
+      else
+        yum -y install redhat-lsb-core
+      fi
     else
       yum -y install redhat-lsb-core
     fi
@@ -76,9 +79,10 @@ if command -v lsb_release >/dev/null 2>&1; then
 else
   # centos stream 9
   if [ -e "/etc/redhat-release" ]; then
-    OS=$(cat /etc/redhat-release)
-    if [ ${OS} == 'CentOS Stream release 9' ]; then
+    OS_TMP=$(cat /etc/redhat-release)
+    if [ "${OS_TMP}" == "CentOS Stream release 9" ]; then
       CentOS_ver=9
+      OS='CentOS Stream release 9'
       PM=dnf
     fi
   else
