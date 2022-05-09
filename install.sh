@@ -51,12 +51,6 @@ fi
 sys_plugins_install() {
     echo -e "${CYELLOW}开始安装系统常用组件 !!!${CEND}"
     # 安装 wget gcc curl git python
-    # [ "${PM}" == 'apt-get' ] && apt-get -y update
-    # [ "${PM}" == 'yum' ] && yum clean all && yum -y update
-    echo 'pm = '${PM}
-    echo 'os = '${OS}
-    echo 'CentOS_ver = '${CentOS_ver}
-    sleep 3
     ${PM} -y install wget gcc curl python git jq vim
     [ "${CentOS_ver}" == '8' ] && {
         yum -y install python36 gcc wget curl git jq vim
@@ -88,7 +82,7 @@ EOF
         fi
 
         [ "${OS}" == "Debian" ] || [ "${OS}" == "Ubuntu" ] && sudo apt-get services docker start && systemctl enable docker
-        [ "${OS}" == "CentOS" ] || [ "${OS}" == "CentOSStream" ] && sudo systemctl daemon-reload && sudo systemctl start docker && systemctl enable docker
+        [ "${OS}" == "CentOS" ] || [ "${OS}" == "CentOSStream" ] || [ "${OS}" == "CentOS Stream release 9" ] && sudo systemctl daemon-reload && sudo systemctl start docker && systemctl enable docker
 
     else
         echo -e "${CYELLOW}环境 Docker 安装成功 !!!${CEND}"
