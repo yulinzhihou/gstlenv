@@ -19,8 +19,6 @@ startTime=$(date +%s)
 #获取当前脚本路径
 GSTL_DIR=$(dirname "$(readlink -f $0)")
 pushd ${GSTL_DIR} >/dev/null
-echo "当前位置：$PWD"
-sleep 3
 # 加载配置
 . ./env.sample
 . ./scripts/color.sh
@@ -108,13 +106,11 @@ EOF
 # 配置常用命令到系统中
 set_command() {
     echo -e "${CYELLOW}开始设置全局命令 !!!${CEND}"
-    ls -l ${GS_PROJECT}/scripts/ | awk '{print $9}' >/tmp/command.txt
-    for VAR in $(cat /tmp/command.txt); do
+    for VAR in $(ls -l ${GS_PROJECT}/scripts/ | awk '{print $9}'); do
         if [ -n ${VAR} ]; then
             \cp -rf ${GS_PROJECT}/scripts/${VAR} /usr/local/bin/${VAR%%.*} && chmod +x /usr/local/bin/${VAR%%.*}
         fi
     done
-    rm -rf /tmp/command.txt
 }
 
 # 设置服务器时间
@@ -130,17 +126,17 @@ do_install() {
     set_timezone
     [ $? -eq 0 ] && echo -e "${CYELLOW}设置时区成功!! ${CEND}" || {
         echo -e "${CRED}设置时区失败!! ;${CEND}"
-        exit 1
+        exit 0
     }
     do_install_docker
     [ $? -eq 0 ] && echo -e "${CYELLOW}环境核心组件安装成功！！ ${CEND}" || {
         echo -e "${CRED}环境核心组件安装失败!! ;${CEND}"
-        exit 1
+        exit 0
     }
     set_command
     [ $? -eq 0 ] && echo -e "${CYELLOW}设置全局命令成功！！${CEND}" || {
         echo -e "${CRED}设置全局命令失败！！${CEND}"
-        exit 1
+        exit 0
     }
 }
 
