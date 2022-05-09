@@ -21,6 +21,10 @@ if [ -e "/usr/bin/yum" ]; then
   fi
 fi
 
+if [ -e "/usr/bin/dnf" ]; then
+  PM=dnf
+fi
+
 if [ -e "/usr/bin/apt-get" ]; then
   PM=apt-get
   command -v lsb_release >/dev/null 2>&1 || {
@@ -38,7 +42,6 @@ command -v lsb_release >/dev/null 2>&1 || {
 # Get OS Version
 OS=$(lsb_release -is)
 if [[ "${OS}" =~ ^CentOS$|^RedHat$|^Rocky$|^Fedora$|^Amazon$|^Alibaba$|^Aliyun$|^EulerOS$|^openEuler$|^CentOSStream$ ]]; then
-  LikeOS=CentOS
   CentOS_ver=$(lsb_release -rs | awk -F. '{print $1}' | awk '{print $1}')
   [[ "${OS}" =~ ^Fedora$ ]] && [ ${CentOS_ver} -ge 19 ] >/dev/null 2>&1 && {
     CentOS_ver=7
@@ -46,12 +49,10 @@ if [[ "${OS}" =~ ^CentOS$|^RedHat$|^Rocky$|^Fedora$|^Amazon$|^Alibaba$|^Aliyun$|
   }
   [[ "${OS}" =~ ^Amazon$|^Alibaba$|^Aliyun$|^EulerOS$|^openEuler$ ]] && CentOS_ver=7
 elif [[ "${OS}" =~ ^Debian$|^Deepin$|^Uos$|^Kali$ ]]; then
-  LikeOS=Debian
   Debian_ver=$(lsb_release -rs | awk -F. '{print $1}' | awk '{print $1}')
   [[ "${OS}" =~ ^Deepin$|^Uos$ ]] && [[ "${Debian_ver}" =~ ^20$ ]] && Debian_ver=10
   [[ "${OS}" =~ ^Kali$ ]] && [[ "${Debian_ver}" =~ ^202 ]] && Debian_ver=10
 elif [[ "${OS}" =~ ^Ubuntu$|^LinuxMint$|^elementary$ ]]; then
-  LikeOS=Ubuntu
   Ubuntu_ver=$(lsb_release -rs | awk -F. '{print $1}' | awk '{print $1}')
   if [[ "${OS}" =~ ^LinuxMint$ ]]; then
     [[ "${Ubuntu_ver}" =~ ^18$ ]] && Ubuntu_ver=16
@@ -61,6 +62,13 @@ elif [[ "${OS}" =~ ^Ubuntu$|^LinuxMint$|^elementary$ ]]; then
   if [[ "${OS}" =~ ^elementary$ ]]; then
     [[ "${Ubuntu_ver}" =~ ^5$ ]] && Ubuntu_ver=18
     [[ "${Ubuntu_ver}" =~ ^6$ ]] && Ubuntu_ver=20
+  fi
+else
+  # centos stream 9
+  OS=$(cat /etc/redhat-release)
+  if [ ${OS} == 'CentOS Stream release 9' ]; then
+    CentOS_ver=9
+    PM=dnf
   fi
 fi
 

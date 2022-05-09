@@ -53,6 +53,10 @@ sys_plugins_install() {
     # 安装 wget gcc curl git python
     # [ "${PM}" == 'apt-get' ] && apt-get -y update
     # [ "${PM}" == 'yum' ] && yum clean all && yum -y update
+    echo 'pm = '${PM}
+    echo 'os = '${OS}
+    echo 'CentOS_ver = '${CentOS_ver}
+    sleep 3
     ${PM} -y install wget gcc curl python git jq vim
     [ "${CentOS_ver}" == '8' ] && {
         yum -y install python36 gcc wget curl git jq vim
