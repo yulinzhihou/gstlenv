@@ -5,6 +5,7 @@ if [ -e "/usr/bin/yum" ]; then
     sed -i 's@centos/RPM-GPG@centos-vault/RPM-GPG@g' /etc/yum.repos.d/CentOS-Base.repo
     [ -e /etc/yum.repos.d/epel.repo ] && rm -f /etc/yum.repos.d/epel.repo
   fi
+
   if ! command -v lsb_release >/dev/null 2>&1; then
     if [ -e "/etc/euleros-release" ]; then
       yum -y install euleros-lsb
@@ -14,15 +15,21 @@ if [ -e "/usr/bin/yum" ]; then
       else
         yum -y install openeuler-lsb
       fi
+    elif [ -e "/etc/redhat-release" ]; then
+      # 表示是centos Stream 9
+      PM=dnf
+      dnf -y update && sudo dnf upgrade --refresh -y &&
+        sudo dnf config-manager --set-enabled crb
+
+      sudo dnf install \
+        https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm \
+        https://dl.fedoraproject.org/pub/epel/epel-next-release-latest-9.noarch.rpm
+
     else
       yum -y install redhat-lsb-core
     fi
     clear
   fi
-fi
-
-if [ -e "/usr/bin/dnf" ]; then
-  PM=dnf
 fi
 
 if [ -e "/usr/bin/apt-get" ]; then
