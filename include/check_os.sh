@@ -23,18 +23,27 @@ fi
 
 if [ -e "/usr/bin/apt-get" ]; then
   PM=apt-get
-  command -v lsb_release >/dev/null 2>&1 || { apt-get -y update > /dev/null; apt-get -y install lsb-release; clear; }
+  command -v lsb_release >/dev/null 2>&1 || {
+    apt-get -y update >/dev/null
+    apt-get -y install lsb-release
+    clear
+  }
 fi
 
-command -v lsb_release >/dev/null 2>&1 || { echo "${CFAILURE}${PM} source failed! ${CEND}"; kill -9 $$; }
-
+command -v lsb_release >/dev/null 2>&1 || {
+  echo "${CFAILURE}${PM} source failed! ${CEND}"
+  kill -9 $$
+}
 
 # Get OS Version
 OS=$(lsb_release -is)
-if [[ "${OS}" =~ ^CentOS$|^RedHat$|^Rocky$|^Fedora$|^Amazon$|^Alibaba$|^Aliyun$|^EulerOS$|^openEuler$ ]]; then
+if [[ "${OS}" =~ ^CentOS$|^RedHat$|^Rocky$|^Fedora$|^Amazon$|^Alibaba$|^Aliyun$|^EulerOS$|^openEuler$|^CentOSStream$ ]]; then
   LikeOS=CentOS
   CentOS_ver=$(lsb_release -rs | awk -F. '{print $1}' | awk '{print $1}')
-  [[ "${OS}" =~ ^Fedora$ ]] && [ ${CentOS_ver} -ge 19 >/dev/null 2>&1 ] && { CentOS_ver=7; Fedora_ver=$(lsb_release -rs); }
+  [[ "${OS}" =~ ^Fedora$ ]] && [ ${CentOS_ver} -ge 19 ] >/dev/null 2>&1 && {
+    CentOS_ver=7
+    Fedora_ver=$(lsb_release -rs)
+  }
   [[ "${OS}" =~ ^Amazon$|^Alibaba$|^Aliyun$|^EulerOS$|^openEuler$ ]] && CentOS_ver=7
 elif [[ "${OS}" =~ ^Debian$|^Deepin$|^Uos$|^Kali$ ]]; then
   LikeOS=Debian
@@ -56,7 +65,7 @@ elif [[ "${OS}" =~ ^Ubuntu$|^LinuxMint$|^elementary$ ]]; then
 fi
 
 # Check OS Version
-if [ ${CentOS_ver} -lt 6 >/dev/null 2>&1 ] || [ ${Debian_ver} -lt 8 >/dev/null 2>&1 ] || [ ${Ubuntu_ver} -lt 14 >/dev/null 2>&1 ]; then
-    echo "${CFAILURE}不支持此系统, 请安装 CentOS 7+,Debian 10+,Ubuntu 18+ ${CEND}"
-    kill -9 $$
+if [ ${CentOS_ver} -lt 6 ] >/dev/null 2>&1 || [ ${Debian_ver} -lt 8 ] >/dev/null 2>&1 || [ ${Ubuntu_ver} -lt 14 ] >/dev/null 2>&1; then
+  echo "${CFAILURE}不支持此系统, 请安装 CentOS 7+,Debian 10+,Ubuntu 18+ ${CEND}"
+  kill -9 $$
 fi
