@@ -26,7 +26,7 @@ WHOLE_NAME=${FILENAME}${SUFFIX}
 #解压后重全名文件夹名称
 ENVDIR='.tlgame'
 #环境版本号
-VERSION='v2.3.1'
+VERSION='v2.3.4'
 # 展示信息
 INFO=$(curl https://gsgameshare.com/info.txt)
 
@@ -40,9 +40,14 @@ download() {
         mv ${VERSION}.tar.gz ${TMP_PATH}/${WHOLE_NAME}
     # gs env 服务器环境 ，组件，手动测试时使用
     cd ${TMP_PATH} &&
-        # 解压目录
-        tar zxf ${WHOLE_NAME} && mv ${FILENAME}-${VERSION} ${ROOT_PATH}/${ENVDIR} &&
-        rm -rf ${TMP_PATH}/${WHOLE_NAME}
+        tar zxf ${WHOLE_NAME}
+    if [ -d /root/.tlgame ]; then
+        \cp -rf ${FILENAME}-${VERSION}/* ${ROOT_PATH}/${ENVDIR}
+    else
+        mv ${FILENAME}-${VERSION} ${ROOT_PATH}/${ENVDIR}
+    fi
+    rm -rf ${TMP_PATH}/${WHOLE_NAME} ${TMP_PATH}/${FILENAME}-${VERSION}
+
     echo -e "${CYELLOW}安装已经下载到本地并准备执行安装！请耐心等待！${CEND}"
 }
 

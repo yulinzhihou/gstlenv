@@ -86,7 +86,7 @@ EOF
         fi
 
         [ "${OS}" == "Debian" ] || [ "${OS}" == "Ubuntu" ] && sudo apt-get services docker start && systemctl enable docker
-        [ "${OS}" == "CentOS" ] && sudo systemctl daemon-reload && sudo systemctl start docker && systemctl enable docker
+        [ "${OS}" == "CentOS" ] || [ "${OS}" == "CentOSStream" ] && sudo systemctl daemon-reload && sudo systemctl start docker && systemctl enable docker
 
     else
         echo -e "${CYELLOW}环境 Docker 安装成功 !!!${CEND}"
