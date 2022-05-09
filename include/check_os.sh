@@ -73,15 +73,16 @@ if command -v lsb_release >/dev/null 2>&1; then
     echo "${CFAILURE}不支持此系统, 请安装 CentOS 7+,Debian 10+,Ubuntu 18+ ${CEND}"
     kill -9 $$
   fi
-
-elif [ -e "/etc/redhat-release" ]; then
-  # centos stream 9
-  OS=$(cat /etc/redhat-release)
-  if [ ${OS} == 'CentOS Stream release 9' ]; then
-    CentOS_ver=9
-    PM=dnf
-  fi
 else
-  echo "${CFAILURE}${PM} source failed! ${CEND}"
-  kill -9 $$
+  # centos stream 9
+  if [ -e "/etc/redhat-release" ]; then
+    OS=$(cat /etc/redhat-release)
+    if [ ${OS} == 'CentOS Stream release 9' ]; then
+      CentOS_ver=9
+      PM=dnf
+    fi
+  else
+    echo "${CFAILURE}${PM} source failed! ${CEND}"
+    kill -9 $$
+  fi
 fi
