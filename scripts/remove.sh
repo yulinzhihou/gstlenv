@@ -24,8 +24,8 @@ if [ $? -eq 0 ]; then
       echo -ne "\r正准备恢复出厂设置，数据全清！！，剩余 ${CBLUE}$time${CEND} 秒，可以在计时结束前，按 CTRL+C 退出！\r"
       sleep 1
     done
-    echo -ne "\n\r"
-    echo -ne "${CYELLOW}正在进行清除操作…………${CEND}"
+    echo -ne "\r\n"
+    echo -ne "${CYELLOW}正在进行清除操作…………\r\n${CEND}"
 
     # bug:移除本环境的docker镜像与容器。还有写入系统的命令
     docker stop gsmysql gsnginx gsredis gsphp gsserver &&

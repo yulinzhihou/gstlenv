@@ -22,24 +22,24 @@ if [ $? -eq 0 ]; then
   setconfig_backup() {
     echo -ne "正在备份版本数据请稍候……\r\n"
     cd /tlgame && tar zcf tlbb-setconfig-backup.tar.gz tlbb &&
-      docker exec -it gsmysql /bin/sh /usr/local/bin/gsmysqlBackup.sh
+      docker exec -d gsmysql /bin/sh /usr/local/bin/gsmysqlBackup.sh
   }
 
   # 还原数据
   setconfig_restore() {
     echo -ne "正在还原修改参数之前的数据库与版本请稍候……\r\n"
     if [ -f "/tlgame/tlbb-setconfig-backup.tar.gz" ]; then
-      cd /tlgame && tar zxf tlbb-setconfig-backup.tar.gz && rm -rf /tlgame/tlbb-setconfig-backup.tar.gz
+      cd /tlgame && tar zxf tlbb-setconfig-backup.tar.gz && mv /tlgame/tlbb-setconfig-backup.tar.gz /tlgame/backup/
     fi
 
     if [ -f "/tlgame/gsmysql/*.sql" ]; then
-      docker exec -it gsmysql /bin/sh /usr/local/bin/gsmysqlRestore.sh
+      docker exec -d gsmysql /bin/sh /usr/local/bin/gsmysqlRestore.sh
     fi
 
   }
   # mysql 5.1 初始化
   init_mysql51() {
-    docker exec -it gsmysql /bin/sh /usr/local/bin/init_db.sh
+    docker exec -d gsmysql /bin/sh /usr/local/bin/init_db.sh
   }
 
   while :; do
@@ -48,8 +48,8 @@ if [ $? -eq 0 ]; then
       echo -ne "\r在准备正行重构操作！！，剩余 ${CYELLOW}$time${CEND} 秒，可以在计时结束前，按 CTRL+C 退出！\r"
       sleep 1
     done
-    echo -ne "\n\r"
-    echo -ne "${CYELLOW}正在重构，数据全部清空…………${CEND}"
+    echo -ne "\r\n"
+    echo -ne "${CYELLOW}正在重构，数据不会清除……\r\n${CEND}"
     #重构前，先备份数据库以及版本数据。
     setconfig_backup &&
       docker stop gsmysql gsnginx gsredis gsphp gsserver &&

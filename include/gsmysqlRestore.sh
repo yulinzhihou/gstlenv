@@ -8,16 +8,16 @@
 
 if [ $# -eq 0 ]; then
     # 表示没有输出任何参数，进行还原备份
-    WEBDBFILE=$(ls -t /var/lib/mysql | grep "web-" | head -n1 | awk '{print $0}')
+    WEBDBFILE=$(ls -t /home/backup | grep "web-" | head -n1 | awk '{print $0}')
 
     if [ ! -n "${WEBDBFILE}" ]; then
-        cd /var/lib/mysql &&
+        cd /home/backup &&
             mysql -uroot -p"${MYSQL_ROOT_PASSWORD}" web <./${WEBDBFILE}
     fi
 
-    TLBBDBFILE=$(ls -t /var/lib/mysql | grep "tlbbdb-" | head -n1 | awk '{print $0}')
+    TLBBDBFILE=$(ls -t /home/backup | grep "tlbbdb-" | head -n1 | awk '{print $0}')
     if [ ! -n "${TLBBDBFILE}" ]; then
-        cd /var/lib/mysql &&
+        cd /home/backup &&
             mysql -uroot -p"${MYSQL_ROOT_PASSWORD}" tlbbdb <./${TLBBDBFILE}
     fi
 elif [ $# -eq 2 ]; then
