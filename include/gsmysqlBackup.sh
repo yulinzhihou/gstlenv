@@ -8,18 +8,26 @@
 FILENAME=$(date "+%Y-%m-%d-%H-%M-%S")
 TLBBDB_LOG_PATH='/home/backup/tlbbdb_backup.log'
 WEB_LOG_PATH='/home/backup/web_backup.log'
-mysqldump -uroot -p"${MYSQL_ROOT_PASSWORD}" tlbbdb >/home/backup/tlbbdb-${FILENAME}.sql
-#判断是否备份成功
-if [ $? -eq 0 ]; then
-    echo "$(date "+%Y-%m-%d-%H-%M-%S")\ttlbbdb-${FILENAME}.sql\t备份成功!!" | tee -a $TLBBDB_LOG_PATH
-else
-    echo "$(date "+%Y-%m-%d-%H-%M-%S")\ttlbbdb-${FILENAME}.sql\t备份失败" | tee -a $TLBBDB_LOG_PATH
+# 如果是空库则不进行备份
+WEB_FILE_NUM=$(ls -l /var/lib/mysql/web | grep '^-' | wc -l)
+TLBBDB_FILE_NUM=$(ls -l /var/lib/mysql/tlbbdb | grep '^-' | wc -l)
+
+if [ ${WEB_FILE_NUM} -gt 1 ]; then
+    mysqldump -uroot -p"${MYSQL_ROOT_PASSWORD}" tlbbdb >/home/backup/tlbbdb-${FILENAME}.sql
+    #判断是否备份成功
+    if [ $? -eq 0 ]; then
+        echo -e "$(date "+%Y-%m-%d-%H-%M-%S")\ttlbbdb-${FILENAME}.sql\t备份成功!!\r\n" | tee -a $TLBBDB_LOG_PATH
+    else
+        echo -e "$(date "+%Y-%m-%d-%H-%M-%S")\ttlbbdb-${FILENAME}.sql\t备份失败\r\n" | tee -a $TLBBDB_LOG_PATH
+    fi
 fi
 
-mysqldump -uroot -p"${MYSQL_ROOT_PASSWORD}" web >/home/backup/web-${FILENAME}.sql
-#判断是否备份成功
-if [ $? -eq 0 ]; then
-    echo "$(date "+%Y-%m-%d-%H-%M-%S")\tweb-${FILENAME}.sql\t备份成功" | tee -a $WEB_LOG_PATH
-else
-    echo "$(date "+%Y-%m-%d-%H-%M-%S")\tweb-${FILENAME}.sql\t备份失败" | tee -a $WEB_LOG_PATH
+if [ ${TLBBDB_FILE_NUM} -gt 1 ]; then
+    mysqldump -uroot -p"${MYSQL_ROOT_PASSWORD}" web >/home/backup/web-${FILENAME}.sql
+    #判断是否备份成功
+    if [ $? -eq 0 ]; then
+        echo -e "$(date "+%Y-%m-%d-%H-%M-%S")\tweb-${FILENAME}.sql\t备份成功\r\n" | tee -a $WEB_LOG_PATH
+    else
+        echo -e "$(date "+%Y-%m-%d-%H-%M-%S")\tweb-${FILENAME}.sql\t备份失败\r\n" | tee -a $WEB_LOG_PATH
+    fi
 fi

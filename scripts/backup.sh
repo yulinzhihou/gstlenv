@@ -30,33 +30,27 @@ if [ $? -eq 0 ]; then
   fi
 
   backup_tlbb() {
-    echo -e "${CYELLOW}正在备份版本目录，请稍等……\r${CEND}"
+    echo -e "${CYELLOW}正在备份服务端版本目录，请稍等……${CEND}\r\n"
     #备份服务端
     cd /tlgame && tar zcf tlbb-${FILENAME}.tar.gz tlbb &&
       mv tlbb-*.tar.gz ${FILEPATH}
     #判断是否备份成功
     if [ $? -eq 0 ]; then
-      echo -ne "${CSUCCESS}$(date '+%Y-%m-%d-%H-%M-%S')\ttlbb-${FILENAME}.tar.gz\t备份成功!!${CEND}" | tee -a ${FILEPATH}${LOG_FILE}
+      echo -ne "${CSUCCESS}$(date '+%Y-%m-%d-%H-%M-%S')\ttlbb-${FILENAME}.tar.gz\t备份成功!!${CEND}\r\n" | tee -a ${FILEPATH}${LOG_FILE}
     else
-      echo -ne "${CRED}$(date '+%Y-%m-%d-%H-%M-%S')\ttlbb-${FILENAME}.tar.gz\t备份失败${CEND}" | tee -a ${FILEPATH}${LOG_FILE}
+      echo -ne "${CRED}$(date '+%Y-%m-%d-%H-%M-%S')\ttlbb-${FILENAME}.tar.gz\t备份失败${CEND}\r\n" | tee -a ${FILEPATH}${LOG_FILE}
     fi
-
-    #清理7天前的，也就是保留7天的数据
-    find /tlgame/backup/ -name "*.tar.gz" -type f -mtime +7 -exec rm -rf {} \; >/dev/null 2>&1
   }
 
   backup_mysql() {
-    echo -e "${CYELLOW}正在备份数据库，请稍等……\r${CEND}"
-    docker exec -it gsmysql /bin/sh /usr/local/bin/gsmysqlBackup.sh &&
-      mv /tlgame/gsmysql/*.sql ${FILEPATH}
+    echo -e "${CYELLOW}正在备份数据库，请稍等……${CEND}\r\n"
+    docker exec -it gsmysql /bin/sh /usr/local/bin/gsmysqlBackup.sh
     #判断是否备份成功
     if [ $? -eq 0 ]; then
-      echo -ne "${CSUCCESS}$(date '+%Y-%m-%d-%H-%M-%S')\t web和tlbbdb库 \t备份成功!!${CEND}" | tee -a ${FILEPATH}${LOG_FILE}
+      echo -ne "${CSUCCESS}$(date '+%Y-%m-%d-%H-%M-%S')\t web和tlbbdb库 \t备份成功!!${CEND}\r\n" | tee -a ${FILEPATH}${LOG_FILE}
     else
-      echo -ne "${CRED}$(date '+%Y-%m-%d-%H-%M-%S')\t web和tlbbdb库 \t备份失败${CEND}" | tee -a ${FILEPATH}${LOG_FILE}
+      echo -ne "${CRED}$(date '+%Y-%m-%d-%H-%M-%S')\t web和tlbbdb库 \t备份失败${CEND}\r\n" | tee -a ${FILEPATH}${LOG_FILE}
     fi
-    #清理7天前的，也就是保留7天的数据
-    find /tlgame/backup/ -name "*.sql" -type f -mtime +7 -exec rm -rf {} \; >/dev/null 2>&1
   }
 
   # 根据输入判断备份类型

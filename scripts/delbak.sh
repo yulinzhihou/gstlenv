@@ -47,6 +47,7 @@ if [ $? -eq 0 ]; then
   # 部署备份脚本
   if [ ${FILE_NUM} -ne 0 ]; then
     cron_data_remove
+    echo -e "${CSUCCESS}自动清理备份文件完成。${CEND}"
     exit 0
   else
     echo -e "${CRED}备份文件保留数量不能为0${CEND}"

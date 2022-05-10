@@ -36,7 +36,7 @@ if [ $? -eq 0 ]; then
   # 版本备份
   VERSION_TASK="/bin/bash /usr/local/bin/backup all > /dev/null 2>&1 &"
   # 定时清理
-  CRON_DEL_TASK="/bin/bash /usr/local/bin/crondel > /dev/null 2>&1 &"
+  CRON_DEL_TASK="/bin/bash /usr/local/bin/delbak > /dev/null 2>&1 &"
   # 定时任务临时备份文件
   CRONTAB_BAK_FILE="/tmp/crontab_bak"
 
@@ -61,7 +61,7 @@ if [ $? -eq 0 ]; then
     # 删除掉再有任务
     sed -i "/docker exec -d gsmysql \/bin\/sh \/usr\/local\/bin\/gsmysqlBackup.sh*./d" ${CRONTAB_BAK_FILE}
     sed -i "/\/bin\/bash \/usr\/local\/bin\/backup all*./d" ${CRONTAB_BAK_FILE}
-    sed -i "/\/bin\/bash \/usr\/local\/bin\/crondel*./d" ${CRONTAB_BAK_FILE}
+    sed -i "/\/bin\/bash \/usr\/local\/bin\/delbak*./d" ${CRONTAB_BAK_FILE}
     echo "0 */${TIME} * * * ${SQL_TASK}" >>${CRONTAB_BAK_FILE}
     echo "0 */${TIME} * * * ${VERSION_TASK}" >>${CRONTAB_BAK_FILE}
     echo "0 */${TIME} * * * ${CRON_DEL_TASK}" >>${CRONTAB_BAK_FILE}

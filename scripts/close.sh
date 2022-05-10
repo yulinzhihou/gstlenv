@@ -29,7 +29,7 @@ if [ $? -eq 0 ]; then
     if [ $? -eq 0 ]; then
       # 删除因为改版本导致引擎启动失败的dump文件
       cd ${ROOT_PATH}/${GSDIR} && rm -rf core.*
-      echo -e "${CSUCCESS}服务端正在关闭……，请稍候……，等进程序全部退出后如果需要重新开启，请运行【runtlbb】命令${CEND}"
+      echo -e "${CYELLOW}服务端正在关闭……，\r\n请稍候……，\r\n请使用【runtop】查看对应进程是否完全退出\r\n等进程序全部退出后如果需要重新开启，请运行【runtlbb】命令${CEND}"
       exit 0
     else
       echo -e "${CRED} 服务端关闭失败！请稍后再试！${CEND}"

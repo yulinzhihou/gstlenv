@@ -32,11 +32,10 @@ if [ $? -eq 0 ]; then
       cd /tlgame && tar zxf tlbb-setconfig-backup.tar.gz && mv /tlgame/tlbb-setconfig-backup.tar.gz /tlgame/backup/
     fi
 
-    if [ -f "/tlgame/gsmysql/*.sql" ]; then
-      docker exec -d gsmysql /bin/sh /usr/local/bin/gsmysqlRestore.sh
-    fi
+    docker exec -d gsmysql /bin/sh /usr/local/bin/gsmysqlRestore.sh
 
   }
+
   # mysql 5.1 初始化
   init_mysql51() {
     docker exec -d gsmysql /bin/sh /usr/local/bin/init_db.sh
@@ -49,7 +48,7 @@ if [ $? -eq 0 ]; then
       sleep 1
     done
     echo -ne "\r\n"
-    echo -ne "${CYELLOW}正在重构，数据不会清除……\r\n${CEND}"
+    echo -ne "${CYELLOW}正在重构，数据不会清除……${CEND}\r\n"
     #重构前，先备份数据库以及版本数据。
     setconfig_backup &&
       docker stop gsmysql gsnginx gsredis gsphp gsserver &&

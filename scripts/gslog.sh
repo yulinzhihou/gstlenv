@@ -31,10 +31,9 @@ if [ $? -eq 0 ]; then
         if [ -d ${TLBB_PATH}"/Server/Log" ]; then
             # 存在目录则进行打印监听，通过传入的 login ShareMemory world等进程的参数进行查看
             for ((time = 2; time >= 0; time--)); do
-                echo -ne "\r正准备查看日志动态！！,请使用完一定记得关闭（命令【rmlog】）。不然日志可能会挤爆服务器硬盘！${CEND}"
+                echo -ne "\r正准备查看日志动态！！,【${time}】秒请使用完一定记得关闭（命令【rmlog】）。不然日志可能会挤爆服务器硬盘！${CEND}"
                 sleep 1
             done
-            echo -ne "\n\r"
             while :; do
                 echo
                 echo -e "
@@ -50,7 +49,7 @@ if [ $? -eq 0 ]; then
 ◎ [5]：查看 [Lua] 日志
 ◎ [0]：查看 [error] 日志
 ◎ [q]：退出按 q 或者 Q，也可以按 CTRL+C 退出！
-※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※\r\n"
+※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※"
                 read -e -p "请选择功能 输入序号并回车：" num
                 case "$num" in
                 '1')
@@ -79,6 +78,7 @@ if [ $? -eq 0 ]; then
                     ;;
                 'q' | 'Q')
                     break
+                    exit 0
                     ;;
                 * | "0")
                     INPUTNAME='error'
@@ -89,6 +89,7 @@ if [ $? -eq 0 ]; then
         else
             mkdir -p ${TLBB_PATH}"/Server/Log"
         fi
+        break
     done
 else
     echo "${CRED}环境毁坏，需要重新安装或者移除现有的环境重新安装！！！${CEND}"

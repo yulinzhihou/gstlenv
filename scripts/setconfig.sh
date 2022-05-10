@@ -22,10 +22,10 @@ FILE_PATH="/root/.gs/"
 # 设置配置参数
 setconfig_rebuild() {
     if [ -f ${GS_WHOLE_PATH} ]; then
-        echo "${CMAGENTA}如果选择了W机+L机模式，则本服务器不要开启 [billing] 服务！！！${CEND}\r\n"
-        echo "${CYELLOW}即将设置服务器环境配置荐，请仔细！！注意：W机=Windows服务器，L机=Linux服务器\r\n${CEND}"
-        echo "${CYELLOW}0=单L机验证，Linux服务器做验证机器，即只需要一台服务器即可${CEND}\r\n"
-        echo "${CYELLOW}1=W机验证+L机，Windows服务器做验证机器,L机不要开验证服务${CEND}\r\n"
+        echo "${CMAGENTA}如果选择了W机+L机模式，则本服务器不要开启 [billing] 服务！！！${CEND}"
+        echo "${CYELLOW}即将设置服务器环境配置荐，请仔细！！注意：W机=Windows服务器，L机=Linux服务器${CEND}"
+        echo "${CYELLOW}0=单L机验证，Linux服务器做验证机器，即只需要一台服务器即可${CEND}"
+        echo "${CYELLOW}1=W机验证+L机，Windows服务器做验证机器,L机不要开验证服务${CEND}"
         chattr -i ${GS_WHOLE_PATH}
         while :; do
             echo
@@ -242,7 +242,7 @@ setconfig_rebuild() {
                 break
             fi
         done
-        echo "${CYELLOW}请稍等，正在写入配置信息……${CEND}\r\n"
+        echo "${CYELLOW}请稍等，正在写入配置信息……${CEND}"
         chattr +i ${GS_WHOLE_PATH}
     else
         echo -e "GS专用环境容器还没下载下来，请重新执行【curl -sSL https://gsgameshare.com/gsenv | bash 】命令！"
@@ -266,12 +266,10 @@ setconfig_backup() {
 setconfig_restore() {
     echo -ne "正在还原修改参数之前的数据库与版本请稍候……\r"
     if [ -f "/tlgame/tlbb-setconfig-backup.tar.gz" ]; then
-        cd /tlgame && tar zxf tlbb-setconfig-backup.tar.gz && rm -rf /tlgame/tlbb-setconfig-backup.tar.gz
+        cd /tlgame && tar zxf tlbb-setconfig-backup.tar.gz && mv /tlgame/tlbb-setconfig-backup.tar.gz /tlgame/backup
     fi
 
-    if [ -f "/tlgame/gsmysql/*.sql" ]; then
-        docker exec -d gsmysql /bin/sh /usr/local/bin/gsmysqlRestore.sh
-    fi
+    docker exec -it gsmysql /bin/sh /usr/local/bin/gsmysqlRestore.sh
 
 }
 
