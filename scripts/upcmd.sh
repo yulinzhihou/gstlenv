@@ -23,47 +23,38 @@ if [ $? -eq 0 ]; then
   download() {
     # [ ! -z ${COMMAND_VERSION} ] && COMMAND_VERSION=${COMMAND_VERSION} || COMMAND_VERSION=${VERSION}
     wget -q https://gitee.com/yulinzhihou/gstlenv/repository/archive/master.tar.gz -O /tmp/master.tar.gz
-    cd ${TMP_PATH} &&
+    cd /tmp &&
       # 解压目录
-      tar zxf master.tar.gz && cd ${TMP_PATH}/gstlenv-master && \cp -rf * ${GS_PROJECT}/
+      tar zxf master.tar.gz && cd /tmp/gstlenv-master && \cp -rf * ${GS_PROJECT}/
     if [ $? -eq 0 ]; then
-      rm -rf ${TMP_PATH}/master.tar.gz &&
-        rm -rf ${TMP_PATH}/gstlenv-master
+      rm -rf /tmp/master.tar.gz &&
+        rm -rf /tmp/gstlenv-master
     fi
   }
 
   # 设置最新命令
   set_command() {
-    ls -l ${GS_PROJECT}/scripts/ | awk '{print $9}' >/tmp/command.txt
-    for VAR in $(cat /tmp/command.txt); do
+    for VAR in $(ls -l ${GS_PROJECT}/scripts/ | awk '{print $9}'); do
       if [ -n ${VAR} ]; then
         \cp -rf ${GS_PROJECT}/scripts/${VAR} /usr/local/bin/${VAR%%.*} && chmod +x /usr/local/bin/${VAR%%.*}
       fi
     done
-    rm -rf /tmp/command.txt
   }
 
   # 复制命令到容器里面
   copy_to_gssmysql() {
     # 复制配置文件
-    ls -l ${GS_PROJECT}/scripts/ | awk '{print $9}' >/tmp/command.txt
-    for VAR in $(cat /tmp/command.txt); do
+    for VAR in $(ls -l ${GS_PROJECT}/scripts/ | awk '{print $9}'); do
       if [ -n ${VAR} ]; then
         docker cp ${GS_PROJECT}/scripts/${VAR} gsmysql:/usr/local/bin/${VAR}
       fi
     done
-    rm -rf /tmp/command.txt
-    # docker cp /root/.tlgame/include/alter_point.sql gsmysql:/usr/local/bin/alter_point.sql
-    # docker cp /root/.tlgame/include/change_valid.sql gsmysql:/usr/local/bin/change_valid.sql
-    # docker cp /root/.tlgame/include/change_invalid.sql gsmysql:/usr/local/bin/change_invalid.sql
-    # docker cp /root/.tlgame/include/gsmysqlRestore.sh gsmysql:/usr/local/bin/gsmysqlRestore.sh
-    # docker cp /root/.tlgame/include/gsset.sh gsmysql:/usr/local/bin/gsset.sh
-    # docker cp /root/.tlgame/include/gssetvalid.sh gsmysql:/usr/local/bin/gssetvalid.sh
   }
 
   # 复制命令到容器里面
   copy_to_gsserver() {
-    docker cp ${GS_PROJECT}/scripts/step.sh gsserver:/usr/local/bin/step
+    docker cp ${GS_PROJECT}/scripts/step.sh gsserver:/usr/local/bin/step &&
+      docker exec -d gsserver chmod a+x /usr/local/bin/step
   }
 
   download
