@@ -51,8 +51,8 @@ if [ $? -eq 0 ]; then
     echo -ne "${CYELLOW}正在重构，数据不会清除……${CEND}\r\n"
     #重构前，先备份数据库以及版本数据。
     setconfig_backup &&
-      docker stop gsmysql gsnginx gsredis gsphp gsserver &&
-      docker rm gsmysql gsnginx gsredis gsphp gsserver &&
+      docker stop gsmysql gsnginx gsserver &&
+      docker rm gsmysql gsnginx gsserver &&
       rm -rf /tlgame/tlbb/* &&
       cd ${ROOT_PATH}/${GSDIR} &&
       docker-compose up -d &&

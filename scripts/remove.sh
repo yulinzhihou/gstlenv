@@ -28,8 +28,8 @@ if [ $? -eq 0 ]; then
     echo -ne "${CYELLOW}正在进行清除操作…………\r\n${CEND}"
 
     # bug:移除本环境的docker镜像与容器。还有写入系统的命令
-    docker stop gsmysql gsnginx gsredis gsphp gsserver &&
-      docker rm -f gsmysql gsnginx gsredis gsphp gsserver &&
+    docker stop gsmysql gsnginx gsserver &&
+      docker rm -f gsmysql gsnginx gsserver &&
       docker rmi -f ${HUB_ALIYUN}gs_mysql ${HUB_ALIYUN}gs_mysql51 ${HUB_ALIYUN}gs_php ${HUB_ALIYUN}gs_redis ${HUB_ALIYUN}gs_server ${HUB_ALIYUN}gs_nginx &&
       mv /tlgame /tlgame-$(date +%Y%m%d%H%I%S) &&
       chattr -i ${GS_WHOLE_PATH} &&
