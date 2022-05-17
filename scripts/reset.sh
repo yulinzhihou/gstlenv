@@ -27,7 +27,7 @@ if [ $? -eq 0 ]; then
     echo -ne "\n\r"
     echo -ne "${CYELLOW}正在删档，数据全部清空…………\r${CEND}"
     #重构前，先备份数据库以及版本数据。
-    docker exec -it gsmysql /bin/sh /usr/local/bin/gsmysqlRestore.sh reset
+    docker exec -it gsmysql /bin/bash /usr/local/bin/gsmysqlRestore.sh reset
     if [ $? -eq 0 ]; then
       echo -e "${CSUCCESS}已经删档成功${CEND}"
       exit 0

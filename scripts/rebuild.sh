@@ -22,7 +22,7 @@ if [ $? -eq 0 ]; then
   setconfig_backup() {
     echo -ne "正在备份版本数据请稍候……\r\n"
     cd /tlgame && tar zcf tlbb-setconfig-backup.tar.gz tlbb &&
-      docker exec -d gsmysql /bin/sh /usr/local/bin/gsmysqlBackup.sh
+      docker exec -d gsmysql /bin/bash /usr/local/bin/gsmysqlBackup.sh
   }
 
   # 还原数据
@@ -32,13 +32,13 @@ if [ $? -eq 0 ]; then
       cd /tlgame && tar zxf tlbb-setconfig-backup.tar.gz && mv /tlgame/tlbb-setconfig-backup.tar.gz /tlgame/backup/
     fi
 
-    docker exec -d gsmysql /bin/sh /usr/local/bin/gsmysqlRestore.sh
+    docker exec -d gsmysql /bin/bash /usr/local/bin/gsmysqlRestore.sh
 
   }
 
   # mysql 5.1 初始化
   init_mysql51() {
-    docker exec -d gsmysql /bin/sh /usr/local/bin/init_db.sh
+    docker exec -d gsmysql /bin/bash /usr/local/bin/init_db.sh
   }
 
   while :; do

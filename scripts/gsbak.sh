@@ -32,7 +32,7 @@ if [ $? -eq 0 ]; then
   fi
 
   # 数据库备份
-  SQL_TASK="docker exec -d gsmysql /bin/sh /usr/local/bin/gsmysqlBackup.sh > /dev/null 2>&1 &"
+  SQL_TASK="docker exec -d gsmysql /bin/bash /usr/local/bin/gsmysqlBackup.sh > /dev/null 2>&1 &"
   # 版本备份
   VERSION_TASK="/bin/bash /usr/local/bin/backup all > /dev/null 2>&1 &"
   # 定时清理

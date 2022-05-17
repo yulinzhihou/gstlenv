@@ -23,7 +23,7 @@ if [ $? -eq 0 ]; then
   }
   # mysql 5.1 初始化
   init_mysql51() {
-    docker exec -it gsmysql /bin/sh /usr/local/bin/init_db.sh
+    docker exec -it gsmysql /bin/bash /usr/local/bin/init_db.sh
   }
 
   function main() {
