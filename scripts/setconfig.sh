@@ -259,7 +259,7 @@ setconfig_backup() {
     echo -ne "正在备份版本数据请稍候……\r"
     [ ! -d /tlgame/backup ] && mkdir /tlgame/backup
     cd /tlgame && tar zcf tlbb-setconfig-backup.tar.gz tlbb &&
-        docker exec -d gsmysql /bin/sh /usr/local/bin/gsmysqlBackup.sh
+        docker exec -d gsmysql /bin/bash /usr/local/bin/gsmysqlBackup.sh
 }
 
 # 还原数据
@@ -269,7 +269,7 @@ setconfig_restore() {
         cd /tlgame && tar zxf tlbb-setconfig-backup.tar.gz && mv /tlgame/tlbb-setconfig-backup.tar.gz /tlgame/backup
     fi
 
-    docker exec -it gsmysql /bin/sh /usr/local/bin/gsmysqlRestore.sh
+    docker exec -d gsmysql /bin/bash /usr/local/bin/gsmysqlRestore.sh
 
 }
 
@@ -312,7 +312,8 @@ main() {
                 setconfig_rebuild &&
                     # 开环境
                     cd ${ROOT_PATH}/${GSDIR} && docker-compose up -d &&
-                    rm -rf /tlgame/tlbb-setconfig-backup.tar.gz
+                    rm -rf /tlgame/tlbb-setconfig-backup.tar.gz &&
+                    docker exec -d gsmysql /bin/bash /usr/local/bin/gsmysqlRestore.sh reset
             fi
             break
         fi

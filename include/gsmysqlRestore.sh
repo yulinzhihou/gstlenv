@@ -9,13 +9,13 @@
 if [ $# -eq 0 ]; then
     # 表示没有输出任何参数，进行还原备份
     WEBDBFILE=$(ls -t /home/backup | grep "web-" | head -n1 | awk '{print $0}')
-    if [ ! -n "${WEBDBFILE}" ]; then
+    if [ -n "${WEBDBFILE}" ]; then
         mysql -uroot -p"${MYSQL_ROOT_PASSWORD}" web </home/backup/${WEBDBFILE}
         echo "正在还原 web 库"
     fi
 
     TLBBDBFILE=$(ls -t /home/backup | grep "tlbbdb-" | head -n1 | awk '{print $0}')
-    if [ ! -n "${TLBBDBFILE}" ]; then
+    if [ -n "${TLBBDBFILE}" ]; then
         mysql -uroot -p"${MYSQL_ROOT_PASSWORD}" tlbbdb </home/backup/${TLBBDBFILE}
         echo "正在还原 tlbbdb 库"
     fi
@@ -29,7 +29,7 @@ elif [ $# -eq 2 ]; then
     fi
 else
     # 表示有参数传入，可能是删档
-    if [ $1 = 'reset' ]; then
+    if [ $1 == 'reset' ]; then
         mysql -uroot -p"${MYSQL_ROOT_PASSWORD}" web </docker-entrypoint-initdb.d/web.sql
         mysql -uroot -p"${MYSQL_ROOT_PASSWORD}" tlbbdb </docker-entrypoint-initdb.d/tlbbdb.sql
         exit 0
