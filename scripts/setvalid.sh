@@ -36,6 +36,7 @@ if [ $? -eq 0 ]; then
         echo -e "${CSUCCESS}封[$1]账号成功：登录游戏查看，如果未实现请退出游戏再执行一次${CEND}"
         exit 0
       else
+        echo "${GSISSUE}"
         echo -e "${CRED}输入错误：如果需要封号，请在账号后面使用数字1即可封号！${CEND}"
         exit 1
       fi
@@ -43,6 +44,7 @@ if [ $? -eq 0 ]; then
 
   fi
 else
+  echo "${GSISSUE}"
   echo "${CRED}环境毁坏，需要重新安装或者移除现有的环境重新安装!!!${CEND}"
   exit 1
 fi

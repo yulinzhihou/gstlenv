@@ -43,11 +43,13 @@ if [ $? -eq 0 ]; then
 ◎ ${CRED}如若需要再查看其他日志，请重新进行本命令！${CEND}
 ◎ ${CRED}切记!!!查看完日志后，请使用【rmlog】命令进行清除，小心挤爆人的服务器${CEND}
 ◎ [1]：查看 [BILLING] 日志,只有用本服务器billing才能查看
-◎ [2]：查看 [ShareMemory] 日志
-◎ [3]：查看 [Login] 日志
-◎ [4]：查看 [World] 日志
-◎ [5]：查看 [Lua] 日志
-◎ [0]：查看 [error] 日志
+◎ [2]：查看 [ShareMemory] ShareMemory进程日志
+◎ [3]：查看 [Login] Login进程日志
+◎ [4]：查看 [World] World进程日志
+◎ [5]：查看 [Lua] 脚本报错日志
+◎ [6]：查看 [debug] 引擎调试(系统相关)日志
+◎ [7]：查看 [Debug] 引擎调试(角色相关)日志
+◎ [0]：查看 [error] 全局报错日志
 ◎ [q]：退出按 q 或者 Q，也可以按 CTRL+C 退出！
 ※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※"
                 read -e -p "请选择功能 输入序号并回车：" num
@@ -74,6 +76,14 @@ if [ $? -eq 0 ]; then
                     ;;
                 '5')
                     INPUTNAME='lua'
+                    tail_log_file
+                    ;;
+                '6')
+                    INPUTNAME='debug'
+                    tail_log_file
+                    ;;
+                '7')
+                    INPUTNAME='Debug'
                     tail_log_file
                     ;;
                 'q' | 'Q')

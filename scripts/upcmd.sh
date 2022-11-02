@@ -64,11 +64,13 @@ if [ $? -eq 0 ]; then
       echo -e "${CSUCCESS} 命令重新生成成功，如果需要了解详情，可以运行 【gs】命令进行帮助查询！！${CEND}"
       exit 0
     else
+      echo "${GSISSUE}"
       echo -e "${CRED} 命令重新生成失败，请联系作者，或者重装安装环境 ${CEND}"
       exit 1
     fi
   fi
 else
+  echo "${GSISSUE}"
   echo "${CRED}环境毁坏，需要重新安装或者移除现有的环境重新安装！！！${CEND}"
   exit 1
 fi

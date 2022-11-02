@@ -34,6 +34,7 @@ run_step_1() {
     if [ $? -eq 0 ]; then
         echo -e "${CSUCCESS} 启动 [BILLING] 服务成功，请耐心等待几分钟。建议使用：【runtop】查看情况！！${CEND}"
     else
+        echo "${GSISSUE}"
         echo -e "${CRED} 启动 [BILLING] 服务失败！${CEND}"
     fi
 }
@@ -43,6 +44,7 @@ run_step_2() {
     if [ $? -eq 0 ]; then
         echo -e "${CSUCCESS} 启动 [ShareMemory] 服务成功，请耐心等待几分钟。建议使用：【runtop】查看情况！！${CEND}"
     else
+        echo "${GSISSUE}"
         echo -e "${CRED} 启动 [ShareMemory] 服务失败！${CEND}"
     fi
 }
@@ -60,6 +62,7 @@ run_step_3() {
     if [ $? -eq 0 ]; then
         echo -e "${CSUCCESS} 启动 [Login] 服务成功，请耐心等待几分钟。建议使用：【runtop】查看情况！！${CEND}"
     else
+        echo "${GSISSUE}"
         echo -e "${CRED} 启动 [Login] 服务失败！${CEND}"
     fi
 }
@@ -77,6 +80,7 @@ run_step_4() {
     if [ $? -eq 0 ]; then
         echo -e "${CSUCCESS} 启动 [World] 服务成功，请耐心等待几分钟。建议使用：【runtop】查看情况！！${CEND}"
     else
+        echo "${GSISSUE}"
         echo -e "${CRED} 启动 [World] 服务失败！${CEND}"
     fi
 }
@@ -93,6 +97,7 @@ run_step_5() {
     if [ $? -eq 0 ]; then
         echo -e "${CSUCCESS} 启动 [Server] 服务成功，请耐心等待几分钟。建议使用：【runtop】查看情况！！${CEND}"
     else
+        echo "${GSISSUE}"
         echo -e "${CRED} 启动 [Server] 服务失败！${CEND}"
     fi
 }
@@ -100,7 +105,7 @@ run_step_5() {
 if [ -d "/home/tlbb" ] && [ -d "/home/billing" ]; then
     echo -e "${CRED}注意：执行此命令前，建议重启服务器，避免一些不必要的问题！${CEND}"
     echo -e "${CYYAN}使用此命令需要手动创建多窗口，点当前容器标签右键---克隆/复制容器---会基于当前容器创建一个全新的容器。每个容器输入一个命令，一共需要4个窗口${CEND}"
-    echo -e "${CYELLOW}如果有问题：可以加客服QQ1303588722，进行反馈${CEND}"
+    echo "${GSISSUE}"
     while :; do
         echo
         echo -e "
@@ -136,12 +141,12 @@ if [ -d "/home/tlbb" ] && [ -d "/home/billing" ]; then
             run_step_5
             break
             ;;
-        *) echo -e "输入错误！！" ;;
+        *) echo "输入错误！！" ;;
         esac
     done
 else
     echo -e "${CRED}请进入容器里面使用此命令，link 命令可以进入！${CEND}"
     echo -e "${CRED}使用此命令需要手动创建多窗口，点当前容器标签右键---克隆/复制容器---会基于当前容器创建一个全新的容器。每个容器输入一个命令，一共需要4个窗口${CEND}"
-    echo -e "${CRED}如果有问题：可以加客服QQ1303588722，进行反馈${CEND}"
+    echo "${GSISSUE}"
     exit 1
 fi

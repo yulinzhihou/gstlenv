@@ -85,6 +85,7 @@ if [ $? -eq 0 ]; then
             echo -e "${CSUCCESS}配置文件已经写入成功，可以执行【runtlbb】进行开服操作！！${CEND}"
             exit 0
         else
+            echo "${GSISSUE}"
             echo -e "${CRED}配置文件写入失败！${CEND}"
             exit 1
         fi
@@ -99,7 +100,7 @@ if [ $? -eq 0 ]; then
     # docker cp ${GS_PROJECT}/include/gssetvalid.sh gsmysql:/usr/local/bin/gssetvalid.sh
 
 else
-
+    echo "${GSISSUE}"
     echo -e "${CRED}环境毁坏，需要重新安装或者移除现有的环境重新安装！！！${CEND}"
     exit 1
 fi

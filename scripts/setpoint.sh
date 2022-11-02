@@ -26,9 +26,11 @@ if [ $? -eq 0 ]; then
       echo -e "${CSUCCESS}设置成功:现在开始，新注册账号上线默认送【$1】充值点，请不要设置过高，一些版本可以会显示为负数${CEND}"
       exit 0
     fi
+    echo "${GSISSUE}"
     echo -e "${CRED}错误:输入有误,充值点数格式不正确，请输入0-21亿之间的整数!!${CEND}"
   fi
 else
+  echo "${GSISSUE}"
   echo "${CRED}环境毁坏，需要重新安装或者移除现有的环境重新安装!!!${CEND}"
   exit 1
 fi

@@ -50,10 +50,12 @@ if [ $? -eq 0 ]; then
     echo -e "${CSUCCESS}自动清理备份文件完成。${CEND}"
     exit 0
   else
+    echo "${GSISSUE}"
     echo -e "${CRED}备份文件保留数量不能为0${CEND}"
     exit 1
   fi
 else
+  echo "${GSISSUE}"
   echo "${CRED}环境毁坏，需要重新安装或者移除现有的环境重新安装！！！${CEND}"
   exit 1
 fi

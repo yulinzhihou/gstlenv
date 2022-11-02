@@ -23,27 +23,28 @@ if [ $? -eq 0 ]; then
     cd ${ROOT_PATH}/${GSDIR} && docker-compose exec gsserver /bin/bash
   else
     case "$1" in
-    'gsmysql' | 'mysql')
+    'gsmysql' | 'mysql' | 'sql' | 'my' | 'm')
       cd ${ROOT_PATH}/${GSDIR} && docker-compose exec gsmysql /bin/bash
       ;;
-    'gsserver' | 'server' | 'gs')
+    'gsserver' | 'server' | 'gs' | 's')
       cd ${ROOT_PATH}/${GSDIR} && docker-compose exec gsserver /bin/bash
       ;;
-    'gsnginx' | 'nginx')
+    'gsnginx' | 'nginx' | 'n')
       cd ${ROOT_PATH}/${GSDIR} && docker-compose exec gsnginx /bin/sh
       ;;
-    'redis' | 'gsredis')
+    'redis' | 'gsredis' | 'r')
       cd ${ROOT_PATH}/${GSDIR} && docker-compose exec gsredis /bin/bash
       ;;
-    'gsphp' | 'php')
+    'gsphp' | 'php' | 'p')
       cd ${ROOT_PATH}/${GSDIR} && docker-compose exec gsphp /bin/sh
       ;;
     *)
-      echo -e "${CRED}错误：输入有误！！请使用 link {gsmysql|mysql},{gsphp|php},{gsredis|redis},{gsnginx|nginx},{gsserver|server|gs}${CEND}"
+      echo -e "${CRED}错误：输入有误！！请使用 link {gsmysql|mysql|sql|my|m},{gsphp|php|p},{gsredis|redis|r},{gsnginx|nginx|n},{gsserver|server|gs|s}${CEND}"
       ;;
     esac
   fi
 else
+  echo "${GSISSUE}"
   echo "${CRED}环境毁坏，需要重新安装或者移除现有的环境重新安装！！！${CEND}"
   exit 1
 fi

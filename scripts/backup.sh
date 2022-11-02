@@ -22,7 +22,7 @@ if [ $? -eq 0 ]; then
 
   FILENAME="$(date +%Y_%m_%d_%H_%M_%S)"
   FILEPATH="/tlgame/backup/"
-  LOG_FILE="backup.log"
+  LOG_FILE="backup-${FILENAME}.log"
 
   # 检测
   if [ ! -d ${FILEPATH} ]; then

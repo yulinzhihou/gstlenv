@@ -32,11 +32,13 @@ if [ $? -eq 0 ]; then
       echo -e "${CYELLOW}服务端正在关闭……，\r\n请稍候……，\r\n请使用【runtop】查看对应进程是否完全退出\r\n等进程序全部退出后如果需要重新开启，请运行【runtlbb】命令${CEND}"
       exit 0
     else
+      echo "${GSISSUE}"
       echo -e "${CRED} 服务端关闭失败！请稍后再试！${CEND}"
       exit 1
     fi
   fi
 else
+  echo "${GSISSUE}"
   echo "${CRED}环境毁坏，需要重新安装或者移除现有的环境重新安装！！！${CEND}"
   exit 1
 fi

@@ -78,6 +78,7 @@ docker_run() {
         echo "success" >${ROOT_PATH}/${GSDIR}/gs.lock
         echo -e "${CGREEN}环境安装成功！！，配置文件已初始化为默认配置。如不想使用默认参数，请使用[setconfig]命令进行所有端口与密码的修改！！！${CEND}"
     else
+        echo "${GSISSUE}"
         echo -e "${CRED}环境安装失败，配置文件已经初始化。更多命令执行 【gs】查看${CRED}"
     fi
 }
@@ -95,6 +96,7 @@ else
     if [ -f ${WHOLE_PATH} ]; then
         . ${WHOLE_PATH}
     else
+        echo "${GSISSUE}"
         echo -e "${CYELLOW}GS专用环境容器还没下载下来，请重新执行【$0】命令！${CEND}"
         exit 1
     fi

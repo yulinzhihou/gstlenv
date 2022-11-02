@@ -32,11 +32,13 @@ if [ $? -eq 0 ]; then
       echo -e "${CSUCCESS}已经删档成功${CEND}"
       exit 0
     else
+      echo "${GSISSUE}"
       echo -e "${CRED}已经删档失败！可能需要重装系统或者环境了！${CEND}"
       exit 1
     fi
   done
 else
+  echo "${GSISSUE}"
   echo "${CRED}环境毁坏，需要重新安装或者移除现有的环境重新安装!!!${CEND}"
   exit 1
 fi

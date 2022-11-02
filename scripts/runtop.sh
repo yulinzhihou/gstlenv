@@ -24,6 +24,7 @@ if [ $? -eq 0 ]; then
     cd ${ROOT_PATH}/${GSDIR} && docker-compose exec $1 top
   fi
 else
+  echo "${GSISSUE}"
   echo "${CRED}环境毁坏，需要重新安装或者移除现有的环境重新安装！！！${CEND}"
   exit 1
 fi

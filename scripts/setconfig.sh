@@ -245,6 +245,7 @@ setconfig_rebuild() {
         echo "${CYELLOW}请稍等，正在写入配置信息……${CEND}"
         chattr +i ${GS_WHOLE_PATH}
     else
+        echo "${GSISSUE}"
         echo -e "GS专用环境容器还没下载下来，请重新执行【curl -sSL https://gsgameshare.com/gsenv | bash 】命令！"
         exit 1
     fi
@@ -323,6 +324,7 @@ main() {
         echo -e "${CSUCCESS}配置写入成功！！,可以使用 【curgs】命令查看配置的信息${CEND}"
         exit 0
     else
+        echo "${GSISSUE}"
         echo -e "${CRED}配置写入失败，请移除环境重新安装！！${CEND}"
         exit 1
     fi
