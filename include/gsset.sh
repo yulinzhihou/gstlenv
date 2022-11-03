@@ -28,22 +28,26 @@ if [ $# -ne 0 ]; then
     *) FIRST_PARAM=point ;;
     esac
 
-    if [[ $2 =~ ^[0-9]+$ ]] && [ $2 -ge 0 ] && [ $2 -lt 2100000000 ]; then
-        SECOND_PARAM=$2
-    else
-        SECOND_PARAM=0
+    if [ $# -eq 2 ]; then
+        if [[ $2 =~ ^[0-9]+$ ]] && [ $2 -ge 0 ] && [ $2 -lt 2100000000 ]; then
+            SECOND_PARAM=$2
+        else
+            SECOND_PARAM=0
+        fi
     fi
 
-    if [ $3 =~ ^[A-Za-z0-9]+$ ]; then
-        THIRD_PARAM=$3
-        if [[ $4 =~ ^[0-9]+$ ]] && [ $4 -ge 0 ] && [ $4 -lt 2100000000 ]; then
-            FOURTH_PARAM=$($4 - 1)
+    if [ $# -eq 3 ]; then
+        if [[ $3 =~ ^[A-Za-z0-9]+$ ]]; then
+            THIRD_PARAM=$3
+            if [[ $4 =~ ^[0-9]+$ ]] && [ $4 -ge 0 ] && [ $4 -lt 2100000000 ]; then
+                FOURTH_PARAM=$($4 - 1)
+            else
+                FOURTH_PARAM=0
+            fi
         else
+            THIRD_PARAM=''
             FOURTH_PARAM=0
         fi
-    else
-        THIRD_PARAM=''
-        FOURTH_PARAM=0
     fi
     # 根据传入的参数进行生成sql文件
     if [ $# -eq 2 ]; then
