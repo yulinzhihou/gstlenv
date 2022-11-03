@@ -20,7 +20,7 @@ if [ $? -eq 0 ]; then
 
   if [ $# -eq 0 ]; then
     # 不传参数，表示一切归零，还原
-    docker exec gsmysql /bin/bash /usr/local/bin/gsset.sh 0
+    docker exec gsmysql /bin/bash /usr/local/bin/gsset.sh point 0
   else
     # 分2个参数和3个参数，
     # 2个参数：设置成功后，所有角色有效果。
@@ -55,20 +55,24 @@ if [ $? -eq 0 ]; then
         exit 1
       fi
 
-      if [ $3 =~ ^[A-Za-z0-9]+$ ]; then
-        THIRD_PARAM=$3
-      else
-        echo -e "${GSISSUE}\r\n"
-        echo -e "${CRED}错误:输入有误,用户账号不需要加后缀 @game.sohu.com,只需要前面账号,并且暂不支持中文${CEND}"
-        exit 1
+      if [ $# -eq 3 ] && [ -z $3 ]; then
+        if [[ $3 =~ ^[A-Za-z0-9]+$ ]]; then
+          THIRD_PARAM=$3
+        else
+          echo -e "${GSISSUE}\r\n"
+          echo -e "${CRED}错误:输入有误,用户账号不需要加后缀 @game.sohu.com,只需要前面账号,并且暂不支持中文${CEND}"
+          exit 1
+        fi
       fi
 
-      case $4 in
-      1) FOURTH_PARAM=1 ;;
-      2) FOURTH_PARAM=2 ;;
-      3) FOURTH_PARAM=3 ;;
-      *) FOURTH_PARAM=1 ;;
-      esac
+      if [ $# -eq 4 ] && [ -z $4 ]; then
+        case $4 in
+        1) FOURTH_PARAM=1 ;;
+        2) FOURTH_PARAM=2 ;;
+        3) FOURTH_PARAM=3 ;;
+        *) FOURTH_PARAM=1 ;;
+        esac
+      fi
       # 组装参数发送命令
       docker exec gsmysql /bin/bash /usr/local/bin/gsset.sh ${FIRST_PARAM} ${SECOND_PARAM} ${THIRD_PARAM} ${FOURTH_PARAM}
     else

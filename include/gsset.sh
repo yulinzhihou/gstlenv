@@ -71,6 +71,8 @@ if [ $# -ne 0 ]; then
             sed -i "s/SET .* = .* WHERE aid IN ( SELECT aid FROM ( SELECT aid FROM t_char WHERE accname = .* LIMIT 1 OFFSET .* ) AS aids );/SET ${FIRST_PARAM} = ${SECOND_PARAM} WHERE aid IN ( SELECT aid FROM ( SELECT aid FROM t_char WHERE accname = ${THIRD_PARAM} LIMIT 1 OFFSET ${FOURTH_PARAM} ) AS aids );/g" /usr/local/bin/update_tlbbdb_point.sql
             ${UPDATE_TLBBDB_POINT}
         fi
-
+    else
+        sed -i "s/default .*/default 0/g" /usr/local/bin/alter_point.sql
+        ${ALTER_POINT}
     fi
 fi
