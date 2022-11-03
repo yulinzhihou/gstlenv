@@ -14,40 +14,11 @@ UPDATE_POINT='/usr/local/bin/update_point.sql'
 UPDATE_TLBBDB_POINT='/usr/local/bin/update_tlbbdb_point.sql'
 
 if [ $# -ne 0 ]; then
-    # case $1 in
-    # 'point') FIRST_PARAM='point' ;;
-    # 'yuanbao') FIRST_PARAM='yuanbao' ;;
-    # 'zengdian') FIRST_PARAM='zengdian' ;;
-    # 'menpaipoint') FIRST_PARAM='menpaipoint' ;;
-    # 'guildpoint') FIRST_PARAM='guildpoint' ;;
-    # *) FIRST_PARAM=point ;;
-    # esac
     FIRST_PARAM=$1
     SECOND_PARAM=$2
     THIRD_PARAM=$3
     FOURTH_PARAM=$4
 
-    if [ $# -eq 2 ]; then
-        if [[ $2 =~ ^[0-9]+$ ]] && [ $2 -ge 0 ] && [ $2 -lt 2100000000 ]; then
-            SECOND_PARAM=$2
-        else
-            SECOND_PARAM=0
-        fi
-    fi
-
-    if [ $# -eq 3 ]; then
-        if [[ $3 =~ ^[A-Za-z0-9]+$ ]]; then
-            THIRD_PARAM=$3
-            if [[ $4 =~ ^[0-9]+$ ]] && [ $4 -ge 0 ] && [ $4 -lt 3 ]; then
-                FOURTH_PARAM=$($4 - 1)
-            else
-                FOURTH_PARAM=0
-            fi
-        else
-            THIRD_PARAM=''
-            FOURTH_PARAM=0
-        fi
-    fi
     # 根据传入的参数进行生成sql文件
     if [ $# -eq 2 ]; then
         if [ ${FIRST_PARAM} == 'point' ]; then
@@ -62,7 +33,7 @@ if [ $# -ne 0 ]; then
             mysql -uroot -p"${MYSQL_ROOT_PASSWORD}" tlbbdb <${ALTER_TLBBDB_POINT}
         fi
 
-    elif [ $# -eq 3 ] && [[ ${THIRD_PARAM} -ne '' ]]; then
+    elif [ $# -eq 3 ]; then
         if [ ${FIRST_PARAM} == 'point' ]; then
             sed -i "s/point = .* WHERE name = .*;/point = ${SECOND_PARAM} WHERE name = ${THIRD_PARAM};/g" ${UPDATE_POINT}
             cat ${UPDATE_POINT} | tee -a $EXCHANGE_LOG_PATH
@@ -74,7 +45,7 @@ if [ $# -ne 0 ]; then
             echo -e "\r" | tee -a $EXCHANGE_LOG_PATH
             mysql -uroot -p"${MYSQL_ROOT_PASSWORD}" tlbbdb <${UPDATE_TLBBDB_POINT}
         fi
-    elif [ $# -eq 4 ] && [[ ${FOURTH_PARAM} -ne 0 ]]; then
+    elif [ $# -eq 4 ]; then
         if [ ${FIRST_PARAM} == 'point' ]; then
             sed -i "s/point = .* WHERE name = .*;/point = ${SECOND_PARAM} WHERE name = ${THIRD_PARAM};/g" ${UPDATE_POINT}
             cat ${UPDATE_POINT} | tee -a $EXCHANGE_LOG_PATH
