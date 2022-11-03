@@ -58,6 +58,7 @@ ${CYELLOW}###########################################
 #    25:setvalid   解/封号                #
 #    26:restore    还原数据库             #
 #    27:delbak    删除备份文件           #
+#    28:gsfix    修复环境安装           #
 #    0:q 退出,或者按 CTRL+C               #
 ###########################################${CEND}
 EFF
@@ -343,9 +344,13 @@ EOF
     cat <<EOF
 ${CRED}setpoint${CEND} ${CGREEN}作用: 修复注册账号送默认充值点
       使用: setpoint 888
-      描述: 表示从设置此命令起，注册的账号会自动赠送888的充值点数
+      描述: 离线给账号刷充值点，元宝，赠点，帮贡，门贡，潜能，金币，也可以单独为某个账号或者某个角色设置
       条件: 设置默认充值点，从即刻起，注册新账号会有默认的充值点
-      参数: 1个 请输入0-21亿内的整数
+      参数: 4个
+      参数1：充值点，元宝，赠点，帮贡，门贡，潜能，金币：[point|p|POINT|P|充值点]\r\n[yuanbao|y|YUANBAO|Y|元宝]\r\n[zengdian|z|ZENGDIAN|Z|赠点]\r\n[menpaipoint|m|MENPAIPOINT|M|门贡]\r\n[guildpoint|g|GUILDPOINT|G|帮贡]\r\n[points|po|POINTS|PO|潜能]\r\n[vmoney|v|VMONEY|V|金币]\r\n
+      参数2：数量，基于参数1的数量，不能超过指定的值。
+      参数3：账号，不需要加后缀。比如账号为：test@game.sohu.com，则参数3为 test
+      参数4：基于第3个参数，取值为1，2，3。分别表示为账号下的第几个角色充值。默认有几个充值几个
       说明: 如有问题，可以向客服反馈
 ${CEND}
 EOF
@@ -398,6 +403,17 @@ ${CRED}delbak${CEND} ${CGREEN}作用: 删除备份文件，默认保留最新的
       条件: 暂无
       参数: 暂无
       说明: 默认 gsbak 会1小时备份一次 web tlbbdb库，tlbb版本。delbak会定时删除多余的备份文件，只保留三种备份的各10份最新文件
+${CEND}
+EOF
+  }
+  # 28 gsfix
+  gsfix_help() {
+    cat <<EOF
+${CRED}gsfix${CEND} ${CGREEN}作用: 修复安装 docker 及 docker-compose 失败
+      用法: gsfix
+      条件: 暂无
+      参数: 暂无
+      说明: 
 ${CEND}
 EOF
   }
@@ -584,6 +600,9 @@ EOF
           ;;
         '27' | 'delbak')
           delbak_help
+          ;;
+        '28' | 'gsfix')
+          gsfix_help
           ;;
         '0' | '00' | 'q' | 'Q')
           break
