@@ -54,12 +54,12 @@ if [ $? -eq 0 ]; then
   # 复制命令到容器里面
   copy_to_gsserver() {
     docker cp ${GS_PROJECT}/scripts/step.sh gsserver:/usr/local/bin/step &&
-      docker exec -d gsserver chmod a+x /usr/local/bin/step
+      docker exec -d gsserver chmod -R 777 /usr/local/bin
   }
 
   download
   if [ $? -eq 0 ]; then
-    set_command && copy_to_gssmysql && copy_to_gsserver
+    set_command && copy_to_gssmysql && copy_to_gsserver && docker exec -d gsmysql chmod -R 777 /usr/local/bin
     if [ $? -eq 0 ]; then
       echo -e "${CSUCCESS} 命令重新生成成功，如果需要了解详情，可以运行 【gs】命令进行帮助查询！！${CEND}"
       exit 0
