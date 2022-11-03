@@ -17,7 +17,7 @@ if [ $# -ne 0 ]; then
     FIRST_PARAM=''
     SECOND_PARAM=''
     THIRD_PARAM=''
-    FOURTH_PARAM=''
+    FOURTH_PARAM=0
 
     case $1 in
     'point') FIRST_PARAM='point' ;;
@@ -75,7 +75,7 @@ if [ $# -ne 0 ]; then
             echo -e "\r" | tee -a $EXCHANGE_LOG_PATH
             mysql -uroot -p"${MYSQL_ROOT_PASSWORD}" tlbbdb <${UPDATE_TLBBDB_POINT}
         fi
-    elif [ $# -eq 4 ] && [ ${THIRD_PARAM} -ne '' ]; then
+    elif [ $# -eq 4 ] && [ ${FOURTH_PARAM} -ne 0 ]; then
         if [ ${FIRST_PARAM} == 'point' ]; then
             sed -i "s/point = .* WHERE name = .*;/point = ${SECOND_PARAM} WHERE name = ${THIRD_PARAM};/g" ${UPDATE_POINT}
             cat ${UPDATE_POINT} | tee -a $EXCHANGE_LOG_PATH
