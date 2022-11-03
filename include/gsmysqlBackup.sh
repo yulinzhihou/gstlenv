@@ -5,9 +5,9 @@
 # Date :  2021-02-01
 # Notes:  gstlenv for CentOS/RedHat 7+ Debian 10+ and Ubuntu 18+
 # comment: 容器里面备份数据库功能和打包服务端
-FILENAME=$(date "+%Y-%m-%d-%H-%M-%S")
-TLBBDB_LOG_PATH='/home/backup/tlbbdb_backup.log'
-WEB_LOG_PATH='/home/backup/web_backup.log'
+FILENAME=$(date "+%Y-%m-%d")
+TLBBDB_LOG_PATH="/home/backup/tlbbdb_backup_${FILENAME}.log"
+WEB_LOG_PATH="/home/backup/web_backup_${FILENAME}.log"
 # 如果是空库则不进行备份
 WEB_FILE_NUM=$(ls -l /var/lib/mysql/web | grep '^-' | wc -l)
 TLBBDB_FILE_NUM=$(ls -l /var/lib/mysql/tlbbdb | grep '^-' | wc -l)
