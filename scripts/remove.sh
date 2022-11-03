@@ -29,7 +29,7 @@ if [ $? -eq 0 ]; then
 
     # bug:移除本环境的docker镜像与容器。还有写入系统的命令
     for VAR in $(ls -l ${GS_PROJECT}/scripts/ | awk '{print $9}'); do
-      if [ -n ${VAR} ] && [ ${VAR} -ne 'remove' ]; then
+      if [ -n ${VAR} ] && [ ${VAR%%.*} -ne 'remove' ]; then
         rm -rf /usr/local/bin/${VAR%%.*}
       fi
     done
