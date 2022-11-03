@@ -6,6 +6,13 @@
 # Notes:  gstlenv for CentOS/RedHat 7+ Debian 10+ and Ubuntu 18+
 # comment: 设置默认充值点数,元宝，赠点，帮贡，门贡
 
+FILENAME=$(date "+%Y-%m-%d-%H-%M-%S")
+EXCHANGE_LOG_PATH="/home/backup/point-${FILENAME}.log"
+ALTER_POINT='/usr/local/bin/alter_point.sql'
+ALTER_TLBBDB_POINT='/usr/local/bin/alter_tlbbdb_point.sql'
+UPDATE_POINT='/usr/local/bin/update_point.sql'
+UPDATE_TLBBDB_POINT='/usr/local/bin/update_tlbbdb_point.sql'
+
 if [ $# -ne 0 ]; then
     FIRST_PARAM=''
     SECOND_PARAM=''
@@ -45,31 +52,45 @@ if [ $# -ne 0 ]; then
     # 根据传入的参数进行生成sql文件
     if [ $# -eq 2 ]; then
         if [ ${FIRST_PARAM} == 'point' ]; then
-            sed -i "s/default .*/default ${SECOND_PARAM}/g" /usr/local/bin/alter_point.sql
-            mysql -uroot -p"${MYSQL_ROOT_PASSWORD}" web </usr/local/bin/alter_point.sql
+            sed -i "s/default .*/default ${SECOND_PARAM}/g" ${ALTER_POINT}
+            cat ${ALTER_POINT} | tee -a $EXCHANGE_LOG_PATH
+            echo -e "\r" | tee -a $EXCHANGE_LOG_PATH
+            mysql -uroot -p"${MYSQL_ROOT_PASSWORD}" web <${ALTER_POINT}
         else
-            sed -i "s/column .* set default .*/column ${FIRST_PARAM} set default ${SECOND_PARAM}/g" /usr/local/bin/alter_tlbbdb_point.sql
-            mysql -uroot -p"${MYSQL_ROOT_PASSWORD}" tlbbdb </usr/local/bin/alter_tlbbdb_point.sql
+            sed -i "s/column .* set default .*/column ${FIRST_PARAM} set default ${SECOND_PARAM}/g" ${ALTER_TLBBDB_POINT}
+            cat ${ALTER_TLBBDB_POINT} | tee -a $EXCHANGE_LOG_PATH
+            echo -e "\r" | tee -a $EXCHANGE_LOG_PATH
+            mysql -uroot -p"${MYSQL_ROOT_PASSWORD}" tlbbdb <${ALTER_TLBBDB_POINT}
         fi
 
     elif [ $# -eq 3 ] && [ -z ${THIRD_PARAM} ]; then
         if [ ${FIRST_PARAM} == 'point' ]; then
-            sed -i "s/point = .* WHERE name = .*;/point = ${SECOND_PARAM} WHERE name = ${THIRD_PARAM};/g" /usr/local/bin/update_point.sql
-            mysql -uroot -p"${MYSQL_ROOT_PASSWORD}" web </usr/local/bin/update_point.sql
+            sed -i "s/point = .* WHERE name = .*;/point = ${SECOND_PARAM} WHERE name = ${THIRD_PARAM};/g" ${UPDATE_POINT}
+            cat ${UPDATE_POINT} | tee -a $EXCHANGE_LOG_PATH
+            echo -e "\r" | tee -a $EXCHANGE_LOG_PATH
+            mysql -uroot -p"${MYSQL_ROOT_PASSWORD}" web <${UPDATE_POINT}
         else
-            sed -i "s/SET .* = .* WHERE aid IN ( SELECT aid FROM ( SELECT aid FROM t_char WHERE accname = .* LIMIT 1 OFFSET .* ) AS aids );/SET ${FIRST_PARAM} = ${SECOND_PARAM} WHERE aid IN ( SELECT aid FROM ( SELECT aid FROM t_char WHERE accname = ${THIRD_PARAM} LIMIT 1 OFFSET 0 ) AS aids );/g" /usr/local/bin/update_tlbbdb_point.sql
-            mysql -uroot -p"${MYSQL_ROOT_PASSWORD}" tlbbdb </usr/local/bin/update_tlbbdb_point.sql
+            sed -i "s/SET .* = .* WHERE aid IN ( SELECT aid FROM ( SELECT aid FROM t_char WHERE accname = .* LIMIT 1 OFFSET .* ) AS aids );/SET ${FIRST_PARAM} = ${SECOND_PARAM} WHERE aid IN ( SELECT aid FROM ( SELECT aid FROM t_char WHERE accname = ${THIRD_PARAM} LIMIT 1 OFFSET 0 ) AS aids );/g" ${UPDATE_TLBBDB_POINT}
+            cat ${UPDATE_TLBBDB_POINT} | tee -a $EXCHANGE_LOG_PATH
+            echo -e "\r" | tee -a $EXCHANGE_LOG_PATH
+            mysql -uroot -p"${MYSQL_ROOT_PASSWORD}" tlbbdb <${UPDATE_TLBBDB_POINT}
         fi
     elif [ $# -eq 4 ] && [ -z ${THIRD_PARAM} ]; then
         if [ ${FIRST_PARAM} == 'point' ]; then
-            sed -i "s/point = .* WHERE name = .*;/point = ${SECOND_PARAM} WHERE name = ${THIRD_PARAM};/g" /usr/local/bin/update_point.sql
-            mysql -uroot -p"${MYSQL_ROOT_PASSWORD}" web </usr/local/bin/update_point.sql
+            sed -i "s/point = .* WHERE name = .*;/point = ${SECOND_PARAM} WHERE name = ${THIRD_PARAM};/g" ${UPDATE_POINT}
+            cat ${UPDATE_POINT} | tee -a $EXCHANGE_LOG_PATH
+            echo -e "\r" | tee -a $EXCHANGE_LOG_PATH
+            mysql -uroot -p"${MYSQL_ROOT_PASSWORD}" web <${UPDATE_POINT}
         else
-            sed -i "s/SET .* = .* WHERE aid IN ( SELECT aid FROM ( SELECT aid FROM t_char WHERE accname = .* LIMIT 1 OFFSET .* ) AS aids );/SET ${FIRST_PARAM} = ${SECOND_PARAM} WHERE aid IN ( SELECT aid FROM ( SELECT aid FROM t_char WHERE accname = ${THIRD_PARAM} LIMIT 1 OFFSET ${FOURTH_PARAM} ) AS aids );/g" /usr/local/bin/update_tlbbdb_point.sql
-            mysql -uroot -p"${MYSQL_ROOT_PASSWORD}" tlbbdb </usr/local/bin/update_tlbbdb_point.sql
+            sed -i "s/SET .* = .* WHERE aid IN ( SELECT aid FROM ( SELECT aid FROM t_char WHERE accname = .* LIMIT 1 OFFSET .* ) AS aids );/SET ${FIRST_PARAM} = ${SECOND_PARAM} WHERE aid IN ( SELECT aid FROM ( SELECT aid FROM t_char WHERE accname = ${THIRD_PARAM} LIMIT 1 OFFSET ${FOURTH_PARAM} ) AS aids );/g" ${UPDATE_TLBBDB_POINT}
+            cat ${UPDATE_TLBBDB_POINT} | tee -a $EXCHANGE_LOG_PATH
+            echo -e "\r" | tee -a $EXCHANGE_LOG_PATH
+            mysql -uroot -p"${MYSQL_ROOT_PASSWORD}" tlbbdb <${UPDATE_TLBBDB_POINT}
         fi
     else
-        sed -i "s/default .*/default 0/g" /usr/local/bin/alter_point.sql
-        mysql -uroot -p"${MYSQL_ROOT_PASSWORD}" web </usr/local/bin/alter_point.sql
+        sed -i "s/default .*/default 0/g" ${ALTER_POINT}
+        cat ${ALTER_POINT} | tee -a $EXCHANGE_LOG_PATH
+        echo -e "\r" | tee -a $EXCHANGE_LOG_PATH
+        mysql -uroot -p"${MYSQL_ROOT_PASSWORD}" web <${ALTER_POINT}
     fi
 fi
