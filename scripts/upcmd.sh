@@ -18,7 +18,7 @@ if [ $? -eq 0 ]; then
   else
     . /usr/local/bin/color
   fi
-
+  echo -e "${WARNING} 正在在线更新最新GS环境命令，请稍等……${CEND}"
   # 更新命令
   download() {
     # [ ! -z ${COMMAND_VERSION} ] && COMMAND_VERSION=${COMMAND_VERSION} || COMMAND_VERSION=${VERSION}
