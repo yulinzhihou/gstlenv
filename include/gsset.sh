@@ -6,10 +6,10 @@
 # Notes:  gstlenv for CentOS/RedHat 7+ Debian 10+ and Ubuntu 18+
 # comment: 设置默认充值点数,元宝，赠点，帮贡，门贡
 
-ALTER_POINT=$(mysql -uroot -p"${MYSQL_ROOT_PASSWORD}" web </usr/local/bin/alter_point.sql)
-ALTER_TLBBDB_POINT=$(mysql -uroot -p"${MYSQL_ROOT_PASSWORD}" tlbbdb </usr/local/bin/alter_tlbbdb_point.sql)
-UPDATE_POINT=$(mysql -uroot -p"${MYSQL_ROOT_PASSWORD}" web </usr/local/bin/update_point.sql)
-UPDATE_TLBBDB_POINT=$(mysql -uroot -p"${MYSQL_ROOT_PASSWORD}" web </usr/local/bin/update_tlbbdb_point.sql)
+ALTER_POINT='mysql -uroot -p"${MYSQL_ROOT_PASSWORD}" web </usr/local/bin/alter_point.sql'
+ALTER_TLBBDB_POINT='mysql -uroot -p"${MYSQL_ROOT_PASSWORD}" tlbbdb </usr/local/bin/alter_tlbbdb_point.sql'
+UPDATE_POINT='mysql -uroot -p"${MYSQL_ROOT_PASSWORD}" web </usr/local/bin/update_point.sql'
+UPDATE_TLBBDB_POINT='mysql -uroot -p"${MYSQL_ROOT_PASSWORD}" web </usr/local/bin/update_tlbbdb_point.sql'
 
 if [ $# -ne 0 ]; then
     # sed -i "s/column point set default .*/column point set default $2/g" /usr/local/bin/alter_point.sql
