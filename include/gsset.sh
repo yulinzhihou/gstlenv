@@ -7,8 +7,6 @@
 # comment: 设置默认充值点数,元宝，赠点，帮贡，门贡
 
 if [ $# -ne 0 ]; then
-    # sed -i "s/column point set default .*/column point set default $2/g" /usr/local/bin/alter_point.sql
-    #  sed -i "s/column yuanbao set default .*/column yuanbao set default $2/g" /usr/local/bin/alter_tlbbdb_point.sql
     FIRST_PARAM=''
     SECOND_PARAM=''
     THIRD_PARAM=''
@@ -46,7 +44,7 @@ if [ $# -ne 0 ]; then
     fi
     # 根据传入的参数进行生成sql文件
     if [ $# -eq 2 ]; then
-        if [ ${FIRST_PARAM} == 'yunbao' ]; then
+        if [ ${FIRST_PARAM} == 'point' ]; then
             sed -i "s/default .*/default ${SECOND_PARAM}/g" /usr/local/bin/alter_point.sql
             mysql -uroot -p"${MYSQL_ROOT_PASSWORD}" web </usr/local/bin/alter_point.sql
         else
@@ -55,7 +53,7 @@ if [ $# -ne 0 ]; then
         fi
 
     elif [ $# -eq 3 ] && [ -z ${THIRD_PARAM} ]; then
-        if [ ${FIRST_PARAM} == 'yunbao' ]; then
+        if [ ${FIRST_PARAM} == 'point' ]; then
             sed -i "s/point = .* WHERE name = .*;/point = ${SECOND_PARAM} WHERE name = ${THIRD_PARAM};/g" /usr/local/bin/update_point.sql
             mysql -uroot -p"${MYSQL_ROOT_PASSWORD}" web </usr/local/bin/update_point.sql
         else
@@ -63,7 +61,7 @@ if [ $# -ne 0 ]; then
             mysql -uroot -p"${MYSQL_ROOT_PASSWORD}" tlbbdb </usr/local/bin/update_tlbbdb_point.sql
         fi
     elif [ $# -eq 4 ] && [ -z ${THIRD_PARAM} ]; then
-        if [ ${FIRST_PARAM} == 'yunbao' ]; then
+        if [ ${FIRST_PARAM} == 'point' ]; then
             sed -i "s/point = .* WHERE name = .*;/point = ${SECOND_PARAM} WHERE name = ${THIRD_PARAM};/g" /usr/local/bin/update_point.sql
             mysql -uroot -p"${MYSQL_ROOT_PASSWORD}" web </usr/local/bin/update_point.sql
         else
