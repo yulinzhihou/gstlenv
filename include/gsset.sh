@@ -24,11 +24,13 @@ if [ $# -ne 0 ]; then
         if [ ${FIRST_PARAM} == 'point' ]; then
             sed -i "s/default .*/default ${SECOND_PARAM}/g" ${ALTER_POINT}
             cat ${ALTER_POINT} >>$EXCHANGE_LOG_PATH
+            echo -e "刷点成功，如果未成功，请将角色下线再继续尝试"
             echo -e "\r" | tee -a $EXCHANGE_LOG_PATH
             mysql -uroot -p"${MYSQL_ROOT_PASSWORD}" web <${ALTER_POINT}
         else
             sed -i "s/column .* set default .*/column ${FIRST_PARAM} set default ${SECOND_PARAM}/g" ${ALTER_TLBBDB_POINT}
             cat ${ALTER_TLBBDB_POINT} >>$EXCHANGE_LOG_PATH
+            echo -e "刷点成功，如果未成功，请将角色下线再继续尝试"
             echo -e "\r" | tee -a $EXCHANGE_LOG_PATH
             mysql -uroot -p"${MYSQL_ROOT_PASSWORD}" tlbbdb <${ALTER_TLBBDB_POINT}
         fi
@@ -37,11 +39,13 @@ if [ $# -ne 0 ]; then
         if [ ${FIRST_PARAM} == 'point' ]; then
             sed -i "s/point = .* WHERE name = .*;/point = ${SECOND_PARAM} WHERE name = '${THIRD_PARAM}';/g" ${UPDATE_POINT}
             cat ${UPDATE_POINT} >>$EXCHANGE_LOG_PATH
+            echo -e "刷点成功，如果未成功，请将角色下线再继续尝试"
             echo -e "\r" | tee -a $EXCHANGE_LOG_PATH
             mysql -uroot -p"${MYSQL_ROOT_PASSWORD}" web <${UPDATE_POINT}
         else
             sed -i "s/SET .* = .* WHERE aid IN ( SELECT aid FROM ( SELECT aid FROM t_char WHERE accname = .* ) AS aids );/SET ${FIRST_PARAM} = ${SECOND_PARAM} WHERE aid IN ( SELECT aid FROM ( SELECT aid FROM t_char WHERE accname = '${THIRD_PARAM}') AS aids );/g" ${UPDATE_TLBBDB_POINT}
             cat ${UPDATE_TLBBDB_POINT} >>$EXCHANGE_LOG_PATH
+            echo -e "刷点成功，如果未成功，请将角色下线再继续尝试"
             echo -e "\r" | tee -a $EXCHANGE_LOG_PATH
             mysql -uroot -p"${MYSQL_ROOT_PASSWORD}" tlbbdb <${UPDATE_TLBBDB_POINT}
         fi
@@ -49,17 +53,20 @@ if [ $# -ne 0 ]; then
         if [ ${FIRST_PARAM} == 'point' ]; then
             sed -i "s/point = .* WHERE name = .*;/point = ${SECOND_PARAM} WHERE name = '${THIRD_PARAM}';/g" ${UPDATE_POINT}
             cat ${UPDATE_POINT} >>$EXCHANGE_LOG_PATH
+            echo -e "刷点成功，如果未成功，请将角色下线再继续尝试"
             echo -e "\r" | tee -a $EXCHANGE_LOG_PATH
             mysql -uroot -p"${MYSQL_ROOT_PASSWORD}" web <${UPDATE_POINT}
         else
             sed -i "s/SET .* = .* WHERE aid IN ( SELECT aid FROM ( SELECT aid FROM t_char WHERE accname = .* LIMIT 1 OFFSET .* ) AS aids );/SET ${FIRST_PARAM} = ${SECOND_PARAM} WHERE aid IN ( SELECT aid FROM ( SELECT aid FROM t_char WHERE accname = '${THIRD_PARAM}' LIMIT 1 OFFSET ${FOURTH_PARAM} ) AS aids );/g" ${UPDATE_TLBBDB_POINT}
             cat ${UPDATE_TLBBDB_POINT} >>$EXCHANGE_LOG_PATH
+            echo -e "刷点成功，如果未成功，请将角色下线再继续尝试"
             echo -e "\r" | tee -a $EXCHANGE_LOG_PATH
             mysql -uroot -p"${MYSQL_ROOT_PASSWORD}" tlbbdb <${UPDATE_TLBBDB_POINT}
         fi
     else
         sed -i "s/default .*/default 0/g" ${ALTER_POINT}
         cat ${ALTER_POINT} >>$EXCHANGE_LOG_PATH
+        echo -e "刷点成功，如果未成功，请将角色下线再继续尝试"
         echo -e "\r" | tee -a $EXCHANGE_LOG_PATH
         mysql -uroot -p"${MYSQL_ROOT_PASSWORD}" web <${ALTER_POINT}
     fi

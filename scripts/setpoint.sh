@@ -42,8 +42,10 @@ if [ $? -eq 0 ]; then
       'zengdian' | 'z' | 'ZENGDIAN' | 'Z' | '赠点') FIRST_PARAM='zengdian' ;;
       'menpaipoint' | 'm' | 'MENPAIPOINT' | 'M' | '门贡') FIRST_PARAM='menpaipoint' ;;
       'guildpoint' | 'g' | 'GUILDPOINT' | 'G' | '帮贡') FIRST_PARAM='guildpoint' ;;
+      'points' | 'po' | 'POINTS' | 'PO' | '潜能') FIRST_PARAM='points' ;;
+      'vmoney' | 'v' | 'VMONEY' | 'V' | '金币') FIRST_PARAM='vmoney' ;;
       *)
-        echo -e "${CWARNING}参数1：[point|p|POINT|P|充值点]\r\n[yuanbao|y|YUANBAO|Y|元宝]\r\n[zengdian|z|ZENGDIAN|Z|赠点]\r\n[menpaipoint|m|MENPAIPOINT|M|门贡]\r\n[guildpoint|g|GUILDPOINT|G|帮贡]\r\n中的任意一个,英文参数可以简写，不区分大小写。\r\n如：p 表示充值点，Y表示元宝${CEND}"
+        echo -e "${CWARNING}参数1：[point|p|POINT|P|充值点]\r\n[yuanbao|y|YUANBAO|Y|元宝]\r\n[zengdian|z|ZENGDIAN|Z|赠点]\r\n[menpaipoint|m|MENPAIPOINT|M|门贡]\r\n[guildpoint|g|GUILDPOINT|G|帮贡]\r\n[points|po|POINTS|PO|潜能]\r\n[vmoney|v|VMONEY|V|金币]\r\n中的任意一个,英文参数可以简写，不区分大小写。\r\n如：p 表示充值点，Y表示元宝${CEND}"
         ;;
       esac
 
