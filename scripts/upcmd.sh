@@ -42,14 +42,14 @@ if [ $? -eq 0 ]; then
   }
 
   # 复制命令到容器里面
-  # copy_to_gssmysql() {
-  #   # 复制配置文件
-  #   for VAR in $(ls -l ${GS_PROJECT}/scripts/ | awk '{print $9}'); do
-  #     if [ -n ${VAR} ]; then
-  #       docker cp ${GS_PROJECT}/scripts/${VAR} gsmysql:/usr/local/bin/${VAR}
-  #     fi
-  #   done
-  # }
+  copy_to_gssmysql() {
+    # 复制配置文件
+    for VAR in $(ls -l ${GS_PROJECT}/scripts/ | awk '{print $9}'); do
+      if [ -n ${VAR} ]; then
+        docker cp ${GS_PROJECT}/scripts/${VAR} gsmysql:/usr/local/bin/${VAR}
+      fi
+    done
+  }
 
   # 复制命令到容器里面
   copy_to_gsserver() {
