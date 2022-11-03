@@ -66,10 +66,18 @@ if [ $? -eq 0 ]; then
       fi
 
       if [ $# -eq 4 ]; then
+        if [[ $3 =~ ^[A-Za-z0-9]+$ ]]; then
+          THIRD_PARAM=$3'@game.sohu.com'
+        else
+          echo -e "${GSISSUE}\r\n"
+          echo -e "${CRED}错误:输入有误,用户账号不需要加后缀 @game.sohu.com,只需要前面账号,并且暂不支持中文${CEND}"
+          exit 1
+        fi
+
         case $4 in
-        1) FOURTH_PARAM=1 ;;
-        2) FOURTH_PARAM=2 ;;
-        3) FOURTH_PARAM=3 ;;
+        [1]) FOURTH_PARAM=1 ;;
+        [2]) FOURTH_PARAM=2 ;;
+        [3]) FOURTH_PARAM=3 ;;
         *) FOURTH_PARAM=1 ;;
         esac
       fi
