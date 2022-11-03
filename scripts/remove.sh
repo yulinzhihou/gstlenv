@@ -29,7 +29,7 @@ if [ $? -eq 0 ]; then
 
     # bug:移除本环境的docker镜像与容器。还有写入系统的命令
     for VAR in $(ls -l ${GS_PROJECT}/scripts/ | awk '{print $9}'); do
-      if [ -n ${VAR} ]; then
+      if [ -n ${VAR} ] && [ ${VAR} =~ 'remove' ]; then
         rm -rf /usr/local/bin/${VAR}
       fi
     done
@@ -53,6 +53,8 @@ if [ $? -eq 0 ]; then
     fi
     break
   done
+  # 自毁
+  rm -rf $0
 else
   echo -e "${GSISSUE}\r\n"
   echo "${CRED}环境毁坏，需要重新安装或者移除现有的环境重新安装！！！${CEND}"
