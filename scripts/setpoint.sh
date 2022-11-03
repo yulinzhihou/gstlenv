@@ -40,7 +40,7 @@ if [ $? -eq 0 ]; then
       'point' | 'p' | 'POINT' | 'P' | '充值点') FIRST_PARAM='point' ;;
       'yuanbao' | 'y' | 'YUANBAO' | 'Y' | '元宝') FIRST_PARAM='yuanbao' ;;
       'zengdian' | 'z' | 'ZENGDIAN' | 'Z' | '赠点') FIRST_PARAM='zengdian' ;;
-      'menpaipoint' | 'y' | 'MENPAIPOINT' | 'M' | '门贡') FIRST_PARAM='menpaipoint' ;;
+      'menpaipoint' | 'm' | 'MENPAIPOINT' | 'M' | '门贡') FIRST_PARAM='menpaipoint' ;;
       'guildpoint' | 'g' | 'GUILDPOINT' | 'G' | '帮贡') FIRST_PARAM='guildpoint' ;;
       *)
         echo -e "${CWARNING}参数1：[point|p|POINT|P|充值点]\r\n[yuanbao|y|YUANBAO|Y|元宝]\r\n[zengdian|z|ZENGDIAN|Z|赠点]\r\n[menpaipoint|m|MENPAIPOINT|M|门贡]\r\n[guildpoint|g|GUILDPOINT|G|帮贡]\r\n中的任意一个,英文参数可以简写，不区分大小写。\r\n如：p 表示充值点，Y表示元宝${CEND}"
@@ -57,7 +57,7 @@ if [ $? -eq 0 ]; then
 
       if [ $# -eq 3 ] && [ -z $3 ]; then
         if [[ $3 =~ ^[A-Za-z0-9]+$ ]]; then
-          THIRD_PARAM=$3
+          THIRD_PARAM=$3'@game.sohu.com'
         else
           echo -e "${GSISSUE}\r\n"
           echo -e "${CRED}错误:输入有误,用户账号不需要加后缀 @game.sohu.com,只需要前面账号,并且暂不支持中文${CEND}"
