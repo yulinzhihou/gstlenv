@@ -75,10 +75,10 @@ if [ $? -eq 0 ]; then
         fi
 
         case $4 in
-        [1]) FOURTH_PARAM=1 ;;
-        [2]) FOURTH_PARAM=2 ;;
-        [3]) FOURTH_PARAM=3 ;;
-        *) FOURTH_PARAM=1 ;;
+        [1]) FOURTH_PARAM=0 ;;
+        [2]) FOURTH_PARAM=1 ;;
+        [3]) FOURTH_PARAM=2 ;;
+        *) FOURTH_PARAM=0 ;;
         esac
       fi
       # 组装参数发送命令
