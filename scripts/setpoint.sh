@@ -55,7 +55,7 @@ if [ $? -eq 0 ]; then
         exit 1
       fi
 
-      if [ $# -eq 3 ] && [ -z $3 ]; then
+      if [ $# -eq 3 ] && [ -n $3 ]; then
         if [[ $3 =~ ^[A-Za-z0-9]+$ ]]; then
           THIRD_PARAM=$3'@game.sohu.com'
         else
@@ -65,7 +65,7 @@ if [ $? -eq 0 ]; then
         fi
       fi
 
-      if [ $# -eq 4 ] && [ -z $4 ]; then
+      if [ $# -eq 4 ] && [ -n $4 ]; then
         case $4 in
         1) FOURTH_PARAM=1 ;;
         2) FOURTH_PARAM=2 ;;

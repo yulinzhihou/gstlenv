@@ -63,7 +63,7 @@ if [ $# -ne 0 ]; then
             mysql -uroot -p"${MYSQL_ROOT_PASSWORD}" tlbbdb <${ALTER_TLBBDB_POINT}
         fi
 
-    elif [ $# -eq 3 ] && [ -z ${THIRD_PARAM} ]; then
+    elif [ $# -eq 3 ] && [ ${THIRD_PARAM} -ne '' ]; then
         if [ ${FIRST_PARAM} == 'point' ]; then
             sed -i "s/point = .* WHERE name = .*;/point = ${SECOND_PARAM} WHERE name = ${THIRD_PARAM};/g" ${UPDATE_POINT}
             cat ${UPDATE_POINT} | tee -a $EXCHANGE_LOG_PATH
@@ -75,7 +75,7 @@ if [ $# -ne 0 ]; then
             echo -e "\r" | tee -a $EXCHANGE_LOG_PATH
             mysql -uroot -p"${MYSQL_ROOT_PASSWORD}" tlbbdb <${UPDATE_TLBBDB_POINT}
         fi
-    elif [ $# -eq 4 ] && [ -z ${THIRD_PARAM} ]; then
+    elif [ $# -eq 4 ] && [ ${THIRD_PARAM} -ne '' ]; then
         if [ ${FIRST_PARAM} == 'point' ]; then
             sed -i "s/point = .* WHERE name = .*;/point = ${SECOND_PARAM} WHERE name = ${THIRD_PARAM};/g" ${UPDATE_POINT}
             cat ${UPDATE_POINT} | tee -a $EXCHANGE_LOG_PATH
