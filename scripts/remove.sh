@@ -21,16 +21,22 @@ if [ $? -eq 0 ]; then
   while :; do
     echo
     for ((time = 5; time >= 0; time--)); do
-      echo -ne "\r正准备恢复出厂设置，数据全清！！，剩余 ${CBLUE}$time${CEND} 秒，可以在计时结束前，按 CTRL+C 退出！\r"
+      echo -ne "\r正准备删除GS环境，数据全清！！，剩余 ${CBLUE}$time${CEND} 秒，可以在计时结束前，按 CTRL+C 退出！\r"
       sleep 1
     done
     echo -ne "\r\n"
     echo -ne "${CYELLOW}正在进行清除操作…………\r\n${CEND}"
 
     # bug:移除本环境的docker镜像与容器。还有写入系统的命令
+    for VAR in $(ls -l ${GS_PROJECT}/scripts/ | awk '{print $9}'); do
+      if [ -n ${VAR} ]; then
+        rm -rf /usr/local/bin/${VAR}
+      fi
+    done
+
     docker stop gsmysql gsnginx gsserver &&
       docker rm -f gsmysql gsnginx gsserver &&
-      docker rmi -f ${HUB_ALIYUN}gs_mysql ${HUB_ALIYUN}gs_mysql51 ${HUB_ALIYUN}gs_php ${HUB_ALIYUN}gs_redis ${HUB_ALIYUN}gs_server ${HUB_ALIYUN}gs_nginx &&
+      docker rmi -f ${HUB_ALIYUN}gs_mysql51 ${HUB_ALIYUN}gs_server ${HUB_ALIYUN}gs_nginx &&
       mv /tlgame /tlgame-$(date +%Y%m%d%H%I%S) &&
       chattr -i ${GS_WHOLE_PATH} &&
       rm -rf /usr/local/bin/.env &&
