@@ -50,7 +50,7 @@ if [ $? -eq 0 ]; then
       if [[ $2 =~ ^[0-9]+$ ]] && [ $2 -ge 0 ] && [ $2 -lt 2100000000 ]; then
         SECOND_PARAM=$2
       else
-        echo "${GSISSUE}"
+        echo -e "${GSISSUE}\r\n"
         echo -e "${CRED}错误:输入有误,充值点数格式不正确，请输入0-21亿之间的整数!!${CEND}"
         exit 1
       fi
@@ -58,7 +58,7 @@ if [ $? -eq 0 ]; then
       if [ $3 =~ ^[A-Za-z0-9]+$ ]; then
         THIRD_PARAM=$3
       else
-        echo "${GSISSUE}"
+        echo -e "${GSISSUE}\r\n"
         echo -e "${CRED}错误:输入有误,用户账号不需要加后缀 @game.sohu.com,只需要前面账号,并且暂不支持中文${CEND}"
         exit 1
       fi
@@ -78,7 +78,7 @@ if [ $? -eq 0 ]; then
   fi
 
 else
-  echo "${GSISSUE}"
+  echo -e "${GSISSUE}\r\n"
   echo "${CRED}环境毁坏，需要重新安装或者移除现有的环境重新安装!!!${CEND}"
   exit 1
 fi

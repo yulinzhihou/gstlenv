@@ -46,7 +46,7 @@ if [ $? -eq 0 ]; then
   }
 
   if [ ! -f /root/tlbb.tar.gz ] && [ ! -f /root/tlbb.zip ]; then
-    echo "${GSISSUE}"
+    echo -e "${GSISSUE}\r\n"
     echo "${CRED}新服务端版本文件不存在，请先上传服务端 tlbb.tar.gz 或者 tlbb.zip 到 /root 目录下再执行换端操作！${CEND}"
     exit 1
   fi
@@ -62,7 +62,7 @@ if [ $? -eq 0 ]; then
     backup_tlbb && main
   done
 else
-  echo "${GSISSUE}"
+  echo -e "${GSISSUE}\r\n"
   echo "${CRED}环境毁坏，需要重新安装或者移除现有的环境重新安装！！！${CEND}"
   exit 1
 fi

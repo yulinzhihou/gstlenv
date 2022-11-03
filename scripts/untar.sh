@@ -34,7 +34,7 @@ elif [ -f "/root/tlbb.zip" ]; then
     echo -e "${CSUCCESS}服务端文件 tlbb.zip 已经上传成功！！，可以执行【setini】进行配置文件写入${CEND}"
     exit 0
 else
-    echo "${GSISSUE}"
+    echo -e "${GSISSUE}\r\n"
     echo -e "${CRED}服务端文件不存在，或者位置上传错误，请上传至 [/root] 目录下面${CEND}"
     exit 1
 fi

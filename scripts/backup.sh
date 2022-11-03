@@ -98,10 +98,12 @@ if [ $? -eq 0 ]; then
     echo -e "${CSUCCESS}${TIME}已经成功备份完成，备份文件在 [/tlgame/backup] 目录下${CEND}" | tee -a ${GS_PROJECT}/gs.log
     exit 0
   else
+    echo -e "${GSISSUE}\r\n"
     echo -e "${CRED}${TIME}备份失败！${CEND}" | tee -a ${GS_PROJECT}/gs.log
     exit 1
   fi
 else
+  echo -e "${GSISSUE}\r\n"
   echo -e "${CRED}${TIME}环境毁坏，需要重新安装或者移除现有的环境重新安装！！！${CEND}" | tee -a ${GS_PROJECT}/gs.log
   exit 1
 fi

@@ -153,7 +153,7 @@ EOF
   echo -e "${CSUCCESS}创建成功，请将网站上传到/tlgame/www/ow目录里面，并且首页必须是index.html index.htm default.html default.htm中的一种${CEND}"
   exit 0
 else
-  echo "${GSISSUE}"
+  echo -e "${GSISSUE}\r\n"
   echo "${CRED}环境毁坏，需要重新安装或者移除现有的环境重新安装！！！${CEND}"
   exit 1
 fi

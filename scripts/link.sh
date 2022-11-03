@@ -39,12 +39,13 @@ if [ $? -eq 0 ]; then
       cd ${ROOT_PATH}/${GSDIR} && docker-compose exec gsphp /bin/sh
       ;;
     *)
+      echo -e "${GSISSUE}\r\n"
       echo -e "${CRED}错误：输入有误！！请使用 link {gsmysql|mysql|sql|my|m},{gsphp|php|p},{gsredis|redis|r},{gsnginx|nginx|n},{gsserver|server|gs|s}${CEND}"
       ;;
     esac
   fi
 else
-  echo "${GSISSUE}"
+  echo -e "${GSISSUE}\r\n"
   echo "${CRED}环境毁坏，需要重新安装或者移除现有的环境重新安装！！！${CEND}"
   exit 1
 fi

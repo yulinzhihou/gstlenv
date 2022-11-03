@@ -39,4 +39,4 @@ CFAILURE="$CRED"
 CQUESTION="$CMAGENTA"
 CWARNING="$CYELLOW"
 CMSG="$CCYAN"
-GSISSUE=${CRED}如果您有疑问，将上述报错截图或者复制提交到: https://gitee.com/yulinzhihou/gs_tl_env/issues 我们会第一时间为您处理！！ ${CEND}
+GSISSUE="${CRED}如果您有疑问，将上述报错截图或者复制提交到: https://gitee.com/yulinzhihou/gs_tl_env/issues 我们会第一时间为您处理！！ ${CEND}"

@@ -47,7 +47,7 @@ if [ $? -eq 0 ]; then
                     echo -e "${CSUCCESS} 数据还原成功！！如有疑问可查看【/tlgame/backup】有还原前的备份，可尝试手动使用工具导入${CEND}"
                     exit 0
                 else
-                    echo "${GSISSUE}"
+                    echo -e "${GSISSUE}\r\n"
                     echo -e "${CRED} 数据还原失败！！${CEND}"
                     exit 1
                 fi
@@ -55,7 +55,7 @@ if [ $? -eq 0 ]; then
         fi
     fi
 else
-    echo "${GSISSUE}"
+    echo -e "${GSISSUE}\r\n"
     echo "${CRED}环境毁坏，需要重新安装或者移除现有的环境重新安装！！！${CEND}"
     exit 1
 fi

@@ -69,7 +69,7 @@ if [ $? -eq 0 ]; then
     if [ $? -eq 0 ]; then
       echo -e "${CSUCCESS}设置定时备份成功.【${TIME}】小时备份一次数据库和版本！备份到 /tlgame/backup ${CEND}"
     else
-      echo "${GSISSUE}"
+      echo -e "${GSISSUE}\r\n"
       echo -e "${CRED}备份命令不完整，请更新命令[upcmd]后再执行！${CEND}"
     fi
   }
@@ -83,13 +83,13 @@ if [ $? -eq 0 ]; then
     [ "${OS}" == "CentOS" ] || [ "${OS}" == "CentOSStream" ] && systemctl restart crond
     exit 0
   else
-    echo "${GSISSUE}"
+    echo -e "${GSISSUE}\r\n"
     echo -e "${CRED}备份命令不完整，请更新命令[upcmd]后再执行！${CEND}"
     exit 1
   fi
 
 else
-  echo "${GSISSUE}"
+  echo -e "${GSISSUE}\r\n"
   echo "${CRED}环境毁坏，需要重新安装或者移除现有的环境重新安装！！！${CEND}"
   exit 1
 fi
