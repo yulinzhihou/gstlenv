@@ -1,0 +1,1 @@
+alter table `tlbbdb`.`t_char` alter column yuanbao set default 0

@@ -1,1 +1,1 @@
-alter table account alter column point set default 0
+alter table `web`.`account` alter column point set default 0
