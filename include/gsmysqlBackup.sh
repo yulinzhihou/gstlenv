@@ -13,7 +13,7 @@ WEB_FILE_NUM=$(ls -l /var/lib/mysql/web | grep '^-' | wc -l)
 TLBBDB_FILE_NUM=$(ls -l /var/lib/mysql/tlbbdb | grep '^-' | wc -l)
 
 if [ ${WEB_FILE_NUM} -gt 1 ]; then
-    mysqldump -uroot -p"${MYSQL_ROOT_PASSWORD}" tlbbdb >/home/backup/tlbbdb-${FILENAME}.sql
+    mysqldump -uroot -p"${MYSQL_ROOT_PASSWORD}" --opt -R tlbbdb >/home/backup/tlbbdb-${FILENAME}.sql
     #判断是否备份成功
     if [ $? -eq 0 ]; then
         echo -e "$(date "+%Y-%m-%d-%H-%M-%S")\ttlbbdb-${FILENAME}.sql\t备份成功!!\r\n" | tee -a $TLBBDB_LOG_PATH

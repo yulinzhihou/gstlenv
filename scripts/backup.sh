@@ -20,7 +20,7 @@ if [ $? -eq 0 ]; then
     . /usr/local/bin/color
   fi
 
-  FILENAME="$(date +%Y_%m_%d_%H_%M_%S)"
+  FILENAME="$(date +%Y-%m-%d)"
   FILEPATH="/tlgame/backup/"
   LOG_FILE="backup-${FILENAME}.log"
 
