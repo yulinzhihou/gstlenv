@@ -58,10 +58,10 @@ if [ $? -eq 0 ]; then
   cron_data_back() {
     echo "${CYELLOW}开始设置定时数据备份，目前为【${TIME}】小时备份一次数据库和版本！备份到 /tlgame/backup 目录下${CEND}"
     crontab -l >${CRONTAB_BAK_FILE} 2>/dev/null
-    # 删除掉再有任务
-    sed -i "/docker exec -d gsmysql \/bin\/sh \/usr\/local\/bin\/gsmysqlBackup.sh*./d" ${CRONTAB_BAK_FILE}
-    sed -i "/\/bin\/bash \/usr\/local\/bin\/backup all*./d" ${CRONTAB_BAK_FILE}
-    sed -i "/\/bin\/bash \/usr\/local\/bin\/delbak*./d" ${CRONTAB_BAK_FILE}
+    # 删除掉存在的任务
+    sed -i "/docker exec -d gsmysql *./d" ${CRONTAB_BAK_FILE}
+    sed -i "/\/bin\/bash \/usr\/local\/bin\/backup all *./d" ${CRONTAB_BAK_FILE}
+    sed -i "/\/bin\/bash \/usr\/local\/bin\/delbak *./d" ${CRONTAB_BAK_FILE}
     echo "0 */${TIME} * * * ${SQL_TASK}" >>${CRONTAB_BAK_FILE}
     echo "0 */${TIME} * * * ${VERSION_TASK}" >>${CRONTAB_BAK_FILE}
     echo "0 */${TIME} * * * ${CRON_DEL_TASK}" >>${CRONTAB_BAK_FILE}
