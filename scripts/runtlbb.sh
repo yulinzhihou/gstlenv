@@ -28,8 +28,9 @@ if [ $? -eq 0 ]; then
   WORLD_IS_RUN=$(docker exec -it gsserver ps aux | grep "World" | wc -l)
   LOGIN_IS_RUN=$(docker exec -it gsserver ps aux | grep "Login" | wc -l)
   SHAREMEM_IS_RUN=$(docker exec -it gsserver ps aux | grep "ShareMem" | wc -l)
-
-  if [ ${SERVER_IS_RUN} -eq 1 ] && [ ${WORLD_IS_RUN} -eq 1 ] && [ ${LOGIN_IS_RUN} -eq 1 ] && [ ${SHAREMEM_IS_RUN} -eq 1 ]; then
+  BILLING_IS_RUN=$(docker exec -it gsserver ps aux | grep "billing" | wc -l)
+  echo "${CRED}正在检测是否已经开服……，请稍候……${CEND}"
+  if [ ${SERVER_IS_RUN} -eq 1 ] || [ ${WORLD_IS_RUN} -eq 1 ] || [ ${LOGIN_IS_RUN} -eq 1 ] || [ ${SHAREMEM_IS_RUN} -eq 1 ] || [ ${BILLING_IS_RUN} -eq 1 ]; then
     echo "${CRED}服务端好像正在运行，如果有疑问可以使用 [runtop] 进行查看，如果想继续执行，请先执行 [restart] 重启后再进行开服 [runtlbb] 操作${CEND}"
     exit 1
   else
