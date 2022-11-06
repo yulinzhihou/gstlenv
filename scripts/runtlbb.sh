@@ -29,12 +29,12 @@ if [ $? -eq 0 ]; then
   LOGIN_IS_RUN=$(docker exec -it gsserver ps aux | grep "Login" | wc -l)
   SHAREMEM_IS_RUN=$(docker exec -it gsserver ps aux | grep "ShareMem" | wc -l)
   BILLING_IS_RUN=$(docker exec -it gsserver ps aux | grep "billing" | wc -l)
-  echo "${CRED}正在检测是否已经开服……，请稍候……${CEND}"
+  echo "${CSUCCESS}正在检测是否已经开服……，请稍候……${CEND}"
   if [ ${SERVER_IS_RUN} -eq 1 ] || [ ${WORLD_IS_RUN} -eq 1 ] || [ ${LOGIN_IS_RUN} -eq 1 ] || [ ${SHAREMEM_IS_RUN} -eq 1 ] || [ ${BILLING_IS_RUN} -eq 1 ]; then
     echo "${CRED}服务端好像正在运行，如果有疑问可以使用 [runtop] 进行查看，如果想继续执行，请先执行 [restart] 重启后再进行开服 [runtlbb] 操作${CEND}"
     exit 1
   else
-
+    echo "${CSUCCESS}暂未发现之前运行过，正在开启……${CEND}"
     chmod -R 777 /tlgame &&
       docker exec -d gsserver chmod -R 777 /usr/local/bin &&
       docker exec -d gsmysql chmod -R 777 /usr/local/bin &&
@@ -54,9 +54,7 @@ if [ $? -eq 0 ]; then
       exit 1
     fi
   fi
-
 else
-
   echo -e "${GSISSUE}\r\n"
   echo "${CRED}环境毁坏，需要重新安装或者移除现有的环境重新安装！！！${CEND}"
   exit 1
