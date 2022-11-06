@@ -27,7 +27,7 @@ if [ $? -eq 0 ]; then
     echo -ne "\n\r"
     echo -ne "${CYELLOW}正在重启…………\n\r${CEND}"
     # cd ${ROOT_PATH}/${GSDIR} && docker-compose restart && docker exec -it gsmysql /bin/bash /usr/local/bin/init_db.sh
-    cd ${ROOT_PATH}/${GSDIR} && docker-compose restart
+    cd ${ROOT_PATH}/${GSDIR} && docker-compose restart nginx && docker-compose restart gsserver
     if [ $? -eq 0 ]; then
       # 删除因为改版本导致引擎启动失败的dump文件
       cd ${ROOT_PATH}/${GSDIR} && rm -rf core.*
