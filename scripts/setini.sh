@@ -21,6 +21,10 @@ if [ $? -eq 0 ]; then
 
     BASE_PATH="/root/.tlgame/config"
     GS_PROJECT_PATH="/tlgame"
+    # 执行替换命令之前 ，先备份一下原始的run.sh启动脚本
+    if [ -f ${GS_PROJECT_PATH}/tlbb/run.sh ]; then
+        \cp -rf ${GS_PROJECT_PATH}/tlbb/run.sh ${GS_PROJECT}
+    fi
 
     tar zxf ${BASE_PATH}/ini.tar.gz -C ${BASE_PATH}
     if [ ! -d "${GS_PROJECT_PATH}/billing/" ]; then
@@ -31,6 +35,7 @@ if [ $? -eq 0 ]; then
     # 游戏内注册=0，登录器注册=1
     if [ ${IS_DLQ} == 1 ]; then
         sed -i "s/127.0.0.2/${BILLING_SERVER_IPADDR}/g" ${BASE_PATH}/ServerInfo.ini
+        \cp -rf ${GS_PROJECT}/run.sh ${GS_PROJECT_PATH}/tlbb
     else
         sed -i "s/127.0.0.2/127.0.0.1/g" ${BASE_PATH}/ServerInfo.ini
     fi
