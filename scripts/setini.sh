@@ -21,10 +21,6 @@ if [ $? -eq 0 ]; then
 
     BASE_PATH="/root/.tlgame/config"
     GS_PROJECT_PATH="/tlgame"
-    # 执行替换命令之前 ，先备份一下原始的run.sh启动脚本
-    if [ -f ${GS_PROJECT_PATH}/tlbb/run.sh ]; then
-        \cp -rf ${GS_PROJECT_PATH}/tlbb/run.sh ${GS_PROJECT}
-    fi
 
     tar zxf ${BASE_PATH}/ini.tar.gz -C ${BASE_PATH}
     if [ ! -d "${GS_PROJECT_PATH}/billing/" ]; then

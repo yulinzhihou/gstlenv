@@ -23,6 +23,11 @@ if [ -f "/root/tlbb.tar.gz" ]; then
         chown -R root:root /tlgame &&
         chmod -R 777 /tlgame &&
         mv /root/tlbb.tar.gz /root/$(date +%Y%m%d%H%I%S)-tlbb.tar.gz
+
+    if [ -f ${TLBB_PATH}/tlbb/run.sh ]; then
+        \cp -rf ${TLBB_PATH}/tlbb/run.sh ${GS_PROJECT}
+    fi
+
     echo -e "${CSUCCESS}服务端文件【tlbb.tar.gz】已经解压成功！！${CEND}"
     exit 0
 elif [ -f "/root/tlbb.zip" ]; then
@@ -31,6 +36,10 @@ elif [ -f "/root/tlbb.zip" ]; then
         unzip -q ~/tlbb.zip -d /tlgame/ &&
         chmod -R 777 /tlgame &&
         mv ~/tlbb.zip ~/$(date +%Y%m%d%H%I%S)-tlbb.zip
+
+    if [ -f ${TLBB_PATH}/tlbb/run.sh ]; then
+        \cp -rf ${TLBB_PATH}/tlbb/run.sh ${GS_PROJECT}
+    fi
     echo -e "${CSUCCESS}服务端文件 tlbb.zip 已经上传成功！！，可以执行【setini】进行配置文件写入${CEND}"
     exit 0
 else
