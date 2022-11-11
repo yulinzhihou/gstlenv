@@ -48,7 +48,7 @@ if [ $? -eq 0 ]; then
     # 游戏内注册=0，登录器注册=1
     if [ ${IS_DLQ} == 1 ]; then
         sed -i "s/127.0.0.2/${BILLING_SERVER_IPADDR}/g" ${BASE_PATH}/ServerInfo.ini
-        sed -i "s/GS_BILLING/\.\/sleep 0/g" ${BASE_PATH}/run.sh
+        sed -i "s/GS_BILLING/sleep 0/g" ${BASE_PATH}/run.sh
     else
         sed -i "s/127.0.0.2/127.0.0.1/g" ${BASE_PATH}/ServerInfo.ini
     fi
@@ -85,6 +85,7 @@ if [ $? -eq 0 ]; then
         \cp -rf ${BASE_PATH}/LoginInfo.ini ${BASE_PATH}/ShareMemInfo.ini ${BASE_PATH}/ServerInfo.ini ${GS_PROJECT_PATH}/tlbb/Server/Config/
         docker cp ${BASE_PATH}/odbc.ini gsserver:/etc
         docker cp ${GS_PROJECT}/scripts/step.sh gsserver:/usr/local/bin/step
+        docker exec -d gsserver chmod -R 777 /usr/local/bin
         # 复制配置文件
         for file in $(ls -l ${GS_PROJECT}/include | awk '{print $9}'); do
             if [ -n ${file} ]; then
