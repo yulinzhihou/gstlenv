@@ -94,7 +94,7 @@ if [ $? -eq 0 ]; then
 
         #每次更新后，先重置更改过的文件
         if [ ${IS_DLQ} -eq 0 ]; then
-            sed -i "s/GS_BILLING/\.\/\/home\/billing\/billing up -d/g" ${BASE_PATH}/run.sh
+            sed -i "s/GS_BILLING/\/home\/billing\/billing up -d/g" ${BASE_PATH}/run.sh
         fi
         \cp -rf ${BASE_PATH}/run.sh ${GS_PROJECT_PATH}/tlbb &&
             cd ${BASE_PATH}/ &&
