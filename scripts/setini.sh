@@ -22,16 +22,33 @@ if [ $? -eq 0 ]; then
     BASE_PATH="/root/.tlgame/config"
     GS_PROJECT_PATH="/tlgame"
 
+    # 前置判断,如果服务端的路径都正确，就直接退出吧。
+    if [ ! -d "${GS_PROJECT_PATH}/tlbb/Server/" ]; then
+        echo -e "${GSISSUE}\r\n"
+        echo "${CRED}请检查服务端的路径是否正确,必须是 /tlgame/tlbb/Server 不能是 /tlgame/tlbb2/Server, /tlgame/tlbbh${CEND}"
+        exit 1
+    fi
+
     tar zxf ${BASE_PATH}/ini.tar.gz -C ${BASE_PATH}
     if [ ! -d "${GS_PROJECT_PATH}/billing/" ]; then
         mkdir -p ${GS_PROJECT_PATH}/billing/ && chown -R root:root ${GS_PROJECT_PATH} && chmod -R 777 ${GS_PROJECT_PATH}
     fi
     \cp -rf ${BASE_PATH}/billing ${GS_PROJECT_PATH}/billing/
 
+    # 解压配置文件，根据服务端程序，进行生成 启动脚本 run.sh
+    if [ -f "${BASE_PATH}/run.sh" ]; then
+        GS_LOGIN=$(ls -t /tlgame/tlbb/Server | grep "Login" | head -n1 | awk '{print $0}')
+        GS_WORLD=$(ls -t /tlgame/tlbb/Server | grep "World" | head -n1 | awk '{print $0}')
+        GS_SERVER=$(ls -t /tlgame/tlbb/Server | grep "Server" | head -n1 | awk '{print $0}')
+        sed -i "s/GS_LOGIN/\.\/${GS_LOGIN} \>\/dev\/null 2\>\&1 \&/g" ${BASE_PATH}/run.sh
+        sed -i "s/GS_WORLD/\.\/${GS_WORLD} \>\/dev\/null 2\>\&1 \&/g" ${BASE_PATH}/run.sh
+        sed -i "s/GS_SERVER/\.\/${GS_SERVER} \>\/dev\/null 2\>\&1 \&/g" ${BASE_PATH}/run.sh
+    fi
+
     # 游戏内注册=0，登录器注册=1
     if [ ${IS_DLQ} == 1 ]; then
         sed -i "s/127.0.0.2/${BILLING_SERVER_IPADDR}/g" ${BASE_PATH}/ServerInfo.ini
-        \cp -rf ${GS_PROJECT}/run.sh ${GS_PROJECT_PATH}/tlbb
+        sed -i "s/GS_BILLING/\.\/sleep 0/g" ${BASE_PATH}/run.sh
     else
         sed -i "s/127.0.0.2/127.0.0.1/g" ${BASE_PATH}/ServerInfo.ini
     fi
@@ -58,6 +75,7 @@ if [ $? -eq 0 ]; then
     fi
 
     if [ ! -d /tlgame/tlbb/Server ]; then
+        echo -e "${GSISSUE}\r\n"
         echo -e "${CRED}未上传服务端执行解压操作; 正确操作：上传服务端压缩包 tlbb.tar.gz或者 tlbb.zip 到 /root 目录下，执行 untar 再执行本命令${CEND}"
         echo -e "${CRED}上传了服务端也解压了，但服务端的目录名不正确：必须是 /tlgame/tlbb 不能是 /tlgame/tlbb2, /tlgame/tlbbhj${CEND}"
         exit 1
@@ -76,11 +94,11 @@ if [ $? -eq 0 ]; then
 
         #每次更新后，先重置更改过的文件
         if [ ${IS_DLQ} -eq 0 ]; then
-            sed -i 's/^else$/else\n  \/home\/billing\/billing up -d \n sleep 10 \n/g' ${GS_PROJECT_PATH}/tlbb/run.sh
+            sed -i "s/GS_BILLING/\.\/\/home\/billing\/billing up -d/g" ${BASE_PATH}/run.sh
         fi
-        sed -i 's/exit$/tail -f \/dev\/null/g' ${GS_PROJECT_PATH}/tlbb/run.sh &&
+        \cp -rf ${BASE_PATH}/run.sh ${GS_PROJECT_PATH}/tlbb &&
             cd ${BASE_PATH}/ &&
-            rm -rf ${BASE_PATH}/*.ini ${BASE_PATH}/config.yaml ${BASE_PATH}/billing
+            rm -rf ${BASE_PATH}/*.ini ${BASE_PATH}/config.yaml ${BASE_PATH}/billing ${BASE_PATH}/run.sh
         chown -R root:root ${GS_PROJECT_PATH} && chmod -R 777 ${GS_PROJECT_PATH}
         if [ $? -eq 0 ]; then
             echo -e "${CSUCCESS}配置文件已经写入成功，可以执行【runtlbb】进行开服操作！！${CEND}"
@@ -91,15 +109,6 @@ if [ $? -eq 0 ]; then
             exit 1
         fi
     fi
-
-    # 复制配置文件
-    # docker cp ${GS_PROJECT}/include/alter_point.sql gsmysql:/usr/local/bin/alter_point.sql
-    # docker cp ${GS_PROJECT}/include/change_valid.sql gsmysql:/usr/local/bin/change_valid.sql
-    # docker cp ${GS_PROJECT}/include/change_invalid.sql gsmysql:/usr/local/bin/change_invalid.sql
-    # docker cp ${GS_PROJECT}/include/gsmysqlRestore.sh gsmysql:/usr/local/bin/gsmysqlRestore.sh
-    # docker cp ${GS_PROJECT}/include/gsset.sh gsmysql:/usr/local/bin/gsset.sh
-    # docker cp ${GS_PROJECT}/include/gssetvalid.sh gsmysql:/usr/local/bin/gssetvalid.sh
-
 else
     echo -e "${GSISSUE}\r\n"
     echo -e "${CRED}环境毁坏，需要重新安装或者移除现有的环境重新安装！！！${CEND}"
