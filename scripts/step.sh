@@ -89,19 +89,19 @@ if [ -d "/home/tlbb" ] && [ -d "/home/billing" ]; then
 
     if [ $# -eq 1 ]; then
         case $1 in
-        [1])
+        1 | "b" | 'billing' | 'B' | 'BILLING')
             run_step_1
             ;;
-        [2])
+        2 | 'sharememory' | "s" | 'SHAREMEMORY')
             run_step_2
             ;;
-        [3])
+        3 | 'login' | 'l' | 'LOGIN' | 'L')
             run_step_3
             ;;
-        [4])
+        4 | 'world' | 'w' | 'WORLD' | 'W')
             run_step_4
             ;;
-        [5])
+        5 | 'Server' | 'server' | 'SERVER')
             run_step_5
             ;;
         *) echo "输入错误！！" ;;
@@ -118,31 +118,31 @@ if [ -d "/home/tlbb" ] && [ -d "/home/billing" ]; then
 ◎ 请在容器外使用runtop命令查看开启了哪些进程
 ◎ 请不要重复启动，重复启动没有任何意义，也达到启动不了的效果。
 ◎ 使用 exit 退出容器操作命令行，使用 link 进入容器操作命令行
-◎ 步骤[1]：启动 [BILLING] 服务
-◎ 步骤[2]：启动 [ShareMemory] 服务
-◎ 步骤[3]：启动 [Login] 服务
-◎ 步骤[4]：启动 [World] 服务
-◎ 步骤[5]：启动 [Server] 服务
+◎ 步骤[1|b|billing|B|BILLING]：启动 [BILLING] 服务
+◎ 步骤[2|sharememory|s|SHAREMEMORY]：启动 [ShareMemory] 服务
+◎ 步骤[3|login|l|LOGIN|L]：启动 [Login] 服务
+◎ 步骤[4|world|w|WORLD|W]：启动 [World] 服务
+◎ 步骤[5|Server|server|SERVER]：启动 [Server] 服务
 ※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※"
             read -e -p "请选择功能 输入序号并回车：" num
             case "$num" in
-            [1])
+            1 | "b" | 'billing' | 'B' | 'BILLING')
                 run_step_1
                 break
                 ;;
-            [2])
+            2 | 'sharememory' | "s" | 'SHAREMEMORY')
                 run_step_2
                 break
                 ;;
-            [3])
+            3 | 'login' | 'l' | 'LOGIN' | 'L')
                 run_step_3
                 break
                 ;;
-            [4])
+            4 | 'world' | 'w' | 'WORLD' | 'W')
                 run_step_4
                 break
                 ;;
-            [5])
+            5 | 'Server' | 'server' | 'SERVER')
                 run_step_5
                 break
                 ;;
