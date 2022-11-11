@@ -89,23 +89,18 @@ if [ -d "/home/tlbb" ] && [ -d "/home/billing" ]; then
         case $1 in
         [1])
             run_step_1
-            break
             ;;
         [2])
             run_step_2
-            break
             ;;
         [3])
             run_step_3
-            break
             ;;
         [4])
             run_step_4
-            break
             ;;
         [5])
             run_step_5
-            break
             ;;
         *) echo "输入错误！！" ;;
         esac
