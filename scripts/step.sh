@@ -52,7 +52,7 @@ run_step_2() {
 }
 
 run_step_3() {
-    GS_LOGIN=$(ls -t /tlgame/tlbb/Server | grep "Login" | head -n1 | awk '{print $0}')
+    GS_LOGIN=$(ls -t /home/tlbb/Server | grep "Login" | head -n1 | awk '{print $0}')
     cd /home/tlbb/Server && ./${GS_LOGIN}
     if [ $? -eq 0 ]; then
         echo -e "${CSUCCESS} 启动 [Login] 服务成功，请耐心等待几分钟。建议使用：【runtop】查看情况！！${CEND}"
@@ -63,7 +63,7 @@ run_step_3() {
 }
 
 run_step_4() {
-    GS_WORLD=$(ls -t /tlgame/tlbb/Server | grep "World" | head -n1 | awk '{print $0}')
+    GS_WORLD=$(ls -t /home/tlbb/Server | grep "World" | head -n1 | awk '{print $0}')
     cd /home/tlbb/Server && ./${GS_WORLD}
     #   cd /home/tlbb/Server && ./World
     if [ $? -eq 0 ]; then
@@ -75,7 +75,7 @@ run_step_4() {
 }
 
 run_step_5() {
-    GS_SERVER=$(ls -t /tlgame/tlbb/Server | grep "Server" | head -n1 | awk '{print $0}')
+    GS_SERVER=$(ls -t /home/tlbb/Server | grep "Server" | head -n1 | awk '{print $0}')
     cd /home/tlbb/Server && ./${GS_SERVER}
     if [ $? -eq 0 ]; then
         echo -e "${CSUCCESS} 启动 [Server] 服务成功，请耐心等待几分钟。建议使用：【runtop】查看情况！！${CEND}"
