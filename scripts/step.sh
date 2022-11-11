@@ -30,7 +30,9 @@ CWARNING="$CYELLOW"
 CMSG="$CCYAN"
 
 run_step_1() {
-    cd /home/billing && ./billing stop && ./billing up -d
+    cd /home/billing
+    ./billing stop
+    ./billing up -d
     if [ $? -eq 0 ]; then
         echo -e "${CSUCCESS} 启动 [BILLING] 服务成功，请耐心等待几分钟。建议使用：【runtop】查看情况！！${CEND}"
     else
