@@ -87,7 +87,7 @@ run_step_4() {
 }
 
 run_step_5() {
-    GS_SERVER=$(ls -l /home/tlbb/Server | grep -v "^d" | grep "Server" | head -n1 | awk '{print $9`}')
+    GS_SERVER=$(ls -l /home/tlbb/Server | grep -v "^d" | grep "Server" | head -n1 | awk '{print $9}')
     if [ -f /home/tlbb/Server/${GS_SERVER} ]; then
         cd /home/tlbb/Server && ./${GS_SERVER}
     else
