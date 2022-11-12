@@ -53,7 +53,13 @@ run_step_2() {
 
 run_step_3() {
     GS_LOGIN=$(ls -l /home/tlbb/Server | grep -v "^d" | grep "Login" | head -n1 | awk '{print $9}')
-    cd /home/tlbb/Server && ./${GS_LOGIN}
+    if [ -f /home/tlbb/Server/${GS_LOGIN} ]; then
+        cd /home/tlbb/Server && ./${GS_LOGIN}
+    else
+        echo -e "${GSISSUE}\r\n"
+        echo -e "${CRED} 启动 [Login] 服务失败！请查看引擎目录下[Login]是否有对应的文件，如果有多个，请手动删除或者移出目录！${CEND}"
+        exit 1
+    fi
     if [ $? -eq 0 ]; then
         echo -e "${CSUCCESS} 启动 [Login] 服务成功，请耐心等待几分钟。建议使用：【runtop】查看情况！！${CEND}"
     else
@@ -64,7 +70,14 @@ run_step_3() {
 
 run_step_4() {
     GS_WORLD=$(ls -l /home/tlbb/Server | grep -v "^d" | grep "World" | head -n1 | awk '{print $9}')
-    cd /home/tlbb/Server && ./${GS_WORLD}
+    if [ -f /home/tlbb/Server/${GS_WORLD} ]; then
+        cd /home/tlbb/Server && ./${GS_WORLD}
+    else
+        echo -e "${GSISSUE}\r\n"
+        echo -e "${CRED} 启动 [World] 服务失败！请查看引擎目录下是否有对应的文件，如果有多个，请手动删除或者移出目录！${CEND}"
+        exit 1
+    fi
+
     if [ $? -eq 0 ]; then
         echo -e "${CSUCCESS} 启动 [World] 服务成功，请耐心等待几分钟。建议使用：【runtop】查看情况！！${CEND}"
     else
@@ -75,7 +88,14 @@ run_step_4() {
 
 run_step_5() {
     GS_SERVER=$(ls -l /home/tlbb/Server | grep -v "^d" | grep "Server" | head -n1 | awk '{print $9`}')
-    cd /home/tlbb/Server && ./${GS_SERVER}
+    if [ -f /home/tlbb/Server/${GS_SERVER} ]; then
+        cd /home/tlbb/Server && ./${GS_SERVER}
+    else
+        echo -e "${GSISSUE}\r\n"
+        echo -e "${CRED} 启动 [Server] 服务失败！请查看引擎目录下[Server]是否有对应的文件，如果有多个，请手动删除或者移出目录！${CEND}"
+        exit 1
+    fi
+
     if [ $? -eq 0 ]; then
         echo -e "${CSUCCESS} 启动 [Server] 服务成功，请耐心等待几分钟。建议使用：【runtop】查看情况！！${CEND}"
     else
