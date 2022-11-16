@@ -39,7 +39,14 @@ if [ $? -eq 0 ]; then
     if [ -f "${BASE_PATH}/run.sh" ]; then
         GS_LOGIN=$(ls -t /tlgame/tlbb/Server | grep "Login" | head -n1 | awk '{print $0}')
         GS_WORLD=$(ls -t /tlgame/tlbb/Server | grep "World" | head -n1 | awk '{print $0}')
-        GS_SERVER=$(ls -t /tlgame/tlbb/Server | grep "Server" | head -n1 | awk '{print $0}')
+
+        for VAR in $(ls -t /tlgame/tlbb/Server | grep "Server" | awk '{print $0}'); do
+            TEMP_NAME=$(file /tlgame/tlbb/Server/${VAR} | grep 'executable' | awk '{print $0}')
+            if [ -n ${TEMP_NAME} ]; then
+                GS_SERVER=${VAR}
+            fi
+        done
+
         sed -i "s/GS_LOGIN/\.\/${GS_LOGIN} \>\/dev\/null 2\>\&1 \&/g" ${BASE_PATH}/run.sh
         sed -i "s/GS_WORLD/\.\/${GS_WORLD} \>\/dev\/null 2\>\&1 \&/g" ${BASE_PATH}/run.sh
         sed -i "s/GS_SERVER/\.\/${GS_SERVER} \>\/dev\/null 2\>\&1 \&/g" ${BASE_PATH}/run.sh

@@ -148,6 +148,5 @@ step 5
 -   [视频配套地址](https://gsgameshare.com/gs-origin/env-v2-001)，如果访问不到，请添加Q，1303588722
 
 -   环境配套对应的产品效果  [**GS游享网**](https://gsgameshare.com)
--   技术交流群：826717146
--   技术交流群链接：<a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=7-xH1POfCRL4fYw6lJE5vNPHdjFrX4kG&jump_from=webapi"><img border="0" src="//pub.idqqimg.com/wpa/images/group.png" alt="技术整合研究所" title="技术整合研究所"></a>
+-   技术交流群：234788882
 -   鉴于经常搜索不到群号，特提供技术交流群扫码![](./qqqun.png)
