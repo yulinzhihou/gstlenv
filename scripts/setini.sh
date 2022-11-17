@@ -110,7 +110,8 @@ if [ $? -eq 0 ]; then
         \cp -rf ${BASE_PATH}/run.sh ${GS_PROJECT_PATH}/tlbb &&
             cd ${BASE_PATH}/ &&
             rm -rf ${BASE_PATH}/*.ini ${BASE_PATH}/config.yaml ${BASE_PATH}/billing ${BASE_PATH}/run.sh
-        chown -R root:root ${GS_PROJECT_PATH} && chmod -R 777 ${GS_PROJECT_PATH}
+        # chown -R root:root ${GS_PROJECT_PATH} &&
+        chmod -R 777 ${GS_PROJECT_PATH}
         if [ $? -eq 0 ]; then
             echo -e "${CSUCCESS}配置文件已经写入成功，可以执行【runtlbb】进行开服操作！！${CEND}"
             exit 0

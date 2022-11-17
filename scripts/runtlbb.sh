@@ -38,7 +38,7 @@ if [ $? -eq 0 ]; then
     chmod -R 777 /tlgame &&
       docker exec -d gsserver chmod -R 777 /usr/local/bin &&
       docker exec -d gsmysql chmod -R 777 /usr/local/bin &&
-      chown -R root:root /tlgame &&
+      # chown -R root:root /tlgame &&
       cd ${ROOT_PATH}/${GSDIR} &&
       docker exec -d gsserver /bin/bash run.sh
 

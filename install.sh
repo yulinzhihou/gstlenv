@@ -43,8 +43,8 @@ if [ -f /root/gstlenv_offline.tar.gz ]; then
     \cp -rf ./* ${GS_PROJECT} &&
         \cp -rf docker-compose.yml /root/.gs/docker-compose.yml &&
         . ${GS_WHOLE_PATH} &&
-        chmod -R 777 ${GS_PROJECT} &&
-        chown -R root:root ${GS_PROJECT}
+        chmod -R 777 ${GS_PROJECT}
+    # chown -R root:root ${GS_PROJECT}
 fi
 
 # 系统组件安装

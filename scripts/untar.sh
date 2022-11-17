@@ -20,7 +20,7 @@ if [ -f "/root/tlbb.tar.gz" ]; then
     tar zcf tlgame-$(date +%Y%m%d%H%I%S)${SUFFIX} ${TLBB_PATH} &&
         rm -rf ${TLBB_PATH} &&
         tar zxf /root/tlbb.tar.gz -C /tlgame/ &&
-        chown -R root:root /tlgame &&
+        # chown -R root:root /tlgame &&
         chmod -R 777 /tlgame &&
         mv /root/tlbb.tar.gz /root/$(date +%Y%m%d%H%I%S)-tlbb.tar.gz
 
