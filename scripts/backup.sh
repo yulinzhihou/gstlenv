@@ -46,12 +46,6 @@ if [ $? -eq 0 ]; then
   backup_mysql() {
     echo -e "${CYELLOW}正在备份数据库，请稍等……${CEND}\r\n"
     docker exec -it gsmysql /bin/bash /usr/local/bin/gsmysqlBackup.sh
-    #判断是否备份成功
-    if [ $? -eq 0 ]; then
-      echo -ne "${CSUCCESS}$(date '+%Y-%m-%d-%H-%M-%S')\t web和tlbbdb库 \t备份成功!!${CEND}\r\n" | tee -a ${FILEPATH}${LOG_FILE}
-    else
-      echo -ne "${CRED}$(date '+%Y-%m-%d-%H-%M-%S')\t web和tlbbdb库 \t备份失败${CEND}\r\n" | tee -a ${FILEPATH}${LOG_FILE}
-    fi
   }
 
   # 根据输入判断备份类型
