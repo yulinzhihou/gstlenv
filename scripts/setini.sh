@@ -22,6 +22,9 @@ if [ $? -eq 0 ]; then
     BASE_PATH="/root/.tlgame/config"
     GS_PROJECT_PATH="/tlgame"
 
+    # 增加对合区工具的兼容
+    docker exec -d gsmysql chown -R mysql:mysql /var/lib/mysql
+
     # 前置判断,如果服务端的路径都正确，就直接退出吧。
     if [ ! -d "${GS_PROJECT_PATH}/tlbb/Server/" ]; then
         echo -e "${GSISSUE}\r\n"
