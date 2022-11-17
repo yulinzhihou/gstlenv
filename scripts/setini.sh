@@ -42,7 +42,7 @@ if [ $? -eq 0 ]; then
 
         for VAR in $(ls -t /tlgame/tlbb/Server | grep "Server" | awk '{print $0}'); do
             TEMP_NAME=$(file /tlgame/tlbb/Server/${VAR} | grep 'executable' | awk '{print $0}')
-            if [ -n ${TEMP_NAME} ]; then
+            if [ -n "${TEMP_NAME}" ]; then
                 GS_SERVER=${VAR}
             fi
         done
