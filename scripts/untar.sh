@@ -21,7 +21,7 @@ if [ -f "/root/tlbb.tar.gz" ]; then
         rm -rf ${TLBB_PATH} &&
         tar zxf /root/tlbb.tar.gz -C /tlgame/ &&
         # chown -R root:root /tlgame &&
-        chmod -R 777 /tlgame &&
+        # chmod -R 777 /tlgame &&
         mv /root/tlbb.tar.gz /root/$(date +%Y%m%d%H%I%S)-tlbb.tar.gz
 
     if [ -f ${TLBB_PATH}/run.sh ]; then
@@ -34,7 +34,7 @@ elif [ -f "/root/tlbb.zip" ]; then
     tar zcf tlgame-$(date +%Y%m%d%H%I%S)${SUFFIX} ${TLBB_PATH} &&
         rm -rf ${TLBB_PATH} &&
         unzip -q ~/tlbb.zip -d /tlgame/ &&
-        chmod -R 777 /tlgame &&
+        # chmod -R 777 /tlgame &&
         mv ~/tlbb.zip ~/$(date +%Y%m%d%H%I%S)-tlbb.zip
 
     if [ -f ${TLBB_PATH}/run.sh ]; then

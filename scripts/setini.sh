@@ -34,7 +34,9 @@ if [ $? -eq 0 ]; then
 
     tar zxf ${BASE_PATH}/ini.tar.gz -C ${BASE_PATH}
     if [ ! -d "${GS_PROJECT_PATH}/billing/" ]; then
-        mkdir -p ${GS_PROJECT_PATH}/billing/ && chown -R root:root ${GS_PROJECT_PATH} && chmod -R 777 ${GS_PROJECT_PATH}
+        mkdir -p ${GS_PROJECT_PATH}/billing/ &&
+            chown -R root:root ${GS_PROJECT_PATH}/billing ${GS_PROJECT_PATH}/tlbb &&
+            chmod -R 777 ${GS_PROJECT_PATH}/billing ${GS_PROJECT_PATH}/tlbb
     fi
     \cp -rf ${BASE_PATH}/billing ${GS_PROJECT_PATH}/billing/
 
@@ -111,7 +113,7 @@ if [ $? -eq 0 ]; then
             cd ${BASE_PATH}/ &&
             rm -rf ${BASE_PATH}/*.ini ${BASE_PATH}/config.yaml ${BASE_PATH}/billing ${BASE_PATH}/run.sh
         # chown -R root:root ${GS_PROJECT_PATH} &&
-        chmod -R 777 ${GS_PROJECT_PATH}
+        chmod -R 777 ${GS_PROJECT_PATH}/billing ${GS_PROJECT_PATH}/tlbb
         if [ $? -eq 0 ]; then
             echo -e "${CSUCCESS}配置文件已经写入成功，可以执行【runtlbb】进行开服操作！！${CEND}"
             exit 0
