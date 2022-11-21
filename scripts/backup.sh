@@ -30,7 +30,7 @@ if [ $? -eq 0 ]; then
   fi
 
   backup_tlbb() {
-    rm -rf /tlgame/tlbb/Server/Log
+    #rm -rf /tlgame/tlbb/Server/Log
     echo -e "${CYELLOW}正在备份服务端版本目录，请稍等……${CEND}\r\n"
     #备份服务端
     cd /tlgame && tar zcf tlbb-${FILENAME}.tar.gz tlbb &&
