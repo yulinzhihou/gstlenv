@@ -44,9 +44,10 @@ if [ $? -eq 0 ]; then
 
     if [ $? -eq 0 ]; then
       # 删除因为改版本导致引擎启动失败的dump文件
-      gsbak
+      # gsbak
       cd ${ROOT_PATH}/${GSDIR} && rm -rf core.*
       echo -e "${CSUCCESS}已经成功启动服务端，请耐心等待几分钟后，建议使用：【runtop】查看开服的情况！！${CEND}"
+      echo -e "${CWARNING}如果需要定时备份，请执行【gsbak】命令，默认1小时备份一次数据库和版本，保留10次备份数据！！${CEND}"
       exit 0
     else
       echo -e "${GSISSUE}\r\n"
