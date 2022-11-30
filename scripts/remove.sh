@@ -38,6 +38,7 @@ if [ $? -eq 0 ]; then
       docker rm -f gsmysql gsnginx gsserver &&
       docker rmi -f ${HUB_ALIYUN}gs_mysql51 ${HUB_ALIYUN}gs_server ${HUB_ALIYUN}gs_nginx &&
       mv /tlgame /tlgame-$(date +%Y%m%d%H%I%S) &&
+      \cp -rf ${ROOT_PATH}/${GSDIR}/.env /root/env-$(date +%Y%m%d%H%I%S) &&
       chattr -i ${GS_WHOLE_PATH} &&
       rm -rf /usr/local/bin/.env &&
       rm -rf ${ROOT_PATH}/${GSDIR} &&
