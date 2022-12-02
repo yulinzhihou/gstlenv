@@ -51,9 +51,9 @@ fi
 sys_plugins_install() {
     echo -e "${CYELLOW}开始安装系统常用组件 !!!${CEND}"
     # 安装 wget gcc curl git python
-    ${PM} -y install wget gcc curl python git jq vim
+    ${PM} -y install wget gcc curl python git jq vim unzip zip
     [ "${CentOS_ver}" == '8' ] && {
-        yum -y install python36 gcc wget curl git jq vim
+        yum -y install python36 gcc wget curl git jq vim unzip zip
         sudo alternatives --set python /usr/bin/python3
     }
 }

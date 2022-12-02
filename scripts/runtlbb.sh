@@ -24,6 +24,24 @@ if [ $? -eq 0 ]; then
   #   docker exec -d gsserver /home/billing/billing up -d
   #   sleep 3
   # fi
+
+  # 检查是否有数据库文件，目前发现会出现不定时的出现数据库容器没有数据初始化的问题，临时解决，在开服前检测是否有正常的数据库文件
+  function check_runtlbb_mysql_is_initd() {
+    while :; do
+      if [ -d '/tlgame/gsmysql/tlbbdb' ]; then
+        FILE_CUR_NUM=$(ls -ltr /tlgame/gsmysql/tlbbdb | wc -l)
+        if [ ${FILE_CUR_NUM} -lt 1 ]; then
+          docker exec -d gsmysql /bin/bash /usr/local/bin/init_db.sh
+        else
+          break
+        fi
+      else
+        echo "${CRED}环境未被初始化成功，请执行 [rebuild] 命令，进行重构${CEND}"
+        exit 1
+      fi
+    done
+  }
+
   SERVER_IS_RUN=$(docker exec -it gsserver ps aux | grep "Server" | wc -l)
   WORLD_IS_RUN=$(docker exec -it gsserver ps aux | grep "World" | wc -l)
   LOGIN_IS_RUN=$(docker exec -it gsserver ps aux | grep "Login" | wc -l)
@@ -35,7 +53,8 @@ if [ $? -eq 0 ]; then
     exit 1
   else
     echo "${CSUCCESS}暂未发现之前运行过，正在开启……${CEND}"
-    chmod -R 777 /tlgame &&
+    check_runtlbb_mysql_is_initd &&
+      chmod -R 777 /tlgame &&
       docker exec -d gsserver chmod -R 777 /usr/local/bin &&
       docker exec -d gsmysql chmod -R 777 /usr/local/bin &&
       # chown -R root:root /tlgame &&
