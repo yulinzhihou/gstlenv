@@ -53,6 +53,7 @@ if [ $? -eq 0 ]; then
     setconfig_backup &&
       docker stop gsmysql gsnginx gsserver &&
       docker rm gsmysql gsnginx gsserver &&
+      rm -rf /tlgame/gsmysql/mysql &&
       rm -rf /tlgame/tlbb/* &&
       cd ${ROOT_PATH}/${GSDIR} &&
       docker-compose up -d &&

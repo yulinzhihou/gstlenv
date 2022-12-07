@@ -251,7 +251,8 @@ setconfig_rebuild() {
     fi
     # 先停止容器，再将容器删除，重新根据镜像文件以及配置文件，通过docker-compose重新生成容器环境
     docker stop gsmysql gsnginx gsserver &&
-        docker rm -f gsmysql gsnginx gsserver
+        docker rm -f gsmysql gsnginx gsserver &&
+        rm -rf /tlgame/gsmysql/mysql
 }
 
 # 备份数据
