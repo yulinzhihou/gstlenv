@@ -268,9 +268,7 @@ setconfig_restore() {
     if [ -f "/tlgame/tlbb-setconfig-backup.tar.gz" ]; then
         cd /tlgame && tar zxf tlbb-setconfig-backup.tar.gz && mv /tlgame/tlbb-setconfig-backup.tar.gz /tlgame/backup
     fi
-
     docker exec -d gsmysql /bin/bash /usr/local/bin/gsmysqlRestore.sh
-
 }
 
 # 核心调用
