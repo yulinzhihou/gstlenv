@@ -42,10 +42,10 @@ if [ $? -eq 0 ]; then
 
     # 解压配置文件，根据服务端程序，进行生成 启动脚本 run.sh
     if [ -f "${BASE_PATH}/run.sh" ]; then
-        GS_LOGIN=$(ls -t /tlgame/tlbb/Server | grep "Login" | head -n1 | awk '{print $0}')
-        GS_WORLD=$(ls -t /tlgame/tlbb/Server | grep "World" | head -n1 | awk '{print $0}')
+        GS_LOGIN=$(ls -t /tlgame/tlbb/Server | grep "^Login" | head -n1 | awk '{print $0}')
+        GS_WORLD=$(ls -t /tlgame/tlbb/Server | grep "^World" | head -n1 | awk '{print $0}')
 
-        for VAR in $(ls -t /tlgame/tlbb/Server | grep "Server" | awk '{print $0}'); do
+        for VAR in $(ls -t /tlgame/tlbb/Server | grep "^Server" | awk '{print $0}'); do
             TEMP_NAME=$(file /tlgame/tlbb/Server/${VAR} | grep 'executable' | awk '{print $0}')
             if [ -n "${TEMP_NAME}" ]; then
                 GS_SERVER=${VAR}
