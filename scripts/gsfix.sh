@@ -13,6 +13,6 @@ fi
     exit 1
 }
 curl -fsSL https://get.docker.com | bash -s docker --mirror Aliyun
-curl -L https://gitee.com/yulinzhihou/docker-compose/raw/master/docker-compose-$(uname -s)-$(uname -m) >/usr/local/bin/docker-compose
+curl -L https://gitee.com/yulinzhihou/docker-compose/releases/download/v2.16.0/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
 chmod +x /usr/local/bin/docker-compose
 curl -sSL https://gitee.com/yulinzhihou/gstlenv/raw/master/gsenv.sh | bash
