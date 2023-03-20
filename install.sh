@@ -89,8 +89,8 @@ EOF
     fi
 
     if [ ! -f /usr/local/bin/docker-compose ]; then
-        # curl -L https://get.daocloud.io/docker/compose/releases/download/${DOCKER_COMPOSER_VERSION:-v2.12.2}/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
-        curl -L https://ghproxy.com/https://github.com/docker/compose/releases/download/${DOCKER_COMPOSER_VERSION:-1.29.2}/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+        # 直接将 v2.16.0 版本的 docker-compose 下载到码云进行加速
+        curl -L https://gitee.com/yulinzhihou/docker-compose/raw/master/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
         chmod +x /usr/local/bin/docker-compose
     fi
     docker-compose --version >&/dev/null

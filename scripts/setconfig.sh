@@ -246,7 +246,7 @@ setconfig_rebuild() {
         chattr +i ${GS_WHOLE_PATH}
     else
         echo -e "${GSISSUE}\r\n"
-        echo -e "GS专用环境容器还没下载下来，请重新执行【curl -sSL https://gsgameshare.com/gsenv | bash 】命令！"
+        echo -e "GS专用环境容器还没下载下来，请重新执行【 curl -sSL https://gitee.com/yulinzhihou/gstlenv/raw/master/gsenv.sh | bash 】命令！"
         exit 1
     fi
     # 先停止容器，再将容器删除，重新根据镜像文件以及配置文件，通过docker-compose重新生成容器环境

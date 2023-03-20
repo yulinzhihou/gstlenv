@@ -4,11 +4,11 @@
 
 | Platform                                                   | x86_64 / amd64                                               | ARM                                                          | ARM64 / AARCH64                                              | Version |
 | :--------------------------------------------------------- | :----------------------------------------------------------- | :----------------------------------------------------------- | :----------------------------------------------------------- | ------- |
-| [CentOS](https://docs.docker.com/engine/install/centos/)   | [![yes](https://docs.docker.com/images/green-check.svg)](https://docs.docker.com/engine/install/centos/) |                                                              | [![yes](https://docs.docker.com/images/green-check.svg)](https://docs.docker.com/engine/install/centos/) | 7+      |
-| [Debian](https://docs.docker.com/engine/install/debian/)   | [![yes](https://docs.docker.com/images/green-check.svg)](https://docs.docker.com/engine/install/debian/) | [![yes](https://docs.docker.com/images/green-check.svg)](https://docs.docker.com/engine/install/debian/) | [![yes](https://docs.docker.com/images/green-check.svg)](https://docs.docker.com/engine/install/debian/) | 9+      |
-| [Fedora](https://docs.docker.com/engine/install/fedora/)   | [![yes](https://docs.docker.com/images/green-check.svg)](https://docs.docker.com/engine/install/fedora/) |                                                              | [![yes](https://docs.docker.com/images/green-check.svg)](https://docs.docker.com/engine/install/fedora/) | 32+     |
-| [Raspbian](https://docs.docker.com/engine/install/debian/) |                                                              | [![yes](https://docs.docker.com/images/green-check.svg)](https://docs.docker.com/engine/install/debian/) | [![yes](https://docs.docker.com/images/green-check.svg)](https://docs.docker.com/engine/install/debian/) | 9+      |
-| [Ubuntu](https://docs.docker.com/engine/install/ubuntu/)   | [![yes](https://docs.docker.com/images/green-check.svg)](https://docs.docker.com/engine/install/ubuntu/) | [![yes](https://docs.docker.com/images/green-check.svg)](https://docs.docker.com/engine/install/ubuntu/) | [![yes](https://docs.docker.com/images/green-check.svg)](https://docs.docker.com/engine/install/ubuntu/) | 16.04+  |
+| <a href="https://docs.docker.com/engine/install/centos/" target="_blank" rel="nofollow noopener">CentOS</a>   | ![](https://docs.docker.com/assets/images/green-check.svg)|                                                              | ![](https://docs.docker.com/assets/images/green-check.svg) | 7+      |
+| <a href="https://docs.docker.com/engine/install/debian/" target="_blank" rel="nofollow noopener">Debian</a>  | ![](https://docs.docker.com/assets/images/green-check.svg) | ![](https://docs.docker.com/assets/images/green-check.svg) | ![](https://docs.docker.com/assets/images/green-check.svg) | 9+      |
+| <a href="https://docs.docker.com/engine/install/Fedora/" target="_blank" rel="nofollow noopener">Fedora</a>  | ![](https://docs.docker.com/assets/images/green-check.svg)|                                                              | ![](https://docs.docker.com/assets/images/green-check.svg) | 32+     |
+| <a href="https://docs.docker.com/engine/install/Raspbian/" target="_blank" rel="nofollow noopener">Raspbian</a>  |                                                              | [](https://docs.docker.com/assets/images/green-check.svg) | ![](https://docs.docker.com/assets/images/green-check.svg) | 9+      |
+| <a href="https://docs.docker.com/engine/install/ubuntu/" target="_blank" rel="nofollow noopener">Ubuntu</a>   | ![](https://docs.docker.com/assets/images/green-check.svg) | ![](https://docs.docker.com/assets/images/green-check.svg) | ![](https://docs.docker.com/assets/images/green-check.svg) | 16.04+
 
 - 本教程支持各种云服务器
 
@@ -33,7 +33,7 @@
 - 第一步：下载部署环境的项目，使用 `root` 用户登录，**否则可能会出现报错，建议安装到 `root` 根目录**
 
 ```bash
-curl -sSL https://gsgameshare.com/gsenv | bash
+curl -sSL https://gitee.com/yulinzhihou/gstlenv/raw/master/gsenv.sh | bash
 ```
 
 - 第二步：如果想使用默认配置(默认的端口，默认的数据库密码等)，可以跳过此步骤

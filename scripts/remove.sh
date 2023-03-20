@@ -45,7 +45,7 @@ if [ $? -eq 0 ]; then
       rm -rf ${GS_PROJECT}
 
     if [ $? -eq 0 ]; then
-      echo -e "${CSUCCESS} 数据清除成功，请重新安装环境!!! 可以重新输入 【 curl -sSL https://gsgameshare.com/gsenv | bash 】进行重新安装!!!${CEND}"
+      echo -e "${CSUCCESS} 数据清除成功，请重新安装环境!!! 可以重新输入 【 curl -sSL https://gitee.com/yulinzhihou/gstlenv/raw/master/gsenv.sh | bash 】进行重新安装!!!${CEND}"
       exit 0
     else
       echo -e "${GSISSUE}\r\n"
