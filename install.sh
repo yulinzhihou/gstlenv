@@ -90,7 +90,8 @@ EOF
 
     if [ ! -f /usr/local/bin/docker-compose ]; then
         # 直接将 v2.16.0 版本的 docker-compose 下载到码云进行加速
-        curl -L https://gitee.com/yulinzhihou/docker-compose/raw/master/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+        # curl -L https://gitee.com/yulinzhihou/docker-compose/raw/master/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+        curl -L https://gitee.com/yulinzhihou/docker-compose/releases/download/v2.16.0/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
         chmod +x /usr/local/bin/docker-compose
     fi
     docker-compose --version >&/dev/null

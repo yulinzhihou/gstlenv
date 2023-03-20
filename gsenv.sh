@@ -48,7 +48,7 @@ download() {
     fi
     rm -rf ${TMP_PATH}/${WHOLE_NAME} ${TMP_PATH}/${FILENAME}-${VERSION}
 
-    echo -e "${CYELLOW}安装已经下载到本地并准备执行安装！请耐心等待！${CEND}"
+    echo -e "${CYELLOW}安装包已经下载到本地并准备执行安装！请耐心等待！${CEND}"
 }
 
 show
