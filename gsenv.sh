@@ -28,7 +28,11 @@ ENVDIR='.tlgame'
 #环境版本号
 VERSION='v2.4.6'
 # 展示信息
-INFO=$(curl https://gsgameshare.com/info.txt)
+if [ -f info.txt ]; then
+    INFO=$(cat info.txt)
+else
+    INFO=$(curl https://gsgameshare.com/info.txt)
+fi
 
 show() {
     echo -e "\e[1;35m${INFO}\033[0m"
