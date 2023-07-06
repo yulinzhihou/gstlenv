@@ -268,8 +268,8 @@ setconfig_restore() {
     echo -ne "正在还原修改参数之前的数据库与版本请稍候……\r"
     if [ -f "/tlgame/tlbb-setconfig-backup.tar.gz" ]; then
         cd /tlgame && tar zxf tlbb-setconfig-backup.tar.gz && mv /tlgame/tlbb-setconfig-backup.tar.gz /tlgame/backup
+        docker exec -d gsmysql /bin/bash /usr/local/bin/gsmysqlRestore.sh
     fi
-    docker exec -d gsmysql /bin/bash /usr/local/bin/gsmysqlRestore.sh
 }
 
 # 核心调用
@@ -312,7 +312,7 @@ main() {
                     # 开环境
                     cd ${ROOT_PATH}/${GSDIR} && docker-compose up -d &&
                     rm -rf /tlgame/tlbb-setconfig-backup.tar.gz &&
-                    docker exec -d gsmysql /bin/bash /usr/local/bin/gsmysqlRestore.sh reset
+                    docker exec -it gsmysql /bin/bash /usr/local/bin/gsmysqlRestore.sh reset
             fi
             break
         fi
