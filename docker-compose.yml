@@ -16,9 +16,9 @@ services:
     links:
       - gsmysql:gsmysql
       - gsnginx:gsnginx
-      # - gsphp:gsphp
-      # - gsredis:gsredis
-  # # Database mysql5.7 暂时不支持，降级到5.1
+      - gsphp:gsphp
+      - gsredis:gsredis
+  # # Database mysql5.7 世面上大多合区工具暂时不支持，降级到5.1
   # gsmysql:
   #   image: ${HUB_ALIYUN}gs_mysql:latest
   #   container_name: gsmysql
@@ -66,23 +66,23 @@ services:
       TZ: "$TZ"
     restart: always
   # PHP
-  # gsphp:
-  #   image: ${HUB_ALIYUN}gs_php:latest
-  #   container_name: gsphp
-  #   volumes:
-  #     - ${SHARED_DIR}/www/:/www/:rw
-  #     - ${SHARED_DIR}/log/php/:/var/log/php
-  #   restart: always
-  #   cap_add:
-  #     - SYS_PTRACE
+  gsphp:
+    image: ${HUB_ALIYUN}gs_php:latest
+    container_name: gsphp
+    volumes:
+      - ${SHARED_DIR}/www/:/www/:rw
+      - ${SHARED_DIR}/log/php/:/var/log/php
+    restart: always
+    cap_add:
+      - SYS_PTRACE
   # NOSQL
-  # gsredis:
-  #   image: ${HUB_ALIYUN}gs_redis:latest
-  #   container_name: gsredis
-  #   ports:
-  #     - "${REDIS_HOST_PORT}:6379"
-  #   volumes:
-  #     - ${SHARED_DIR}/redis:/data/:rw
-  #   restart: always
-  #   environment:
-  #     TZ: "$TZ"
+  gsredis:
+    image: ${HUB_ALIYUN}gs_redis:latest
+    container_name: gsredis
+    ports:
+      - "${REDIS_HOST_PORT}:6379"
+    volumes:
+      - ${SHARED_DIR}/redis:/data/:rw
+    restart: always
+    environment:
+      TZ: "$TZ"

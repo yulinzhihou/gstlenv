@@ -26,13 +26,13 @@ WHOLE_NAME=${FILENAME}${SUFFIX}
 #解压后重全名文件夹名称
 ENVDIR='.tlgame'
 #环境版本号
-VERSION='v2.4.6'
+VERSION='v2.5.0'
 # 展示信息
-if [ -f info.txt ]; then
-    INFO=$(cat info.txt)
-else
-    INFO=$(curl https://gsgameshare.com/info.txt)
-fi
+# if [ -f info.txt ]; then
+INFO=$(cat info.txt)
+# else
+#     INFO=$(curl https://gsgameshare.com/info.txt)
+# fi
 
 show() {
     echo -e "\e[1;35m${INFO}\033[0m"
@@ -40,8 +40,14 @@ show() {
 
 download() {
     echo -e "${CYELLOW}正在下载环境安装源码，此过程决定于网速，源码安装包大概 2MB 左右，请稍候……${CEND}"
-    curl -sOL https://gitee.com/yulinzhihou/gstlenv/repository/archive/${VERSION}.tar.gz &&
-        mv ${VERSION}.tar.gz ${TMP_PATH}/${WHOLE_NAME}
+    if [ -f /root/${VERSION}.tar.gz ]; then
+        cd /root &&
+            mv ${VERSION}.tar.gz ${TMP_PATH}/${WHOLE_NAME}
+    else
+        curl -sOL https://gitee.com/yulinzhihou/gstlenv/repository/archive/${VERSION}.tar.gz &&
+            mv ${VERSION}.tar.gz ${TMP_PATH}/${WHOLE_NAME}
+    fi
+
     # gs env 服务器环境 ，组件，手动测试时使用
     cd ${TMP_PATH} &&
         tar zxf ${WHOLE_NAME}

@@ -3,7 +3,5 @@
 .idea
 workspace
 .DS_Store
-vendor
-info.txt
 push.sh
 tag.sh

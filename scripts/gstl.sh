@@ -49,7 +49,7 @@ init_config() {
 
 # 运行容器
 docker_run() {
-    TIPS="${CRED}环境不充足，请重新安装服务器基础环境组件和必要安装包，运行【 curl -sSL https://gitee.com/yulinzhihou/gstlenv/raw/master/gsenv.sh | bash | bash 】${CEND}"
+    TIPS="${CRED}环境不充足，请重新安装服务器基础环境组件和必要安装包，运行【 curl -sSL https://gitee.com/yulinzhihou/gstlenv/raw/master/gsenv.sh | bash 】${CEND}"
     docker info >&/dev/null
     if [ $? -ne 0 ]; then
         echo -e $TIPS
