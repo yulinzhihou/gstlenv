@@ -83,12 +83,11 @@ do_install_docker() {
 }
 EOF
     fi
+    [ "${OS}" == "Debian" ] || [ "${OS}" == "Ubuntu" ] && sudo apt-get services docker start && systemctl enable docker
+    [ "${OS}" == "CentOS" ] || [ "${OS}" == "CentOSStream" ] || [ "${OS}" == "CentOS Stream release 9" ] && sudo systemctl daemon-reload && sudo systemctl start docker && systemctl enable docker
 
     docker info >&/dev/null
     if [ $? -eq 0 ]; then
-        [ "${OS}" == "Debian" ] || [ "${OS}" == "Ubuntu" ] && sudo apt-get services docker start && systemctl enable docker
-        [ "${OS}" == "CentOS" ] || [ "${OS}" == "CentOSStream" ] || [ "${OS}" == "CentOS Stream release 9" ] && sudo systemctl daemon-reload && sudo systemctl start docker && systemctl enable docker
-
         echo -e "${CYELLOW}环境 Docker 安装成功 !!!${CEND}"
     else
         echo -e "${CRED}环境 Docker 安装失败 !!!${CEND}"
