@@ -66,23 +66,23 @@ services:
       TZ: "$TZ"
     restart: always
   # PHP
-  gsphp:
-    image: ${HUB_ALIYUN}gs_php:latest
-    container_name: gsphp
-    volumes:
-      - ${SHARED_DIR}/www/:/www/:rw
-      - ${SHARED_DIR}/log/php/:/var/log/php
-    restart: always
-    cap_add:
-      - SYS_PTRACE
+  # gsphp:
+  #   image: ${HUB_ALIYUN}gs_php:latest
+  #   container_name: gsphp
+  #   volumes:
+  #     - ${SHARED_DIR}/www/:/www/:rw
+  #     - ${SHARED_DIR}/log/php/:/var/log/php
+  #   restart: always
+  #   cap_add:
+  #     - SYS_PTRACE
   # NOSQL
-  gsredis:
-    image: ${HUB_ALIYUN}gs_redis:latest
-    container_name: gsredis
-    ports:
-      - "${REDIS_HOST_PORT}:6379"
-    volumes:
-      - ${SHARED_DIR}/redis:/data/:rw
-    restart: always
-    environment:
-      TZ: "$TZ"
+  # gsredis:
+  #   image: ${HUB_ALIYUN}gs_redis:latest
+  #   container_name: gsredis
+  #   ports:
+  #     - "${REDIS_HOST_PORT}:6379"
+  #   volumes:
+  #     - ${SHARED_DIR}/redis:/data/:rw
+  #   restart: always
+  #   environment:
+  #     TZ: "$TZ"
