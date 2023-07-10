@@ -16,8 +16,8 @@ services:
     links:
       - gsmysql:gsmysql
       - gsnginx:gsnginx
-      - gsphp:gsphp
-      - gsredis:gsredis
+      # - gsphp:gsphp
+      # - gsredis:gsredis
   # # Database mysql5.7 世面上大多合区工具暂时不支持，降级到5.1
   # gsmysql:
   #   image: ${HUB_ALIYUN}gs_mysql:latest
