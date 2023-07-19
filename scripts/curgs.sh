@@ -20,9 +20,19 @@ if [ $? -eq 0 ]; then
 
   cat <<EOF
 ${CYELLOW}
-※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※
-此命令只用于查看当前配置信息，不作任何修改。如需要重新设置，请执行【setconfig】命令
-※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※
+※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※
+◎           
+◎                       GS游戏享网服务端环境 gstlenv
+◎           
+◎           gstlenv 环境开源免费，无后门，无劫持，防泄漏，完全可靠
+◎           环境教程文字：https://gitee.com/yulinzhihou/gstlenv
+◎           环境视频教程：https://gsgameshare.com/deploy/1.html
+◎           环境离线版本：https://gsgameshare.com/deploy/30.html
+◎           环境命令文档：https://gsgameshare.com/deploy/28.html
+◎           
+◎ 【curgs】此命令只用于查看当前配置信息，不作任何修改。如需要重新设置，请执行【setconfig】命令
+※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※
+◎           
 ◎  数据库端口: $([ ${TL_MYSQL_PORT} == ${TL_MYSQL_DEFAULT_PORT} ] && echo ${TL_MYSQL_DEFAULT_PORT} || echo ${TL_MYSQL_PORT})
 ◎  数据库密码: $([ ${TL_MYSQL_PASSWORD} == ${TL_MYSQL_DEFAULT_PASSWORD} ] && echo ${TL_MYSQL_DEFAULT_PASSWORD} || echo ${TL_MYSQL_PASSWORD})
 ◎  验证端口: $([ ${BILLING_PORT} == ${BILLING_DEFAULT_PORT} ] && echo ${BILLING_DEFAULT_PORT} || echo ${BILLING_PORT})
@@ -32,7 +42,8 @@ ${CYELLOW}
 ◎  是否单服务器: $([ ${IS_DLQ} == '0' ] && echo "是" || echo "否")
 ◎  转发机器: $([ ${BILLING_DEFAULT_SERVER_IPADDR} == ${BILLING_SERVER_IPADDR} ] && echo ${BILLING_DEFAULT_SERVER_IPADDR} || echo ${BILLING_SERVER_IPADDR})
 ◎  服务端路径: $(echo ${TLBB_PATH})
-※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※
+◎           
+※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※
 ${CEND}
 EOF
 else
