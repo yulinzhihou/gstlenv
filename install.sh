@@ -33,18 +33,14 @@ command_exists() {
 # 系统组件安装
 sys_plugins_install() {
     echo -e "${CYELLOW}开始安装系统常用组件 !!!${CEND}"
+    local packages="gcc wget curl git jq vim unzip zip"
     # 安装 wget gcc curl git python
-    ${PM} -y install wget gcc curl python git jq vim unzip zip
-    [ "${CentOS_ver}" == "8" ] && {
-        yum -y install python38 gcc wget curl git jq vim unzip zip
+    ${PM} -y install python $packages
+    [ "${OS_VERSION}" == "8" ] && {
+        ${PM} -y install python38 $packages
         sudo alternatives --set python /usr/bin/python3
     }
 }
-
-# 检测离线安装包里面各软件是否符合sha256加密验证
-# offline_do_sha256_verify() {
-# TODO::下个大版本迭代
-# }
 
 # 安装docker docker-compose
 do_install_docker() {
@@ -61,29 +57,18 @@ do_install_docker() {
     OS_VERSION=${OS_VERSION[1]}
 
     # 安装docker docker-compose 及导入离线镜像前，先检验sha256是否符合规则
-    if [ -f /usr/bin/sha256sum ] && [ -f /root/gstlenv_offline.tar.gz ]; then
-        if [ -f /root/gstlenv_offline.tar.gz ] && [ -f /root/gs_docker_compose.tar.gz ] && [ -f /root/gs_docker_ce.tar.gz ]; then
-            PACKAGE_OFFLINE=$(sha256sum /root/gstlenv_offline.tar.gz | awk '{print $1}')
-            if [ "$GS_OFFLINE_PACKAGE" != "$PACKAGE_OFFLINE" ]; then
-                echo -e "${CRED} 离线镜像包 gstlenv_offline.tar.gz 被非法串改，请从GS游享官方人渠道下载 !!!${CEND}"
-                exit 1
+    if [ -f /usr/bin/sha256sum ] && [ $IS_OFFLINE -eq 1 ]; then
+        local PACKAGES=("gstlenv_offline.tar.gz" "gs_docker_compose.tar.gz" "gs_docker_ce.tar.gz")
+        local PACKAGES_SHA256=("${GS_OFFLINE_PACKAGE}" "${GS_DOCKER_COMPOSE_PACKAGE}" "${GS_DOCKER_CE_PACKAGE}")
+        for INDEX in "${!PACKAGES[@]}"; do
+            if [ -n ${PACKAGES[$INDEX]} ] && [ -f /root/${PACKAGES[$INDEX]} ]; then
+                PACKAGE_TEMP=$(sha256sum /root/${PACKAGES[$INDEX]} | awk '{print $1}')
+                if [ $PACKAGE_TEMP != ${PACKAGES_SHA256[$INDEX]}]; then
+                    echo -e "${CRED} 离线镜像包 ${PACKAGES[$INDEX]} 被非法串改，请从GS游享官方人渠道下载 !!!${CEND}"
+                    exit 1
+                fi
             fi
-
-            PACKAGE_DOCKER_COMPOSE=$(sha256sum /root/gs_docker_compose.tar.gz | awk '{print $1}')
-            if [ "$GS_DOCKER_COMPOSE_PACKAGE" != "$PACKAGE_DOCKER_COMPOSE" ]; then
-                echo -e "${CRED} 离线软件包 gs_docker_compose.tar.gz 被非法串改，请从GS游享官方渠道下载 !!!${CEND}"
-                exit 1
-            fi
-
-            PACKAGE_DOCKER_CE=$(sha256sum /root/gs_docker_ce.tar.gz | awk '{print $1}')
-            if [ "$GS_DOCKER_CE_PACKAGE" != "$PACKAGE_DOCKER_CE" ]; then
-                echo -e "${CRED} 离线软件包 gs_docker_ce.tar.gz 被非法串改，请从GS游享官方渠道下载 !!!${CEND}"
-                exit 1
-            fi
-        else
-            echo -e "${CRED} 离线安装包不存在，请使用在线安装环境！！${CEND}"
-            exit 1
-        fi
+        done
     fi
 
     # 获取系统版本 及安装命令
@@ -116,10 +101,10 @@ do_install_docker() {
         else
             # 在线安装 docker
             if [ -f ./gsdocker.sh ]; then
-                bash gsdocker.sh -s docker --mirror Aliyun
+                bash gsdocker.sh -s docker --mirror Aliyun --version 24.0
             else
                 # 制作的国内镜像安装脚本
-                curl -sSL https://gsgameshare.com/gsdocker | bash -s docker --mirror Aliyun
+                curl -sSL https://gsgameshare.com/gsdocker | bash -s docker --mirror Aliyun --version 24.0
             fi
         fi
 
@@ -198,24 +183,23 @@ set_timezone() {
     echo -e "${CYELLOW}开始设置时区 !!!${CEND}"
     rm -rf /etc/localtime
     ln -sf /usr/share/zoneinfo/${TZ} /etc/localtime
-    # 复制一份到docker镜像里面。可以在制作docker镜像时添加
 }
 
 # 安装整合
 do_install() {
     set_timezone
-    [ $? -eq 0 ] && echo -e "${CYELLOW}设置时区成功!! ${CEND}" || {
+    [ $? -eq 0 ] && echo -e "${CYELLOW}设置时区成功，当前时间为:$(date +"%Y-%m-%d %H:%M:%S") ${CEND}" || {
         echo -e "${CRED}设置时区失败!! ;${CEND}"
         exit 1
     }
     do_install_docker
-    [ $? -eq 0 ] && echo -e "${CYELLOW}环境核心组件安装成功！！ ${CEND}" || {
-        echo -e "${CRED}环境核心组件安装失败!! ;${CEND}"
+    [ $? -eq 0 ] && echo -e "${CYELLOW}环境核心软件 docker, docker-compose 安装成功！！ ${CEND}" || {
+        echo -e "${CRED}环境核心软件 docker, docker-compose 安装失败!! ;${CEND}"
         exit 1
     }
     set_command
     [ $? -eq 0 ] && echo -e "${CYELLOW}设置全局命令成功！！${CEND}" || {
-        echo -e "${CRED}设置全局命令失败！！${CEND}"
+        echo -e "${CRED}设置GS游享专用命令失败！！${CEND}"
         exit 1
     }
 }
@@ -237,6 +221,8 @@ startTime=$(date +%s)
 #获取当前脚本路径
 GSTL_DIR=$(dirname "$(readlink -f $0)")
 pushd ${GSTL_DIR} >/dev/null
+# 是否为离线环境，如果为离线环境，变量为1，否则为0
+IS_OFFLINE=0
 # 加载配置
 . ./scripts/color.sh
 # 检测服务器，并获取系统的发行版本及版本号
@@ -251,7 +237,6 @@ if [ ! -f /root/.gs/.env ]; then
     \cp -rf env.sample /root/.gs/.env
     \cp -rf docker-compose.yml /root/.gs
 fi
-
 # 加载配置
 . /root/.gs/.env
 
@@ -262,22 +247,26 @@ if [ $? != 0 ]; then
     exit 1
 fi
 
-# 解压防线安装包
-if [ -f /root/gstlenv_offline.tar.gz ]; then
-    [ ! -d ${SHARED_DIR} ] && mkdir -p ${SHARED_DIR}
-    [ ! -d ${GS_PROJECT} ] && mkdir -p ${GS_PROJECT}
-
-    \cp -rf ./* ${GS_PROJECT} &&
-        \cp -rf docker-compose.yml /root/.gs/docker-compose.yml &&
-        . ${GS_WHOLE_PATH} &&
-        chmod -R 777 ${GS_PROJECT}
-fi
-
 # 第二步：判断并兼容离线环境
 if [ $# -eq 1 ]; then
+
     if [ $1 != 'local' ]; then
         echo -e "${CRED} 离线环境安装命令输入错误，请输入 bash install.sh local ${CEND}"
         exit 1
+    else
+        # 配置离线环境变量
+        IS_OFFLINE=1
+    fi
+
+    # 解压防线安装包
+    if [ -f /root/gstlenv_offline.tar.gz ]; then
+        [ ! -d ${SHARED_DIR} ] && mkdir -p ${SHARED_DIR}
+        [ ! -d ${GS_PROJECT} ] && mkdir -p ${GS_PROJECT}
+
+        \cp -rf ./* ${GS_PROJECT} &&
+            \cp -rf docker-compose.yml /root/.gs/docker-compose.yml &&
+            . ${GS_WHOLE_PATH} &&
+            chmod -R 777 ${GS_PROJECT}
     fi
 else
     # 调用系统组件
