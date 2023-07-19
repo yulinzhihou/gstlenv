@@ -239,12 +239,6 @@ GSTL_DIR=$(dirname "$(readlink -f $0)")
 pushd ${GSTL_DIR} >/dev/null
 # 加载配置
 . ./scripts/color.sh
-# 第一步，检测当前系统是否可以安装 docker 及 docker-compose
-bash check-docker-env.sh --dry-run >/dev/null 2>&1 | tee docker-check.log
-if [ $? -ne 0 ]; then
-    echo -e "${CRED} 当前服务器系统暂不支持本环境，请联系客服QQ:1303588722 反馈并获取适合安装的环境 ${CEND}"
-    exit 1
-fi
 # 检测服务器，并获取系统的发行版本及版本号
 . ./include/get_os.sh
 
@@ -260,6 +254,13 @@ fi
 
 # 加载配置
 . /root/.gs/.env
+
+# 第一步，检测当前系统是否可以安装 docker 及 docker-compose
+bash ${GS_PROJECT}/check-docker-env.sh --dry-run >/dev/null 2>&1 | tee docker-check.log
+if [ $? -ne 0 ]; then
+    echo -e "${CRED} 当前服务器系统暂不支持本环境，请联系客服QQ:1303588722 反馈并获取适合安装的环境 ${CEND}"
+    exit 1
+fi
 
 # 解压防线安装包
 if [ -f /root/gstlenv_offline.tar.gz ]; then
@@ -278,7 +279,6 @@ if [ $# -eq 1 ]; then
         echo -e "${CRED} 离线环境安装命令输入错误，请输入 bash install.sh local ${CEND}"
         exit 1
     fi
-
 else
     # 调用系统组件
     sys_plugins_install
