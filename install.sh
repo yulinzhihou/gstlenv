@@ -62,21 +62,26 @@ do_install_docker() {
 
     # 安装docker docker-compose 及导入离线镜像前，先检验sha256是否符合规则
     if [ -f /usr/bin/sha256sum ]; then
-        PACKAGE_OFFLINE=$(sha256sum /root/gstlenv_offline.tar.gz | awk '{print $1}')
-        if [ "$GS_OFFLINE_PACKAGE" != "$PACKAGE_OFFLINE" ]; then
-            echo -e "${CRED} 离线镜像包 gstlenv_offline.tar.gz 被非法串改，请从GS游享官方人渠道下载 !!!${CEND}"
-            exit 1
-        fi
+        if [ -f /root/gstlenv_offline.tar.gz ] && [ -f /root/gs_docker_compose.tar.gz ] && [ -f /root/gs_docker_ce.tar.gz ]; then
+            PACKAGE_OFFLINE=$(sha256sum /root/gstlenv_offline.tar.gz | awk '{print $1}')
+            if [ "$GS_OFFLINE_PACKAGE" != "$PACKAGE_OFFLINE" ]; then
+                echo -e "${CRED} 离线镜像包 gstlenv_offline.tar.gz 被非法串改，请从GS游享官方人渠道下载 !!!${CEND}"
+                exit 1
+            fi
 
-        PACKAGE_DOCKER_COMPOSE=$(sha256sum /root/gs_docker_compose.tar.gz | awk '{print $1}')
-        if [ "$GS_DOCKER_COMPOSE_PACKAGE" != "$PACKAGE_DOCKER_COMPOSE" ]; then
-            echo -e "${CRED} 离线软件包 gs_docker_compose.tar.gz 被非法串改，请从GS游享官方渠道下载 !!!${CEND}"
-            exit 1
-        fi
+            PACKAGE_DOCKER_COMPOSE=$(sha256sum /root/gs_docker_compose.tar.gz | awk '{print $1}')
+            if [ "$GS_DOCKER_COMPOSE_PACKAGE" != "$PACKAGE_DOCKER_COMPOSE" ]; then
+                echo -e "${CRED} 离线软件包 gs_docker_compose.tar.gz 被非法串改，请从GS游享官方渠道下载 !!!${CEND}"
+                exit 1
+            fi
 
-        PACKAGE_DOCKER_CE=$(sha256sum /root/gs_docker_ce.tar.gz | awk '{print $1}')
-        if [ "$GS_DOCKER_CE_PACKAGE" != "$PACKAGE_DOCKER_CE" ]; then
-            echo -e "${CRED} 离线软件包 gs_docker_ce.tar.gz 被非法串改，请从GS游享官方渠道下载 !!!${CEND}"
+            PACKAGE_DOCKER_CE=$(sha256sum /root/gs_docker_ce.tar.gz | awk '{print $1}')
+            if [ "$GS_DOCKER_CE_PACKAGE" != "$PACKAGE_DOCKER_CE" ]; then
+                echo -e "${CRED} 离线软件包 gs_docker_ce.tar.gz 被非法串改，请从GS游享官方渠道下载 !!!${CEND}"
+                exit 1
+            fi
+        else
+            echo -e "${CRED} 离线安装包不存在，请使用在线安装环境！！${CEND}"
             exit 1
         fi
     fi
@@ -243,34 +248,35 @@ fi
 # 检测服务器，并获取系统的发行版本及版本号
 . ./include/get_os.sh
 
+# 分配资源及配置参数
+if [ ! -d /root/.gs ]; then
+    mkdir -p /root/.gs
+fi
+
+if [ ! -f /root/.gs/.env ]; then
+    \cp -rf env.sample /root/.gs/.env
+    \cp -rf docker-compose.yml /root/.gs
+fi
+
+# 加载配置
+. /root/.gs/.env
+
+# 解压防线安装包
+if [ -f /root/gstlenv_offline.tar.gz ]; then
+    [ ! -d ${SHARED_DIR} ] && mkdir -p ${SHARED_DIR}
+    [ ! -d ${GS_PROJECT} ] && mkdir -p ${GS_PROJECT}
+
+    \cp -rf ./* ${GS_PROJECT} &&
+        \cp -rf docker-compose.yml /root/.gs/docker-compose.yml &&
+        . ${GS_WHOLE_PATH} &&
+        chmod -R 777 ${GS_PROJECT}
+fi
+
 # 第二步：判断并兼容离线环境
 if [ $# -eq 1 ]; then
     if [ $1 != 'local' ]; then
         echo -e "${CRED} 离线环境安装命令输入错误，请输入 bash install.sh local ${CEND}"
         exit 1
-    fi
-    # 分配资源及配置参数
-    if [ ! -d /root/.gs ]; then
-        mkdir -p /root/.gs
-    fi
-
-    if [ ! -f /root/.gs/.env ]; then
-        \cp -rf env.sample /root/.gs/.env
-        \cp -rf docker-compose.yml /root/.gs
-    fi
-
-    # 加载配置
-    . /root/.gs/.env
-
-    # 解压防线安装包
-    if [ -f /root/gstlenv_offline.tar.gz ]; then
-        [ ! -d ${SHARED_DIR} ] && mkdir -p ${SHARED_DIR}
-        [ ! -d ${GS_PROJECT} ] && mkdir -p ${GS_PROJECT}
-
-        \cp -rf ./* ${GS_PROJECT} &&
-            \cp -rf docker-compose.yml /root/.gs/docker-compose.yml &&
-            . ${GS_WHOLE_PATH} &&
-            chmod -R 777 ${GS_PROJECT}
     fi
 
 else
