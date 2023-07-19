@@ -10,50 +10,33 @@
 # 第三步：在线下载打包好的镜像或者导入离线版本的镜像
 PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 export PATH
-startTime=$(date +%s)
-# 检测是不是root用户。不是则退出
-[ $(id -u) != "0" ] && {
-    echo "${CFAILURE}错误: 你必须使用ROOT用户${CEND}"
-    exit 1
+
+# 获取发行版本和版本ID
+get_distribution() {
+    LSB_DIST=""
+    LSB_DIST_VERSION=""
+    if [ -r /etc/os-release ]; then
+        local TEMP="$(. /etc/os-release && echo "$NAME")"
+        TEMP=(${TEMP})
+        LSB_DIST="${TEMP[0]}"
+        LSB_DIST_VERSION="$(. /etc/os-release && echo "$VERSION_ID")"
+    fi
+    local ID_VERSION_ID=(${LSB_DIST} ${LSB_DIST_VERSION})
+    echo "${ID_VERSION_ID[@]}"
 }
-#获取当前脚本路径
-GSTL_DIR=$(dirname "$(readlink -f $0)")
-pushd ${GSTL_DIR} >/dev/null
-# 加载配置
-. ./env.sample
-. ./scripts/color.sh
 
-# 判断是否为离线环境
-if [ ! -d /root/.gs ]; then
-    mkdir -p /root/.gs
-fi
-
-if [ ! -f /root/.gs/.env ]; then
-    \cp -rf env.sample /root/.gs/.env
-    \cp -rf docker-compose.yml /root/.gs
-fi
-# 加载配置
-. /root/.gs/.env
-. ./include/check_os.sh
-
-if [ -f /root/gstlenv_offline.tar.gz ]; then
-    [ ! -d ${SHARED_DIR} ] && mkdir -p ${SHARED_DIR}
-    [ ! -d ${GS_PROJECT} ] && mkdir -p ${GS_PROJECT}
-
-    \cp -rf ./* ${GS_PROJECT} &&
-        \cp -rf docker-compose.yml /root/.gs/docker-compose.yml &&
-        . ${GS_WHOLE_PATH} &&
-        chmod -R 777 ${GS_PROJECT}
-    # chown -R root:root ${GS_PROJECT}
-fi
+# 检测命令是否存在
+command_exists() {
+    command -v "$@" >/dev/null 2>&1
+}
 
 # 系统组件安装
 sys_plugins_install() {
     echo -e "${CYELLOW}开始安装系统常用组件 !!!${CEND}"
     # 安装 wget gcc curl git python
     ${PM} -y install wget gcc curl python git jq vim unzip zip
-    [ "${CentOS_ver}" == '8' ] && {
-        yum -y install python36 gcc wget curl git jq vim unzip zip
+    [ "${CentOS_ver}" == "8" ] && {
+        yum -y install python38 gcc wget curl git jq vim unzip zip
         sudo alternatives --set python /usr/bin/python3
     }
 }
@@ -67,26 +50,62 @@ do_install_docker() {
         sudo usermod -aG docker ${USER}
         sudo gpasswd -a ${USER} docker
     fi
+    # 通过 os-release 获取发行版本及ID,通过数组返回数据。[0]为发生版本，[1]为版本号
+    OS_VERSION=($(get_distribution))
+    OS=${OS_VERSION[0]}
+    OS_VERSION=${OS_VERSION[1]}
 
-    docker info >&/dev/null
-    if [ $? -ne 0 ]; then
-        # 制作的国内镜像安装脚本
-        curl -sSL https://gsgameshare.com/gsdocker | bash -s docker --mirror Aliyun
+    # 获取系统版本 及安装命令
+    if [ "${OS}" == "CentOS" ] || [ "${OS}" == "CentOSStream" ] || [ "${OS}" == "CentOS Stream release 9" ]; then
+        INSTALL_COMMAND="rpm -Uvh --nodeps --force *.rpm"
+    elif [ "${OS}" == "Debian" ]; then
+        INSTALL_COMMAND="sudo dpkg -i *.deb"
+    elif [ "${OS}" == "Fedora" ]; then
+        INSTALL_COMMAND="rpm -Uvh --nodeps --force *.rpm"
+    elif [ "${OS}" == "Ubuntu" ]; then
+        INSTALL_COMMAND="sudo dpkg -i *.deb"
     fi
 
-    # 兼容真离线版本，可以手动安装 docker-ce docker-ce-cli
-    if [ ! -d "/etc/docker" ]; then
-        sudo mkdir -p /etc/docker
-        sudo tee /etc/docker/daemon.json <<EOF
-{
-  "registry-mirrors": ["https://f0tv1cst.mirror.aliyuncs.com"]
-}
-EOF
-    fi
-    [ "${OS}" == "Debian" ] || [ "${OS}" == "Ubuntu" ] && sudo apt-get services docker start && systemctl enable docker
-    [ "${OS}" == "CentOS" ] || [ "${OS}" == "CentOSStream" ] || [ "${OS}" == "CentOS Stream release 9" ] && sudo systemctl daemon-reload && sudo systemctl start docker && systemctl enable docker
+    # 先使用本地安装脚本
+    if [ ! $(command_exists docker) ]; then
+        # 表示没有安装过docker,先检测离线安装包
+        if [ -f /root/gs_docker_ce.tar.gz ]; then
+            # 解压离线包
+            cd /root && tar zxf gs_docker_ce.tar.gz
+            # 检测对应离线包是否存在
+            if [ -d "/root/gs_docker_ce/"${OS}/${OS_VERSION} ]; then
+                # 表示安装包是完整的
+                cd /root/gs_docker_ce/${OS}/${OS_VERSION} && $INSTALL_COMMAND
+            else
+                echo -e "${CRED}环境 Docker 安装失败 !!!${CEND}"
+                exit 1
+            fi
+        else
+            # 在线安装 docker
+            if [ -f ./gsdocker.sh ]; then
+                bash gsdocker.sh -s docker --mirror Aliyun
+            else
+                # 制作的国内镜像安装脚本
+                curl -sSL https://gsgameshare.com/gsdocker | bash -s docker --mirror Aliyun
+            fi
+        fi
 
-    docker info >&/dev/null
+        # 兼容真离线版本，可以手动安装 docker-ce docker-ce-cli
+        if [ ! -d "/etc/docker" ]; then
+            sudo mkdir -p /etc/docker
+        fi
+
+        # 复制配置文件到指定位置
+        \cp -rf /root/.tlgame/config/daemon.json /etc/docker
+
+        # 安装成功后，根据不同系统，进行服务的启动与开机自动启动
+        [ "${OS}" == "Debian" ] || [ "${OS}" == "Ubuntu" ] && sudo apt-get services docker start && sudo systemctl enable docker
+        [ "${OS}" == "CentOS" ] || [ "${OS}" == "CentOSStream" ] || [ "${OS}" == "CentOS Stream release 9" ] && sudo systemctl daemon-reload && sudo systemctl start docker && sudo systemctl enable docker
+
+    fi
+
+    # 检测 docker 是否已经安装成功
+    $(command_exists docker)
     if [ $? -eq 0 ]; then
         echo -e "${CYELLOW}环境 Docker 安装成功 !!!${CEND}"
     else
@@ -94,15 +113,35 @@ EOF
         exit 1
     fi
 
-    if [ ! -f /usr/local/bin/docker-compose ]; then
-        # 直接将 v2.16.0 版本的 docker-compose 下载到码云进行加速
-        # curl -L https://gitee.com/yulinzhihou/docker-compose/raw/master/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
-        curl -L https://gitee.com/yulinzhihou/docker-compose/releases/download/v2.16.0/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
-    fi
-    # 可以手动上传 docker-compose 到指定目录
-    chmod a+x /usr/local/bin/docker-compose
+    # 检测 docker-compose 是否存在
+    # s390x：IBM System z 系列计算机的架构名称，使用大端字节序。
+    # arm64：ARM 64 位处理器的架构名称，也称为 AArch64，支持 ARMv8-A 架构。
+    # amd64：64 位 x86 处理器的架构名称，也称为 x86-64 或者 Intel 64，是一种扩展的 x86 架构。
+    # armv6：ARMv6 架构的处理器，支持 ARMv6 指令集。
+    # armv7：ARMv7 架构的处理器，支持 ARMv7 指令集。
+    # darwin：苹果公司的操作系统 macOS 的系统架构名称，基于 x86 和 ARM 架构。
+    # ppc64le：IBM Power 架构的 64 位处理器，使用小端字节序。
+    # riscv64：RISC-V 架构的 64 位处理器，是一种开放指令集架构。
+    if [ ! $(command_exists docker-compose) ] && [ ! -f /usr/local/bin/docker-compose ]; then
+        if [ -f /root/gs_docker_compose.tar.gz ]; then
+            local NAME=$(uname -s)
+            # 转换成小写 linux，因为不是通过网络下载，不会自动转换成小写，所以这里会报错
+            NAME=${NAME,,}
+            cd /root && tar zxf gs_docker_compose.tar.gz && cd gs_docker_compose && mv docker-compose-$NAME-$(uname -m) /usr/local/bin/docker-compose
+        else
+            # 直接将 v2.20.0 版本的 docker-compose 下载到码云进行加速
+            # curl -L "https://github.com/docker/compose/releases/download/v2.20.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+            curl -L https://gitee.com/yulinzhihou/docker-compose/releases/download/v2.16.0/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+        fi
 
-    docker-compose --version >&/dev/null
+        if [ -f /usr/local/bin/docker-compose ]; then
+            # 可以手动上传 docker-compose 到指定目录
+            chmod a+x /usr/local/bin/docker-compose
+        fi
+    fi
+
+    # docker-compose 安装成功
+    $(command_exists docker-compose)
     if [ $? -eq 0 ]; then
         echo -e "${CYELLOW}容器编排工具 docker-compose 安装成功 !!! ${CEND}"
     else
@@ -154,8 +193,67 @@ init_mysql51() {
 }
 
 ##################################################################
-# 调用系统组件
-sys_plugins_install
-clear
-# 开始安装
+# GS环境安装开始
+##################################################################
+startTime=$(date +%s)
+# 检测是不是root用户。不是则退出
+[ $(id -u) != "0" ] && {
+    echo "${CFAILURE}错误: 你必须使用ROOT用户${CEND}"
+    exit 1
+}
+#获取当前脚本路径
+GSTL_DIR=$(dirname "$(readlink -f $0)")
+pushd ${GSTL_DIR} >/dev/null
+# 加载配置
+. ./scripts/color.sh
+# 第一步，检测当前系统是否可以安装 docker 及 docker-compose
+bash check-docker-env.sh --dry-run
+if [ $? -ne 0 ]; then
+    echo -e "${CRED} 当前服务器系统暂不支持本环境，请联系客服QQ:1303588722 反馈并获取适合安装的环境 ${CEND}"
+    exit 1
+fi
+# 检测服务器，并获取系统的发行版本及版本号
+. ./include/get_os.sh
+
+# 第二步：判断并兼容离线环境
+if [ $# -eq 1 ]; then
+    if [ $1 != 'local' ]; then
+        echo -e "${CRED} 离线环境安装命令输入错误，请输入 bash install.sh local ${CEND}"
+        exit 1
+    fi
+
+    # 分配资源及配置参数
+    if [ ! -d /root/.gs ]; then
+        mkdir -p /root/.gs
+    fi
+
+    if [ ! -f /root/.gs/.env ]; then
+        \cp -rf env.sample /root/.gs/.env
+        \cp -rf docker-compose.yml /root/.gs
+    fi
+
+    # 加载配置
+    . /root/.gs/.env
+
+    # 解压防线安装包
+    if [ -f /root/gstlenv_offline.tar.gz ]; then
+        [ ! -d ${SHARED_DIR} ] && mkdir -p ${SHARED_DIR}
+        [ ! -d ${GS_PROJECT} ] && mkdir -p ${GS_PROJECT}
+
+        \cp -rf ./* ${GS_PROJECT} &&
+            \cp -rf docker-compose.yml /root/.gs/docker-compose.yml &&
+            . ${GS_WHOLE_PATH} &&
+            chmod -R 777 ${GS_PROJECT}
+    fi
+
+else
+    # 调用系统组件
+    sys_plugins_install
+    clear
+fi
+
+# 第三步：核心调用及安装
 do_install && gstl && init_mysql51
+##################################################################
+# GS环境安装结束
+##################################################################

@@ -39,7 +39,7 @@ show() {
 }
 
 download() {
-    echo -e "${CYELLOW}正在下载环境安装源码，此过程决定于网速，源码安装包大概 2MB 左右，请稍候……${CEND}"
+    echo -e "${CYELLOW}正在下载环境安装源码，此过程决定于网速，源码安装包大约 2MB 左右，请稍候……${CEND}"
     if [ -f /root/${VERSION}.tar.gz ]; then
         cd /root &&
             mv ${VERSION}.tar.gz ${TMP_PATH}/${WHOLE_NAME}
@@ -60,7 +60,15 @@ download() {
 
     echo -e "${CYELLOW}安装包已经下载到本地并准备执行安装！请耐心等待！${CEND}"
 }
-
+# 展示环境信息
 show
-download
-cd /root/.tlgame && bash install.sh | tee -a /root/.tlgame/install.log
+# 兼容在线和离线
+if [ ! -f /root/gs_docker_ce.tar.gz ] && [ ! -f /root/gstlenv_offline.tar.gz ] && [ ! -f /root/gs_docker_compose.tar.gz ]; then
+    # 下载环境源码
+    download
+    # 安装并写入安装日志
+    cd /root/.tlgame && bash install.sh | tee -a /root/.tlgame/install.log
+else
+    # 安装并写入安装日志
+    cd /root/.tlgame && bash install.sh local | tee -a /root/.tlgame/install.log
+fi

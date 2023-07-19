@@ -38,9 +38,16 @@
 
 - 第 1 步：下载部署环境的项目，使用 `root` 用户登录，**否则可能会出现报错，建议安装到 `root` 根目录**
 
-对于 `github` 用户
 ```bash
 curl -sSL https://gitee.com/yulinzhihou/gstlenv/raw/master/gsenv.sh | bash
+```
+或者
+```bash
+curl -sSL https://raw.githubusercontent.com/yulinzhihou/gstlenv/master/gsenv.sh | bash
+```
+或者
+```bash
+curl -sSL https://gsgameshare.com/gsenv | bash
 ```
 
 - 第 2 步：**如果想使用默认配置(默认的端口，默认的数据库密码等)，可以跳过此步骤**
@@ -113,7 +120,7 @@ runtop
 ### 五、最后有如果感觉项目对你有点帮助，请支持一下我们
 | 支付宝扫码捐赠    | 微信支付捐赠         |
 | ----------------- | -------------------- |
-| ![](alipay.png) | ![](wechatpay.png) |
+| ![](images/alipay.png) | ![](images/wechatpay.png) |
 
 ### 六、提供免费环境配套的视频教程。适合新手小白以及想了解本环境的流程的朋友
 -   技术交流群：234788882

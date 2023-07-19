@@ -54,10 +54,12 @@ if command -v lsb_release >/dev/null 2>&1; then
       Fedora_ver=$(lsb_release -rs)
     }
     [[ "${OS}" =~ ^Amazon$|^Alibaba$|^Aliyun$|^EulerOS$|^openEuler$ ]] && CentOS_ver=7
+    OS_VERSION=${CentOS_ver}
   elif [[ "${OS}" =~ ^Debian$|^Deepin$|^Uos$|^Kali$ ]]; then
     Debian_ver=$(lsb_release -rs | awk -F. '{print $1}' | awk '{print $1}')
     [[ "${OS}" =~ ^Deepin$|^Uos$ ]] && [[ "${Debian_ver}" =~ ^20$ ]] && Debian_ver=10
     [[ "${OS}" =~ ^Kali$ ]] && [[ "${Debian_ver}" =~ ^202 ]] && Debian_ver=10
+    OS_VERSION=${Debian_ver}
   elif [[ "${OS}" =~ ^Ubuntu$|^LinuxMint$|^elementary$ ]]; then
     Ubuntu_ver=$(lsb_release -rs | awk -F. '{print $1}' | awk '{print $1}')
     if [[ "${OS}" =~ ^LinuxMint$ ]]; then
@@ -69,11 +71,12 @@ if command -v lsb_release >/dev/null 2>&1; then
       [[ "${Ubuntu_ver}" =~ ^5$ ]] && Ubuntu_ver=18
       [[ "${Ubuntu_ver}" =~ ^6$ ]] && Ubuntu_ver=20
     fi
+    OS_VERSION=${Ubuntu_ver}
   fi
 
   # Check OS Version
   if [ ${CentOS_ver} -lt 6 ] >/dev/null 2>&1 || [ ${Debian_ver} -lt 8 ] >/dev/null 2>&1 || [ ${Ubuntu_ver} -lt 14 ] >/dev/null 2>&1; then
-    echo "${CFAILURE}不支持此系统, 请安装 CentOS 7+,Debian 10+,Ubuntu 18+ ${CEND}"
+    echo "${CFAILURE}不支持此系统, 请安装 CentOS 7+,Debian 10+,Ubuntu 18+,Fedora 36+ ${CEND}"
     kill -9 $$
   fi
 else
@@ -83,6 +86,7 @@ else
     if [ "${OS_TMP}" == "CentOS Stream release 9" ]; then
       CentOS_ver=9
       OS='CentOS Stream release 9'
+      OS_VERSION=${CentOS_ver}
       PM=dnf
     fi
   else
