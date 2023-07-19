@@ -260,6 +260,13 @@ if [ $# -eq 1 ]; then
         IS_OFFLINE=1
     fi
 
+    # 生成环境目录
+    if [ -d /root/.tlgame ]; then
+        \cp -rf * /root/.tlgame
+    else
+        mkdir /root/.tlgame && \cp -rf * /root/.tlgame
+    fi
+
     # 解压防线安装包
     if [ -f /root/gstlenv_offline.tar.gz ]; then
         [ ! -d ${SHARED_DIR} ] && mkdir -p ${SHARED_DIR}
