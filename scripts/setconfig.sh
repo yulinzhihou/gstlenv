@@ -289,7 +289,6 @@ main() {
             echo "${CWARNING}输入错误! 请输入 y 或者 n ${CEND}"
         else
             . /root/.gs/.env
-            source /root/.gs/.env
             if [ "${IS_MODIFY}" == 'y' ]; then
                 # 备份数据
                 setconfig_backup &&
@@ -301,7 +300,7 @@ main() {
                     setconfig_restore
 
                 if [ ! -d /tlgame/tlbb/Server/Config ]; then
-                    echo -e "${CSUCCESS}未发现版本，请上传版本后依次执行 【untar】【setini】【runtlbb】进行开服！！${CEND}"
+                    echo -e "${CSUCCESS}未发现版本，请上传版本后依次执行 【 untar 】【 setini 】【 runtlbb 】进行开服！！${CEND}"
                     exit 0
                 else
                     setini
@@ -319,7 +318,7 @@ main() {
     done
 
     if [ $? -eq 0 ]; then
-        echo -e "${CSUCCESS}配置写入成功！！,可以使用 【curgs】命令查看配置的信息${CEND}"
+        echo -e "${CSUCCESS}配置写入成功！！,可以使用 【 curgs 】命令查看配置的信息${CEND}"
         exit 0
     else
         echo -e "${GSISSUE}\r\n"

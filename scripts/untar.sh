@@ -40,7 +40,7 @@ elif [ -f "/root/tlbb.zip" ]; then
     if [ -f ${TLBB_PATH}/run.sh ]; then
         \cp -rf ${TLBB_PATH}/run.sh ${GS_PROJECT}
     fi
-    echo -e "${CSUCCESS}服务端文件【tlbb.zip】 已经解压成功！，可以执行【setini】进行配置文件写入${CEND}"
+    echo -e "${CSUCCESS}服务端文件【tlbb.zip】 已经解压成功！，可以执行【 setini 】进行配置文件写入${CEND}"
     exit 0
 else
     echo -e "${GSISSUE}\r\n"
