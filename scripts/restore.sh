@@ -39,7 +39,7 @@ if [ $? -eq 0 ]; then
                 # 先执行备份
                 backup 2
                 # 再复制需要备份的文件到容器里面
-                docker cp $2 gsmysql:/tmp/${FILENAME}
+                docker cp -q $2 gsmysql:/tmp/${FILENAME}
                 # 再调用脚本还原
                 docker exec -it gsmysql /bin/bash /usr/local/bin/gsmysqlRestore.sh $1 /tmp/${FILENAME}
 

@@ -95,13 +95,13 @@ if [ $? -eq 0 ]; then
         #复制到已经修改好的文件到指定容器
         \cp -rf ${BASE_PATH}/config.yaml ${GS_PROJECT_PATH}/billing/
         \cp -rf ${BASE_PATH}/LoginInfo.ini ${BASE_PATH}/ShareMemInfo.ini ${BASE_PATH}/ServerInfo.ini ${GS_PROJECT_PATH}/tlbb/Server/Config/
-        docker cp ${BASE_PATH}/odbc.ini gsserver:/etc
-        docker cp ${GS_PROJECT}/scripts/step.sh gsserver:/usr/local/bin/step
+        docker cp -q ${BASE_PATH}/odbc.ini gsserver:/etc
+        docker cp -q ${GS_PROJECT}/scripts/step.sh gsserver:/usr/local/bin/step
         docker exec -d gsserver chmod -R 777 /usr/local/bin
         # 复制配置文件
         for file in $(ls -l ${GS_PROJECT}/include | awk '{print $9}'); do
             if [ -n ${file} ]; then
-                docker cp ${GS_PROJECT}/include/${file} gsmysql:/usr/local/bin/${file}
+                docker cp -q ${GS_PROJECT}/include/${file} gsmysql:/usr/local/bin/${file}
             fi
         done
 

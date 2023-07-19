@@ -41,6 +41,11 @@ sys_plugins_install() {
     }
 }
 
+# 检测离线安装包里面各软件是否符合sha256加密验证
+offline_do_sha256_verify() {
+    # TODO::下个大版本迭代
+}
+
 # 安装docker docker-compose
 do_install_docker() {
     echo -e "${CYELLOW}开始安装环境核心组件 Docker + docker-compose !!!${CEND}"
@@ -55,8 +60,31 @@ do_install_docker() {
     OS=${OS_VERSION[0]}
     OS_VERSION=${OS_VERSION[1]}
 
+    # 安装docker docker-compose 及导入离线镜像前，先检验sha256是否符合规则
+    if [ -f /usr/bin/sha256sum ]; then
+        PACKAGE_OFFLINE=$(sha256sum /root/gstlenv_offline.tar.gz | awk '{print $1}')
+        if [ "$GS_OFFLINE_PACKAGE" != "$PACKAGE_OFFLINE" ]; then
+            echo -e "${CRED} 离线镜像包 gstlenv_offline.tar.gz 被非法串改，请从GS游享官方人渠道下载 !!!${CEND}"
+            exit 1
+        fi
+
+        PACKAGE_DOCKER_COMPOSE=$(sha256sum /root/gs_docker_compose.tar.gz | awk '{print $1}')
+        if [ "$GS_OFFLINE_PACKAGE" != "$PACKAGE_OFFLINE" ]; then
+            echo -e "${CRED} 离线软件包 gs_docker_compose.tar.gz 被非法串改，请从GS游享官方渠道下载 !!!${CEND}"
+            exit 1
+        fi
+
+        PACKAGE_DOCKER_CE=$(sha256sum /root/gs_docker_ce.tar.gz | awk '{print $1}')
+        if [ "$GS_OFFLINE_PACKAGE" != "$PACKAGE_OFFLINE" ]; then
+            echo -e "${CRED} 离线软件包 gs_docker_ce.tar.gz 被非法串改，请从GS游享官方渠道下载 !!!${CEND}"
+            exit 1
+        fi
+    fi
+
     # 获取系统版本 及安装命令
     if [ "${OS}" == "CentOS" ] || [ "${OS}" == "CentOSStream" ] || [ "${OS}" == "CentOS Stream release 9" ]; then
+        # 导入rpm公钥
+        rpm --import config/gpg
         INSTALL_COMMAND="rpm -Uvh --nodeps --force *.rpm"
     elif [ "${OS}" == "Debian" ]; then
         INSTALL_COMMAND="sudo dpkg -i *.deb"
@@ -221,7 +249,6 @@ if [ $# -eq 1 ]; then
         echo -e "${CRED} 离线环境安装命令输入错误，请输入 bash install.sh local ${CEND}"
         exit 1
     fi
-
     # 分配资源及配置参数
     if [ ! -d /root/.gs ]; then
         mkdir -p /root/.gs
