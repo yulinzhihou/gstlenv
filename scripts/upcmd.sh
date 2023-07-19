@@ -67,21 +67,21 @@ if [ $? -eq 0 ]; then
 
   # 判断是否有下载最新命令，如果没有，则不更新
   if [ -e /usr/bin/wget ]; then
-    echo -e "${CYELLOW} 正在在线更新最新GS环境命令，请稍等……${CEND}"
+    echo -e "${CYELLOW}正在在线更新最新GS环境命令，请稍等……${CEND}"
     download
     if [ $? -eq 0 ]; then
       set_command && copy_to_gssmysql && copy_to_gsserver && docker exec -d gsmysql chmod -R 777 /usr/local/bin
       if [ $? -eq 0 ]; then
-        echo -e "${CSUCCESS} 命令重新生成成功，如果需要了解详情，可以运行 【gs】命令进行帮助查询！！${CEND}"
+        echo -e "${CSUCCESS}命令重新生成成功，如果需要了解详情，可以运行 【gs】命令进行帮助查询！！${CEND}"
         exit 0
       else
         echo -e "${GSISSUE}\r\n"
-        echo -e "${CRED} 命令重新生成失败，请联系作者，或者重装安装环境 ${CEND}"
+        echo -e "${CRED}命令重新生成失败，请联系作者，或者重装安装环境 ${CEND}"
         exit 1
       fi
     fi
   else
-    echo -e "${CYELLOW} 当前命令已是最新版本[$UPDATE]，无需更新！！！${CEND}"
+    echo -e "${CYELLOW}当前命令已是最新版本[$UPDATE]，无需更新！！！${CEND}"
   fi
 else
   echo -e "${GSISSUE}\r\n"

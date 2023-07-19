@@ -127,9 +127,9 @@ do_install_docker() {
     # 检测 docker 是否已经安装成功
     $(command_exists docker)
     if [ $? -eq 0 ]; then
-        echo -e "${CYELLOW} GS游享环境核心软件 docker 安装成功 ！！！${CEND}"
+        echo -e "${CYELLOW}GS游享环境核心软件 docker 安装成功 ！！！${CEND}"
     else
-        echo -e "${CRED} GS游享环境核心软件 docker 安装失败 ！！！${CEND}"
+        echo -e "${CRED}GS游享环境核心软件 docker 安装失败 ！！！${CEND}"
         exit 1
     fi
 
