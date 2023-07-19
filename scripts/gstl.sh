@@ -49,7 +49,7 @@ init_config() {
 
 # 运行容器
 docker_run() {
-    TIPS="${CRED}环境不充足，请重新安装服务器基础环境组件和必要安装包，运行【 curl -sSL https://gitee.com/yulinzhihou/gstlenv/raw/master/gsenv.sh | bash 】${CEND}"
+    TIPS="${CRED}GS游享环境不充足，请重新安装服务器基础环境组件和必要安装包，运行【 curl -sSL https://gitee.com/yulinzhihou/gstlenv/raw/master/gsenv.sh | bash 】${CEND}"
     docker info >&/dev/null
     if [ $? -ne 0 ]; then
         echo -e $TIPS
@@ -76,10 +76,10 @@ docker_run() {
 
     if [ $? -eq 0 ]; then
         echo "success" >${ROOT_PATH}/${GSDIR}/gs.lock
-        echo -e "${CGREEN}环境安装成功！！，配置文件已初始化为默认配置。如不想使用默认参数，请使用[setconfig]命令进行所有端口与密码的修改！！！${CEND}"
+        echo -e "${CGREEN}GS游享环境安装成功 ！！！，配置文件已初始化为默认值。如不想使用默认值，请使用【 setconfig 】命令进行所有端口与密码的修改 ！！！${CEND}"
     else
         echo -e "${GSISSUE}\r\n"
-        echo -e "${CRED}环境安装失败，配置文件已经初始化。更多命令执行 【gs】查看${CRED}"
+        echo -e "${CRED}GS游享环境安装失败 ！！！${CRED}"
     fi
 }
 
@@ -97,12 +97,12 @@ else
         . ${WHOLE_PATH}
     else
         echo -e "${GSISSUE}\r\n"
-        echo -e "${CYELLOW}GS专用环境容器还没下载下来，请重新执行【$0】命令！${CEND}"
+        echo -e "${CYELLOW}GS专用环境容器还没下载下来，请重新执行【 $0 】命令！${CEND}"
         exit 1
     fi
 
     init_config &&
         docker_run && curgs && swap && upcmd
 fi
-echo "${CYELLOW}【GS游享网】环境已初始化配置参数，如上所示，请保管好参数，如需重新配置，请执行【setconfig】命令！获取命令帮助请使用 [gs] 命令${CEND}"
-echo "${CYELLOW}【GS游享网】温馨提醒：在使用环境前，建议更新最新的命令,请使用 [upcmd]${CEND}"
+echo "${CYELLOW}GS游享环境已初始化配置参数，如上所示，请保管好参数，如需重新配置，请执行【 setconfig 】命令！获取命令帮助请使用【 gs 】命令${CEND}"
+echo "${CYELLOW}【GS游享网】温馨提醒：在使用环境前，建议更新最新的命令,请使用【 upcmd 】${CEND}"

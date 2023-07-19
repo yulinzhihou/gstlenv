@@ -44,7 +44,7 @@ sys_plugins_install() {
 
 # 安装docker docker-compose
 do_install_docker() {
-    echo -e "${CYELLOW}开始安装环境核心组件 Docker + docker-compose ！！！${CEND}"
+    echo -e "${CYELLOW}开始安装GS游享环境核心软件 docker + docker-compose ！！！${CEND}"
     egrep "^docker" /etc/group >&/dev/null
     if [ $? -ne 0 ]; then
         sudo groupadd docker
@@ -66,7 +66,7 @@ do_install_docker() {
             if [ -n ${PACKAGES[$INDEX]} ] && [ -f /root/${PACKAGES[$INDEX]} ]; then
                 PACKAGE_TEMP=$(sha256sum /root/${PACKAGES[$INDEX]} | awk '{print $1}')
                 if [ $PACKAGE_TEMP != ${PACKAGES_SHA256[$INDEX]} ]; then
-                    echo -e "${CRED} 离线镜像包 ${PACKAGES[$INDEX]} 被非法串改，请从GS游享官方人渠道下载 ！！！${CEND}"
+                    echo -e "${CRED} GS游享环境离线镜像包 ${PACKAGES[$INDEX]} 被非法串改，请从GS游享官方人渠道下载 ！！！${CEND}"
                     exit 1
                 fi
             fi
@@ -97,7 +97,7 @@ do_install_docker() {
                 # 表示安装包是完整的
                 cd /root/gs_docker_ce/${OS}/${OS_VERSION} && $INSTALL_COMMAND
             else
-                echo -e "${CRED}环境 Docker 安装失败 ！！！${CEND}"
+                echo -e "${CRED}GS游享环境核心软件 docker 安装失败 ！！！${CEND}"
                 exit 1
             fi
         else
@@ -127,9 +127,9 @@ do_install_docker() {
     # 检测 docker 是否已经安装成功
     $(command_exists docker)
     if [ $? -eq 0 ]; then
-        echo -e "${CYELLOW}环境 Docker 安装成功 ！！！${CEND}"
+        echo -e "${CYELLOW} GS游享环境核心软件 docker 安装成功 ！！！${CEND}"
     else
-        echo -e "${CRED}环境 Docker 安装失败 ！！！${CEND}"
+        echo -e "${CRED} GS游享环境核心软件 docker 安装失败 ！！！${CEND}"
         exit 1
     fi
 
@@ -163,16 +163,16 @@ do_install_docker() {
     # docker-compose 安装成功
     $(command_exists docker-compose)
     if [ $? -eq 0 ]; then
-        echo -e "${CYELLOW}容器编排工具 docker-compose 安装成功 ！！！ ${CEND}"
+        echo -e "${CYELLOW}GS游享环境核心软件 docker-compose 安装成功 ！！！ ${CEND}"
     else
-        echo -e "${CRED}容器编排工具 docker-compose 安装失败 ！！！ ${CEND}"
+        echo -e "${CRED}GS游享环境核心软件 docker-compose 安装失败 ！！！ ${CEND}"
         exit 1
     fi
 }
 
 # 配置常用命令到系统中
 set_command() {
-    echo -e "${CYELLOW}开始设置全局命令 ！！！${CEND}"
+    echo -e "${CYELLOW}开始设置GS游享环境全局命令 ！！！${CEND}"
     for VAR in $(ls -l ${GS_PROJECT}/scripts/ | awk '{print $9}'); do
         if [ -n ${VAR} ]; then
             \cp -rf ${GS_PROJECT}/scripts/${VAR} /usr/local/bin/${VAR%%.*} && chmod +x /usr/local/bin/${VAR%%.*}
@@ -195,13 +195,13 @@ do_install() {
         exit 1
     }
     do_install_docker
-    [ $? -eq 0 ] && echo -e "${CYELLOW}环境核心软件 docker, docker-compose 安装成功 ！！！ ${CEND}" || {
-        echo -e "${CRED}环境核心软件 docker, docker-compose 安装失败 ！！！;${CEND}"
+    [ $? -eq 0 ] && echo -e "${CYELLOW}GS游享环境核心软件 docker, docker-compose 安装成功 ！！！ ${CEND}" || {
+        echo -e "${CRED}GS游享环境核心软件 docker, docker-compose 安装失败 ！！！;${CEND}"
         exit 1
     }
     set_command
-    [ $? -eq 0 ] && echo -e "${CYELLOW}设置全局命令成功 ！！！${CEND}" || {
-        echo -e "${CRED}设置GS游享专用命令失败 ！！！${CEND}"
+    [ $? -eq 0 ] && echo -e "${CYELLOW}设置GS游享环境全局命令成功 ！！！${CEND}" || {
+        echo -e "${CRED}设置GS游享环境全局命令失败 ！！！${CEND}"
         exit 1
     }
 }
@@ -245,7 +245,7 @@ fi
 # 第一步，检测当前系统是否可以安装 docker 及 docker-compose
 bash check-docker-env.sh --dry-run >/dev/null 2>&1
 if [ $? != 0 ]; then
-    echo -e "${CRED} 当前服务器系统暂不支持本环境，请联系客服QQ:1303588722 反馈并获取适合安装的环境 ${CEND}"
+    echo -e "${CRED}当前服务器系统暂不支持本环境，请联系客服QQ:1303588722 反馈并获取适合安装的环境 ${CEND}"
     exit 1
 fi
 
@@ -253,7 +253,7 @@ fi
 if [ $# -eq 1 ]; then
 
     if [ $1 != 'local' ]; then
-        echo -e "${CRED} 离线环境安装命令输入错误，请输入 bash install.sh local ${CEND}"
+        echo -e "${CRED}离线环境安装命令输入错误，请输入 bash install.sh local ${CEND}"
         exit 1
     else
         # 配置离线环境变量
