@@ -32,7 +32,7 @@ command_exists() {
 
 # 系统组件安装
 sys_plugins_install() {
-    echo -e "${CYELLOW}开始安装系统常用组件 !!!${CEND}"
+    echo -e "${CYELLOW}开始安装系统常用组件 ！！！${CEND}"
     local packages="gcc wget curl git jq vim unzip zip"
     # 安装 wget gcc curl git python
     ${PM} -y install python $packages
@@ -44,7 +44,7 @@ sys_plugins_install() {
 
 # 安装docker docker-compose
 do_install_docker() {
-    echo -e "${CYELLOW}开始安装环境核心组件 Docker + docker-compose !!!${CEND}"
+    echo -e "${CYELLOW}开始安装环境核心组件 Docker + docker-compose ！！！${CEND}"
     egrep "^docker" /etc/group >&/dev/null
     if [ $? -ne 0 ]; then
         sudo groupadd docker
@@ -66,7 +66,7 @@ do_install_docker() {
             if [ -n ${PACKAGES[$INDEX]} ] && [ -f /root/${PACKAGES[$INDEX]} ]; then
                 PACKAGE_TEMP=$(sha256sum /root/${PACKAGES[$INDEX]} | awk '{print $1}')
                 if [ $PACKAGE_TEMP != ${PACKAGES_SHA256[$INDEX]} ]; then
-                    echo -e "${CRED} 离线镜像包 ${PACKAGES[$INDEX]} 被非法串改，请从GS游享官方人渠道下载 !!!${CEND}"
+                    echo -e "${CRED} 离线镜像包 ${PACKAGES[$INDEX]} 被非法串改，请从GS游享官方人渠道下载 ！！！${CEND}"
                     exit 1
                 fi
             fi
@@ -97,7 +97,7 @@ do_install_docker() {
                 # 表示安装包是完整的
                 cd /root/gs_docker_ce/${OS}/${OS_VERSION} && $INSTALL_COMMAND
             else
-                echo -e "${CRED}环境 Docker 安装失败 !!!${CEND}"
+                echo -e "${CRED}环境 Docker 安装失败 ！！！${CEND}"
                 exit 1
             fi
         else
@@ -127,9 +127,9 @@ do_install_docker() {
     # 检测 docker 是否已经安装成功
     $(command_exists docker)
     if [ $? -eq 0 ]; then
-        echo -e "${CYELLOW}环境 Docker 安装成功 !!!${CEND}"
+        echo -e "${CYELLOW}环境 Docker 安装成功 ！！！${CEND}"
     else
-        echo -e "${CRED}环境 Docker 安装失败 !!!${CEND}"
+        echo -e "${CRED}环境 Docker 安装失败 ！！！${CEND}"
         exit 1
     fi
 
@@ -163,16 +163,16 @@ do_install_docker() {
     # docker-compose 安装成功
     $(command_exists docker-compose)
     if [ $? -eq 0 ]; then
-        echo -e "${CYELLOW}容器编排工具 docker-compose 安装成功 !!! ${CEND}"
+        echo -e "${CYELLOW}容器编排工具 docker-compose 安装成功 ！！！ ${CEND}"
     else
-        echo -e "${CRED}容器编排工具 docker-compose 安装失败 !!! ${CEND}"
+        echo -e "${CRED}容器编排工具 docker-compose 安装失败 ！！！ ${CEND}"
         exit 1
     fi
 }
 
 # 配置常用命令到系统中
 set_command() {
-    echo -e "${CYELLOW}开始设置全局命令 !!!${CEND}"
+    echo -e "${CYELLOW}开始设置全局命令 ！！！${CEND}"
     for VAR in $(ls -l ${GS_PROJECT}/scripts/ | awk '{print $9}'); do
         if [ -n ${VAR} ]; then
             \cp -rf ${GS_PROJECT}/scripts/${VAR} /usr/local/bin/${VAR%%.*} && chmod +x /usr/local/bin/${VAR%%.*}
@@ -182,7 +182,7 @@ set_command() {
 
 # 设置服务器时间
 set_timezone() {
-    echo -e "${CYELLOW}开始设置时区 !!!${CEND}"
+    echo -e "${CYELLOW}开始设置时区 ！！！${CEND}"
     rm -rf /etc/localtime
     ln -sf /usr/share/zoneinfo/${TZ} /etc/localtime
 }
@@ -190,18 +190,18 @@ set_timezone() {
 # 安装整合
 do_install() {
     set_timezone
-    [ $? -eq 0 ] && echo -e "${CYELLOW}设置时区成功，当前时间为:$(date +"%Y-%m-%d %H:%M:%S") ${CEND}" || {
-        echo -e "${CRED}设置时区失败!! ;${CEND}"
+    [ $? -eq 0 ] && echo -e "${CYELLOW}设置时区成功，当前时间为: $(date +"%Y-%m-%d %H:%M:%S") ${CEND}" || {
+        echo -e "${CRED}设置时区失败 ！！！;${CEND}"
         exit 1
     }
     do_install_docker
-    [ $? -eq 0 ] && echo -e "${CYELLOW}环境核心软件 docker, docker-compose 安装成功！！ ${CEND}" || {
-        echo -e "${CRED}环境核心软件 docker, docker-compose 安装失败!! ;${CEND}"
+    [ $? -eq 0 ] && echo -e "${CYELLOW}环境核心软件 docker, docker-compose 安装成功 ！！！ ${CEND}" || {
+        echo -e "${CRED}环境核心软件 docker, docker-compose 安装失败 ！！！;${CEND}"
         exit 1
     }
     set_command
-    [ $? -eq 0 ] && echo -e "${CYELLOW}设置全局命令成功！！${CEND}" || {
-        echo -e "${CRED}设置GS游享专用命令失败！！${CEND}"
+    [ $? -eq 0 ] && echo -e "${CYELLOW}设置全局命令成功 ！！！${CEND}" || {
+        echo -e "${CRED}设置GS游享专用命令失败 ！！！${CEND}"
         exit 1
     }
 }

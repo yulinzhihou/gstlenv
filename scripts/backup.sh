@@ -37,7 +37,7 @@ if [ $? -eq 0 ]; then
       mv tlbb-*.tar.gz ${FILEPATH}
     #判断是否备份成功
     if [ $? -eq 0 ]; then
-      echo -ne "${CSUCCESS}$(date '+%Y-%m-%d-%H-%M-%S')\ttlbb-${FILENAME}.tar.gz\t备份成功!!${CEND}\r\n" | tee -a ${FILEPATH}${LOG_FILE}
+      echo -ne "${CSUCCESS}$(date '+%Y-%m-%d-%H-%M-%S')\ttlbb-${FILENAME}.tar.gz\t备份成功 ！！！${CEND}\r\n" | tee -a ${FILEPATH}${LOG_FILE}
     else
       echo -ne "${CRED}$(date '+%Y-%m-%d-%H-%M-%S')\ttlbb-${FILENAME}.tar.gz\t备份失败${CEND}\r\n" | tee -a ${FILEPATH}${LOG_FILE}
     fi

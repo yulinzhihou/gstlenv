@@ -53,7 +53,7 @@ if [ $? -eq 0 ]; then
         SECOND_PARAM=$2
       else
         echo -e "${GSISSUE}\r\n"
-        echo -e "${CRED}错误:输入有误,充值点数格式不正确，请输入0-21亿之间的整数!!${CEND}"
+        echo -e "${CRED}错误:输入有误,充值点数格式不正确，请输入0-21亿之间的整数 ！！！${CEND}"
         exit 1
       fi
 
@@ -86,13 +86,13 @@ if [ $? -eq 0 ]; then
       # 组装参数发送命令
       docker exec gsmysql /bin/bash /usr/local/bin/gsset.sh ${FIRST_PARAM} ${SECOND_PARAM} ${THIRD_PARAM} ${FOURTH_PARAM}
     else
-      echo "${CRED}错误:输入有误,如果需要命令帮助，请使用 gs 查询!!${CEND}"
+      echo "${CRED}错误:输入有误,如果需要命令帮助，请使用 gs 查询 ！！！${CEND}"
       exit 1
     fi
   fi
 
 else
   echo -e "${GSISSUE}\r\n"
-  echo "${CRED}环境毁坏，需要重新安装或者移除现有的环境重新安装!!!${CEND}"
+  echo "${CRED}环境毁坏，需要重新安装或者移除现有的环境重新安装 ！！！${CEND}"
   exit 1
 fi

@@ -16,7 +16,7 @@ if [ ${WEB_FILE_NUM} -gt 1 ]; then
     mysqldump -uroot -p"${MYSQL_ROOT_PASSWORD}" web >/home/backup/web-${DATE_FILENAME}.sql
     #判断是否备份成功
     if [ $? -eq 0 ]; then
-        echo -e "$(date "+%Y-%m-%d-%H-%M-%S")\tweb-${DATE_FILENAME}.sql\t备份成功!!\r\n" | tee -a $LOG_FILE
+        echo -e "$(date "+%Y-%m-%d-%H-%M-%S")\tweb-${DATE_FILENAME}.sql\t备份成功 ！！！\r\n" | tee -a $LOG_FILE
     else
         echo -e "$(date "+%Y-%m-%d-%H-%M-%S")\tweb-${DATE_FILENAME}.sql\t备份失败\r\n" | tee -a $LOG_FILE
     fi
