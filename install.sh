@@ -42,9 +42,9 @@ sys_plugins_install() {
 }
 
 # 检测离线安装包里面各软件是否符合sha256加密验证
-offline_do_sha256_verify() {
-    # TODO::下个大版本迭代
-}
+# offline_do_sha256_verify() {
+# TODO::下个大版本迭代
+# }
 
 # 安装docker docker-compose
 do_install_docker() {
@@ -69,13 +69,13 @@ do_install_docker() {
         fi
 
         PACKAGE_DOCKER_COMPOSE=$(sha256sum /root/gs_docker_compose.tar.gz | awk '{print $1}')
-        if [ "$GS_OFFLINE_PACKAGE" != "$PACKAGE_OFFLINE" ]; then
+        if [ "$GS_DOCKER_COMPOSE_PACKAGE" != "$PACKAGE_DOCKER_COMPOSE" ]; then
             echo -e "${CRED} 离线软件包 gs_docker_compose.tar.gz 被非法串改，请从GS游享官方渠道下载 !!!${CEND}"
             exit 1
         fi
 
         PACKAGE_DOCKER_CE=$(sha256sum /root/gs_docker_ce.tar.gz | awk '{print $1}')
-        if [ "$GS_OFFLINE_PACKAGE" != "$PACKAGE_OFFLINE" ]; then
+        if [ "$GS_DOCKER_CE_PACKAGE" != "$PACKAGE_DOCKER_CE" ]; then
             echo -e "${CRED} 离线软件包 gs_docker_ce.tar.gz 被非法串改，请从GS游享官方渠道下载 !!!${CEND}"
             exit 1
         fi
@@ -235,7 +235,7 @@ pushd ${GSTL_DIR} >/dev/null
 # 加载配置
 . ./scripts/color.sh
 # 第一步，检测当前系统是否可以安装 docker 及 docker-compose
-bash check-docker-env.sh --dry-run
+bash check-docker-env.sh --dry-run >/dev/null 2>&1 | tee /root/.gs/docker-check.log
 if [ $? -ne 0 ]; then
     echo -e "${CRED} 当前服务器系统暂不支持本环境，请联系客服QQ:1303588722 反馈并获取适合安装的环境 ${CEND}"
     exit 1
