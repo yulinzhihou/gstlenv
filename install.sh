@@ -61,7 +61,7 @@ do_install_docker() {
     OS_VERSION=${OS_VERSION[1]}
 
     # 安装docker docker-compose 及导入离线镜像前，先检验sha256是否符合规则
-    if [ -f /usr/bin/sha256sum ]; then
+    if [ -f /usr/bin/sha256sum ] && [ -f /root/gstlenv_offline.tar.gz ]; then
         if [ -f /root/gstlenv_offline.tar.gz ] && [ -f /root/gs_docker_compose.tar.gz ] && [ -f /root/gs_docker_ce.tar.gz ]; then
             PACKAGE_OFFLINE=$(sha256sum /root/gstlenv_offline.tar.gz | awk '{print $1}')
             if [ "$GS_OFFLINE_PACKAGE" != "$PACKAGE_OFFLINE" ]; then
