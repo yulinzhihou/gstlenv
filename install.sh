@@ -58,9 +58,10 @@ do_install_docker() {
 
     # 安装docker docker-compose 及导入离线镜像前，先检验sha256是否符合规则
     if [ -f /usr/bin/sha256sum ] && [ $IS_OFFLINE -eq 1 ]; then
-        OS_NAME_UPPER=$OS | tr '[:lower:]' '[:upper:]'
+        OS_NAME_UPPER=$(echo $OS | tr '[:lower:]' '[:upper:]')
         local PACKAGES=("gstlenv_offline.tar.gz" "gs_docker_compose.tar.gz" "gs_docker_ce.tar.gz")
-        local PACKAGES_SHA256=("${GS_OFFLINE_PACKAGE}" "${GS_DOCKER_COMPOSE_PACKAGE}" "${GS_DOCKER_CE_PACKAGE}${OS_NAME_UPPER}")
+        GS_DOCKER_CE="GS_DOCKER_CE_PACKAGE_"${OS_NAME_UPPER}
+        local PACKAGES_SHA256=("${GS_OFFLINE_PACKAGE}" "${GS_DOCKER_COMPOSE_PACKAGE}" "${!GS_DOCKER_CE}")
         for INDEX in "${!PACKAGES[@]}"; do
             if [ -n ${PACKAGES[$INDEX]} ] && [ -f /root/${PACKAGES[$INDEX]} ]; then
                 PACKAGE_TEMP=$(sha256sum /root/${PACKAGES[$INDEX]} | awk '{print $1}')
