@@ -256,8 +256,8 @@ fi
 . /root/.gs/.env
 
 # 第一步，检测当前系统是否可以安装 docker 及 docker-compose
-bash ${GS_PROJECT}/check-docker-env.sh --dry-run >/dev/null 2>&1 | tee docker-check.log
-if [ $? -ne 0 ]; then
+bash check-docker-env.sh --dry-run >/dev/null 2>&1
+if [ $? != 0 ]; then
     echo -e "${CRED} 当前服务器系统暂不支持本环境，请联系客服QQ:1303588722 反馈并获取适合安装的环境 ${CEND}"
     exit 1
 fi
