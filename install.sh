@@ -38,7 +38,7 @@ sys_plugins_install() {
     ${PM} -y install python $packages
     [ "${OS_VERSION}" == "8" ] && {
         ${PM} -y install python38 $packages
-        sudo alternatives --set python /usr/bin/python3
+        alternatives --set python /usr/bin/python3
     }
 }
 
@@ -47,9 +47,9 @@ do_install_docker() {
     echo -e "${CYELLOW}开始安装GS游享环境核心软件 docker + docker-compose ！！！${CEND}"
     egrep "^docker" /etc/group >&/dev/null
     if [ $? -ne 0 ]; then
-        sudo groupadd docker
-        sudo usermod -aG docker ${USER}
-        sudo gpasswd -a ${USER} docker
+        groupadd docker
+        usermod -aG docker ${USER}
+        gpasswd -a ${USER} docker
     fi
     # 通过 os-release 获取发行版本及ID,通过数组返回数据。[0]为发生版本，[1]为版本号
     OS_VERSION=($(get_distribution))
@@ -83,11 +83,12 @@ do_install_docker() {
         rpm --import config/gpg
         INSTALL_COMMAND="rpm -Uvh --nodeps --force *.rpm"
     elif [ "${OS}" == "Debian" ]; then
-        INSTALL_COMMAND="sudo dpkg -i *.deb"
+        INSTALL_COMMAND=" dpkg -i *.deb"
     elif [ "${OS}" == "Fedora" ]; then
+        rpm --import config/gpg
         INSTALL_COMMAND="rpm -Uvh --nodeps --force *.rpm"
     elif [ "${OS}" == "Ubuntu" ]; then
-        INSTALL_COMMAND="sudo dpkg -i *.deb"
+        INSTALL_COMMAND=" dpkg -i *.deb"
     fi
 
     # echo "$INSTALL_COMMAND"
@@ -118,15 +119,15 @@ do_install_docker() {
 
         # 兼容真离线版本，可以手动安装 docker-ce docker-ce-cli
         if [ ! -d "/etc/docker" ]; then
-            sudo mkdir -p /etc/docker
+            mkdir -p /etc/docker
         fi
 
         # 复制配置文件到指定位置
         \cp -rf /root/.tlgame/config/daemon.json /etc/docker
 
         # 安装成功后，根据不同系统，进行服务的启动与开机自动启动
-        [ "${OS}" == "Debian" ] || [ "${OS}" == "Ubuntu" ] && sudo sudo systemctl docker start && sudo systemctl enable docker
-        [ "${OS}" == "CentOS" ] || [ "${OS}" == "CentOSStream" ] || [ "${OS}" == "CentOS Stream release 9" ] && sudo systemctl daemon-reload && sudo systemctl start docker && sudo systemctl enable docker
+        [ "${OS}" == "Debian" ] || [ "${OS}" == "Ubuntu" ] && systemctl docker start && systemctl enable docker
+        [ "${OS}" == "CentOS" ] || [ "${OS}" == "CentOSStream" ] || [ "${OS}" == "CentOS Stream release 9" ] && systemctl daemon-reload && systemctl start docker && systemctl enable docker
 
     fi
 
