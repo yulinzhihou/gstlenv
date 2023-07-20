@@ -55,7 +55,9 @@ do_install_docker() {
     OS_VERSION=($(get_distribution))
     OS=${OS_VERSION[0]}
     OS_VERSION=${OS_VERSION[1]}
-
+    # echo ${OS_VERSION}
+    # echo $OS
+    # echo $PM
     # 安装docker docker-compose 及导入离线镜像前，先检验sha256是否符合规则
     if [ -f /usr/bin/sha256sum ] && [ $IS_OFFLINE -eq 1 ]; then
         OS_NAME_UPPER=$(echo $OS | tr '[:lower:]' '[:upper:]')
@@ -63,6 +65,8 @@ do_install_docker() {
         GS_DOCKER_CE="GS_DOCKER_CE_PACKAGE_"${OS_NAME_UPPER}
         local PACKAGES_SHA256=("${GS_OFFLINE_PACKAGE}" "${GS_DOCKER_COMPOSE_PACKAGE}" "${!GS_DOCKER_CE}")
         for INDEX in "${!PACKAGES[@]}"; do
+            # echo ${GS_DOCKER_CE}
+            # echo ${PACKAGES[$INDEX]}
             if [ -n ${PACKAGES[$INDEX]} ] && [ -f /root/${PACKAGES[$INDEX]} ]; then
                 PACKAGE_TEMP=$(sha256sum /root/${PACKAGES[$INDEX]} | awk '{print $1}')
                 if [ $PACKAGE_TEMP != ${PACKAGES_SHA256[$INDEX]} ]; then
@@ -86,6 +90,7 @@ do_install_docker() {
         INSTALL_COMMAND="sudo dpkg -i *.deb"
     fi
 
+    # echo "$INSTALL_COMMAND"
     # 先使用本地安装脚本
     if [ ! $(command_exists docker) ]; then
         # 表示没有安装过docker,先检测离线安装包
@@ -95,6 +100,7 @@ do_install_docker() {
             # 检测对应离线包是否存在
             if [ -d "/root/gs_docker_ce/"${OS}/${OS_VERSION} ]; then
                 # 表示安装包是完整的
+                # echo "/root/gs_docker_ce/${OS}/${OS_VERSION}"
                 cd /root/gs_docker_ce/${OS}/${OS_VERSION} && $INSTALL_COMMAND
             else
                 echo -e "${CRED}GS游享环境核心软件 docker 安装失败 ！！！${CEND}"
@@ -119,7 +125,7 @@ do_install_docker() {
         \cp -rf /root/.tlgame/config/daemon.json /etc/docker
 
         # 安装成功后，根据不同系统，进行服务的启动与开机自动启动
-        [ "${OS}" == "Debian" ] || [ "${OS}" == "Ubuntu" ] && sudo apt-get services docker start && sudo systemctl enable docker
+        [ "${OS}" == "Debian" ] || [ "${OS}" == "Ubuntu" ] && sudo sudo systemctl docker start && sudo systemctl enable docker
         [ "${OS}" == "CentOS" ] || [ "${OS}" == "CentOSStream" ] || [ "${OS}" == "CentOS Stream release 9" ] && sudo systemctl daemon-reload && sudo systemctl start docker && sudo systemctl enable docker
 
     fi

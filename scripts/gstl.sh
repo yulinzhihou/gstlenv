@@ -102,7 +102,7 @@ else
     fi
 
     init_config &&
-        docker_run && echo -e "\r\n" && curgs && swap && upcmd
+        docker_run && curgs && swap && upcmd
 fi
-echo "${CYELLOW}GS游享环境已初始化配置参数，如上所示，请保管好参数，如需重新配置，请执行【 setconfig 】命令！获取命令帮助请使用【 gs 】命令${CEND}"
-echo "${CYELLOW}GS游享网：温馨提醒在使用环境前，建议更新最新的命令,请使用【 upcmd 】${CEND}"
+echo -e "${CYELLOW}GS游享环境已初始化配置参数，如上所示，请保管好参数，如需重新配置，请执行【 setconfig 】命令！获取命令帮助请使用【 gs 】命令${CEND}"
+echo -e "${CYELLOW}GS游享网：温馨提醒在使用环境前，建议更新最新的命令,请使用【 upcmd 】${CEND}"
