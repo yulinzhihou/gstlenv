@@ -76,7 +76,8 @@ docker_run() {
 
     if [ $? -eq 0 ]; then
         echo "success" >${ROOT_PATH}/${GSDIR}/gs.lock
-        echo -e "${CGREEN}GS游享环境安装成功 ！！！，配置文件已初始化为默认值。如不想使用默认值，请使用【 setconfig 】命令进行所有端口与密码的修改 ！！！${CEND}"
+        echo -e "\r\n"
+        echo -e "${CYELLOW}GS游享环境安装成功 ！！！，配置文件已初始化为默认值。如不想使用默认值，请使用【 setconfig 】命令进行所有端口与密码的修改 ！！！${CEND}"
     else
         echo -e "${GSISSUE}\r\n"
         echo -e "${CRED}GS游享环境安装失败 ！！！${CRED}"

@@ -131,7 +131,7 @@ do_install_docker() {
     fi
 
     # 检测 docker 是否已经安装成功
-    $(command_exists docker)
+    docker info >/dev/null 2>&1
     if [ $? -eq 0 ]; then
         echo -e "${CYELLOW}GS游享环境核心软件 docker 安装成功 ！！！${CEND}"
     else
@@ -167,7 +167,7 @@ do_install_docker() {
     fi
 
     # docker-compose 安装成功
-    $(command_exists docker-compose)
+    docker-compose version >/dev/null 2>&1
     if [ $? -eq 0 ]; then
         echo -e "${CYELLOW}GS游享环境核心软件 docker-compose 安装成功 ！！！ ${CEND}"
     else

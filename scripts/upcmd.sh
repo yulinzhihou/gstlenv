@@ -11,12 +11,16 @@
 download() {
   # [ ! -z ${COMMAND_VERSION} ] && COMMAND_VERSION=${COMMAND_VERSION} || COMMAND_VERSION=${VERSION}
   wget -q https://gitee.com/yulinzhihou/gstlenv/repository/archive/master.tar.gz -O /tmp/master.tar.gz
-  cd /tmp &&
-    # 解压目录
-    tar zxf master.tar.gz && cd /tmp/gstlenv-master && \cp -rf * ${GS_PROJECT}/
-  if [ $? -eq 0 ]; then
-    rm -rf /tmp/master.tar.gz &&
-      rm -rf /tmp/gstlenv-master
+  if [ -f /tmp/master.tar.gz ]; then
+    cd /tmp &&
+      # 解压目录
+      tar zxf master.tar.gz && cd /tmp/gstlenv-master && \cp -rf * ${GS_PROJECT}/
+    if [ $? -eq 0 ]; then
+      rm -rf /tmp/master.tar.gz &&
+        rm -rf /tmp/gstlenv-master
+    else
+      return 1
+    fi
   else
     return 1
   fi
@@ -61,9 +65,6 @@ if [ $? -eq 0 ]; then
   else
     . /usr/local/bin/color
   fi
-
-  copy_to_gsserver
-  copy_to_gssmysql
 
   # 判断是否有下载最新命令，如果没有，则不更新
   if [ -e /usr/bin/wget ]; then
