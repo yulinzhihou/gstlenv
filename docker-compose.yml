@@ -6,7 +6,7 @@ services:
     image: ${HUB_ALIYUN}yulinzhihou/gs_server:latest
     container_name: gsserver
     volumes:
-      - "${SHARED_DIR}/:/usr/local/src"
+      - "${SHARED_DIR}/:/home/tlbb"
       # - "${SHARED_DIR}/billing/:/home/billing/"
     ports:
       - "${LOGIN_PORT}:${LOGIN_PORT}"
