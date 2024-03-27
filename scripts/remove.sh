@@ -32,8 +32,8 @@ while :; do
     fi
   done
 
-  docker stop gsmysql gsnginx gsserver &&
-    docker rm -f gsmysql gsnginx gsserver &&
+  cd ${ROOT_PATH}/${GSDIR} && docker-comopser down &&
+    docker rm -f gsmysql gsnginx gsserver gsphp gsredis &&
     docker rmi -f ${HUB_ALIYUN}gs_mysql51 ${HUB_ALIYUN}gs_server ${HUB_ALIYUN}gs_nginx &&
     mv /tlgame /tlgame-$(date +%Y%m%d%H%I%S) &&
     \cp -rf ${ROOT_PATH}/${GSDIR}/.env /root/env-$(date +%Y%m%d%H%I%S) &&

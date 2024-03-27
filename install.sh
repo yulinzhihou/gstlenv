@@ -78,7 +78,7 @@ do_install_docker() {
     fi
 
     # 获取系统版本 及安装命令
-    if [ "${OS}" == "CentOS" ] || [ "${OS}" == "Anolis OS" ] || [ "${OS}" == "CentOSStream" ] || [ "${OS}" == "CentOS Stream release 9" ]; then
+    if [ "${OS}" == "CentOS" ] || [ "${OS}" == "CentOSStream" ] || [ "${OS}" == "CentOS Stream release 9" ]; then
         # 导入rpm公钥
         rpm --import config/gpg
         INSTALL_COMMAND="rpm -Uvh --nodeps --force *.rpm"
