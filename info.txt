@@ -21,7 +21,7 @@
 |       BUG及问题提交：https://gitee.com/yulinzhihou/gstlenv/issues
 |       BUG及问题提交：https://github.com/yulinzhihou/gstlenv/issues
 +----------------------------------------------------------------------+
-|       技术交流群：234788882 如搜索不到群号，请加客服QQ并备注进群
+|       技术交流群：902281567 如搜索不到群号，请加客服QQ并备注进群
 +----------------------------------------------------------------------+
 |       支持 CentOS/RedHat 7+ Debian 10+ and Ubuntu 18+ 64位系统的安装
 |       具体详情可以参考：https://docs.docker.com/engine/install/

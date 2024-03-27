@@ -51,7 +51,7 @@ do_install_docker() {
         usermod -aG docker ${USER}
         gpasswd -a ${USER} docker
     fi
-    # 通过 os-release 获取发行版本及ID,通过数组返回数据。[0]为发生版本，[1]为版本号
+    # 通过 os-release 获取发行版本及ID,通过数组返回数据。[0]为发行版本，[1]为版本号
     OS_VERSION=($(get_distribution))
     OS=${OS_VERSION[0]}
     OS_VERSION=${OS_VERSION[1]}
@@ -78,7 +78,7 @@ do_install_docker() {
     fi
 
     # 获取系统版本 及安装命令
-    if [ "${OS}" == "CentOS" ] || [ "${OS}" == "CentOSStream" ] || [ "${OS}" == "CentOS Stream release 9" ]; then
+    if [ "${OS}" == "CentOS" ] || [ "${OS}" == "Anolis OS" ] || [ "${OS}" == "CentOSStream" ] || [ "${OS}" == "CentOS Stream release 9" ]; then
         # 导入rpm公钥
         rpm --import config/gpg
         INSTALL_COMMAND="rpm -Uvh --nodeps --force *.rpm"
