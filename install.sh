@@ -70,7 +70,7 @@ do_install_docker() {
             if [ -n ${PACKAGES[$INDEX]} ] && [ -f /root/${PACKAGES[$INDEX]} ]; then
                 PACKAGE_TEMP=$(sha256sum /root/${PACKAGES[$INDEX]} | awk '{print $1}')
                 if [ $PACKAGE_TEMP != ${PACKAGES_SHA256[$INDEX]} ]; then
-                    echo -e "${CRED} GS游享环境离线镜像包 ${PACKAGES[$INDEX]} 被非法串改，请从GS游享官方人渠道下载 ！！！${CEND}"
+                    echo -e "${CRED} GS游享环境离线镜像包 ${PACKAGES[$INDEX]} 被非法串改，请从GS游享官方渠道下载 ！！！${CEND}"
                     exit 1
                 fi
             fi
