@@ -123,7 +123,7 @@ runtop
 | ![](images/alipay.png) | ![](images/wechatpay.png) |
 
 ### 六、提供免费环境配套的视频教程。适合新手小白以及想了解本环境的流程的朋友
--   技术交流群：234788882
+-   技术交流群：902281567(原群被封)
 -   有需要可以进电报群（PS:不经常看）[https://t.me/gstlenv](https://t.me/gstlenv)
 
 
