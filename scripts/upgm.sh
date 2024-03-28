@@ -147,7 +147,13 @@ if [ $? -eq 0 ]; then
     # sed -i "s/IS_DLQ=.*/IS_DLQ=${IS_NEW_DLQ}/g"
     if [ $? -eq 0 ]; then
       echo -e "${CSUCCESS} GS游享GM在线发货系统配置文件替换成功，准备启动！！！${CEND}"
-      cd /tlgame/GSOnlineGM && ./GSOnlineGM start -d~
+      # 基础动作：设置ssl请求的证书
+      if [ ! -r /etc/ssl/certs/ca-certificates.crt ] && [ -r /etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem ]; then
+        ln -s /etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem /etc/ssl/certs/ca-certificates.crt
+      fi
+      # 增加系统服务？
+      cd /tlgame/GSOnlineGM && ./GSOnlineGM start -d 2> &1
+      
     else
       echo -e "${CRED} GS游享GM在线发货系统配置文件替换失败！！！，被非法串改，请从GS游享官方渠道下载 ！！！${CEND}"
       exit 1
