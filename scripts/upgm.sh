@@ -44,7 +44,7 @@ if [ $? -eq 0 ]; then
         SHA_1=$(cat /root/GSOnlineGM.sha256 | awk '{print $1}')
         SHA_2=$(sha256sum /root/GSOnlineGM.tar.gz | awk '{print $1}')
         if [ $SHA_1 != $SHA_2]; then
-          echo -e "${CRED} GS游享GM在线发货安装包 ${PACKAGES[$INDEX]} 被非法串改，请从GS游享官方渠道下载 ！！！${CEND}"
+          echo -e "${CRED} GS游享GM在线发货安装包被非法串改，请不要使用，请从GS游享官方渠道下载 ！！！${CEND}"
           exit 1
         fi
      fi
@@ -55,7 +55,7 @@ if [ $? -eq 0 ]; then
      if [ -r /tlgame/GSOnlineGM/GSOnlineGM ]; then
         echo -e "${CSUCCESS} GS游享GM在线发货已经解压完成！！！${CEND}"
      else
-        echo -e "${CRED} GS游享GM在线发货安装包 ${PACKAGES[$INDEX]} 被非法串改，请从GS游享官方渠道下载 ！！！${CEND}"
+        echo -e "${CRED} GS游享GM在线发货安装包不存在或者异常，请从GS游享官方渠道下载 ！！！${CEND}"
         exit 1
      fi
   }
@@ -98,6 +98,61 @@ if [ $? -eq 0 ]; then
 
     echo "GS_ONLINE_GAME_TOOLS=1" >> $SCRIPT_GLOBAL
     echo -e "${CSUCCESS} GS游享GM在线发货配置写入成功，请查看 Script.dat文件最后一行对应的脚本有没在存在！！！${CEND}"
+  }
+
+  # 导入数据库到 web 库
+  function import_sql_to_web() {
+    SQL_FILE=/tlgame/GSOnlineGM/web.sql
+    if [ -r $SQL_FILE ]; then
+      # 再复制需要备份的文件到容器里面
+      docker cp -q $SQL_FILE gsmysql:/tmp/web.sql
+      # 再调用脚本还原
+      docker exec -it gsmysql /bin/bash /usr/local/bin/gsmysqlRestore.sh web /tmp/web.sql
+    else
+      echo -e "${CRED} GS游享GM在线发货安装包,未发现 sql 文件，被非法串改，请从GS游享官方渠道下载 ！！！${CEND}"
+      exit 1
+    fi 
+
+    if [ $? -eq 0 ]; then
+      echo -e "${CSUCCESS} GS游享GM在线发货系统安装成功！！！${CEND}"
+    fi
+  }
+
+  # 核心调用方法
+  function main() {
+    # 开始
+    get_distribution_package
+    set_lua_config
+    import_sql_to_web
+    
+    # 11、修改.env文件配置，mysql,redis都得用宿主机的ip地址和暴露出来的端口。
+    # 12、启动程序并加为系统服务，设置开机自动启动
+    ENV_EXAMPLE_FILE=/tlgame/GSOnlineGM/.env.example
+    ENV_FILE=/tlgame/GSOnlineGM/.env
+    if [ -r $ENV_FILE ]; then
+      \cp -rf $ENV_EXAMPLE_FILE $ENV_FILE
+      # 开始替换配置文件
+      sed -i "s/REDIS_PASS=.*/REDIS_PASS=''/g" $ENV_FILE # REDIS密码
+      sed -i "s/REDIS_PORT=.*/REDIS_PORT=''/g" $ENV_FILE # REDIS密码
+      sed -i "s/DB_PASS=.*/DB_PASS=''/g" $ENV_FILE # web库密码
+      sed -i "s/DB_PORT=.*/DB_PORT=''/g" $ENV_FILE # web库端口
+      sed -i "s/TLBB_PASS=.*/TLBB_PASS=''/g" $ENV_FILE # tlbbdb库密码
+      sed -i "s/TLBB_PORT=.*/TLBB_PORT=''/g" $ENV_FILE # tlbbdb库端口
+      
+    else
+      echo -e "${CRED} GS游享GM在线发货安装包,未发现 .env.example 文件，被非法串改，请从GS游享官方渠道下载 ！！！${CEND}"
+      exit 1
+    fi
+
+    # sed -i "s/IS_DLQ=.*/IS_DLQ=${IS_NEW_DLQ}/g"
+    if [ $? -eq 0 ]; then
+      echo -e "${CSUCCESS} GS游享GM在线发货系统配置文件替换成功，准备启动！！！${CEND}"
+      cd /tlgame/GSOnlineGM && ./GSOnlineGM start -d~
+    else
+      echo -e "${CRED} GS游享GM在线发货系统配置文件替换失败！！！，被非法串改，请从GS游享官方渠道下载 ！！！${CEND}"
+      exit 1
+    fi
+
   }
 
 
