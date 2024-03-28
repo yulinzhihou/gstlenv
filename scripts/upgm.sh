@@ -155,7 +155,7 @@ if [ $? -eq 0 ]; then
 
   }
 
-
+  main
 
 else
   echo -e "${GSISSUE}\r\n"
