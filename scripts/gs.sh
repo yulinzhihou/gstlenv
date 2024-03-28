@@ -59,6 +59,9 @@ ${CYELLOW}###########################################
 #    26:restore    还原数据库             #
 #    27:delbak    删除备份文件           #
 #    28:gsfix    修复环境安装           #
+#    29:gmstart    启动GS游享在线GM           #
+#    30:gmstop    停止GS游享在线GM           #
+#    31:gmrestart    重启GS游享在线GM         #
 #    0:q 退出,或者按 CTRL+C               #
 ###########################################${CEND}
 EFF
@@ -227,11 +230,11 @@ EOF
   #    14:upgm
   upgm_help() {
     cat <<EOF
-${CRED}upgm${CEND} ${CGREEN}作用: 增加GM网站，暂时只支持GS游享网定制的在线GM管理系统
+${CRED}upgm${CEND} ${CGREEN}作用: 增加在线发货GM系统。请到交流群免费下载程序包，
       用法: upgm
-      条件: 无
-      参数: 无 
-      说明: 如有问题，可以向客服反馈
+      条件: 请到交流群免费下载程序包
+      参数: 请到交流群免费下载程序包 
+      说明: 如有问题，可以向客服1303588722反馈
 ${CEND}
 EOF
   }
@@ -418,6 +421,42 @@ ${CEND}
 EOF
   }
 
+  #    29:gmstart
+  gmstart() {
+    cat <<EOF
+${CRED}gmstart${CEND} ${CGREEN}作用: 启动GM在线发货系统
+      用法: gmstart
+      条件: 无
+      参数: 无 
+      说明: 如有问题，可以向客服1303588722反馈
+${CEND}
+EOF
+  }
+
+  #    30:gmstop
+  gmstop() {
+    cat <<EOF
+${CRED}gmstop${CEND} ${CGREEN}作用: 停止GM在线发货系统
+      用法: gmstop
+      条件: 无
+      参数: 无 
+      说明: 如有问题，可以向客服1303588722反馈
+${CEND}
+EOF
+  }
+
+  #    31:gmrestart
+  gmrestart() {
+    cat <<EOF
+${CRED}gmrestart${CEND} ${CGREEN}作用: 重启GM在线发货系统
+      用法: gmrestart
+      条件: 无
+      参数: 无 
+      说明: 如有问题，可以向客服1303588722反馈
+${CEND}
+EOF
+  }
+
   # 执行
   if [ ! -z $1 ]; then
     case "$1" in
@@ -501,6 +540,18 @@ EOF
       ;;
     '27' | 'delbak')
       delbak_help
+      ;;
+    '28' | 'gsfix')
+      gsfix_help
+      ;;
+    '29' | 'gmstart')
+      gmstart_help
+      ;;
+    '30' | 'gmstop')
+      gmstop_help
+      ;;
+    '31' | 'gmrestart')
+      gmrestart_help
       ;;
     '0' | '00' | 'q' | 'Q')
       break

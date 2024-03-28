@@ -86,6 +86,58 @@ setconfig_rebuild() {
             done
         fi
 
+        # 修改 REDIS_PORT
+        while :; do
+            echo
+            read -e -p "当前【Redis端口】为：${CYELLOW}[${REDIS_PORT}]${CEND}，是否需要修改【Redis端口】 [y/n](默认: n): " IS_MODIFY
+            IS_MODIFY=${IS_MODIFY:-'n'}
+            if [[ ! ${IS_MODIFY} =~ ^[y,n]$ ]]; then
+                echo "${CRED}输入错误! 请输入 'y' 或者 'n',当前【mysql端口】为：[${GS_GM_PORT}]${CEND}"
+            else
+                if [ "${IS_MODIFY}" == 'y' ]; then
+                    while :; do
+                        echo
+                        read -e -p "请输入【mysql端口】：(默认: ${REDIS_DEFAULT_PORT}): " REDIS_NEW_PORT
+                        REDIS_NEW_PORT=${REDIS_NEW_PORT:-${REDIS_DEFAULT_PORT}}
+                        if [ ${REDIS_NEW_PORT} -eq ${REDIS_DEFAULT_PORT} -o ${REDIS_NEW_PORT} -gt 1024 -a ${REDIS_NEW_PORT} -lt 65535 ] >/dev/null 2>&1 >/dev/null 2>&1 >/dev/null 2>&1; then
+                            sed -i "s/GS_GM_PORT=.*/GS_GM_PORT=${REDIS_NEW_PORT}/g" ${GS_WHOLE_PATH}
+                            break
+                        else
+                            echo "${CRED}输入错误! 端口范围: 1025~65534${CEND}"
+                            exit 1
+                        fi
+                    done
+                fi
+                break
+            fi
+        done
+
+        # 修改GS_GM_PORT
+        while :; do
+            echo
+            read -e -p "当前【GS游享GM端口】为：${CYELLOW}[${GS_GM_PORT}]${CEND}，是否需要修改【GS游享GM端口】 [y/n](默认: n): " IS_MODIFY
+            IS_MODIFY=${IS_MODIFY:-'n'}
+            if [[ ! ${IS_MODIFY} =~ ^[y,n]$ ]]; then
+                echo "${CRED}输入错误! 请输入 'y' 或者 'n',当前【mysql端口】为：[${GS_GM_PORT}]${CEND}"
+            else
+                if [ "${IS_MODIFY}" == 'y' ]; then
+                    while :; do
+                        echo
+                        read -e -p "请输入【mysql端口】：(默认: ${GS_GM_DEFAULT_PORT}): " GS_GM_NEW_PORT
+                        GS_GM_NEW_PORT=${GS_GM_NEW_PORT:-${GS_GM_DEFAULT_PORT}}
+                        if [ ${GS_GM_NEW_PORT} -eq ${GS_GM_DEFAULT_PORT} -o ${GS_GM_NEW_PORT} -gt 1024 -a ${GS_GM_NEW_PORT} -lt 65535 ] >/dev/null 2>&1 >/dev/null 2>&1 >/dev/null 2>&1; then
+                            sed -i "s/GS_GM_PORT=.*/GS_GM_PORT=${GS_GM_NEW_PORT}/g" ${GS_WHOLE_PATH}
+                            break
+                        else
+                            echo "${CRED}输入错误! 端口范围: 1025~65534${CEND}"
+                            exit 1
+                        fi
+                    done
+                fi
+                break
+            fi
+        done
+
         # 配置BILLING_PORT
         while :; do
             echo
