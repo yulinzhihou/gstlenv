@@ -118,6 +118,11 @@ if [ $? -eq 0 ]; then
     fi
   }
 
+  # 给主城NPC增加ini文件
+  function set_npc_ini_file() {
+
+  }
+
   # 核心调用方法
   function main() {
     # 开始
