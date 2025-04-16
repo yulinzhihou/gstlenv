@@ -2,20 +2,27 @@
 
 查看支持的服务器系统版本 
 
-| Platform                                                   | x86_64 / amd64                                               | ARM                                                          | ARM64 / AARCH64                                              | Version |
-| :--------------------------------------------------------- | :----------------------------------------------------------- | :----------------------------------------------------------- | :----------------------------------------------------------- | ------- |
-| <a href="https://docs.docker.com/engine/install/centos/" target="_blank" rel="nofollow noopener">CentOS</a>   | ![](https://docs.docker.com/assets/images/green-check.svg)|                                                              | ![](https://docs.docker.com/assets/images/green-check.svg) | 7+      |
-| <a href="https://docs.docker.com/engine/install/debian/" target="_blank" rel="nofollow noopener">Debian</a>  | ![](https://docs.docker.com/assets/images/green-check.svg) | ![](https://docs.docker.com/assets/images/green-check.svg) | ![](https://docs.docker.com/assets/images/green-check.svg) | 9+      |
-| <a href="https://docs.docker.com/engine/install/Fedora/" target="_blank" rel="nofollow noopener">Fedora</a>  | ![](https://docs.docker.com/assets/images/green-check.svg)|                                                              | ![](https://docs.docker.com/assets/images/green-check.svg) | 32+     |
-| <a href="https://docs.docker.com/engine/install/Raspbian/" target="_blank" rel="nofollow noopener">Raspbian</a>  |                                                              | [](https://docs.docker.com/assets/images/green-check.svg) | ![](https://docs.docker.com/assets/images/green-check.svg) | 9+      |
-| <a href="https://docs.docker.com/engine/install/ubuntu/" target="_blank" rel="nofollow noopener">Ubuntu</a>   | ![](https://docs.docker.com/assets/images/green-check.svg) | ![](https://docs.docker.com/assets/images/green-check.svg) | ![](https://docs.docker.com/assets/images/green-check.svg) | 16.04+
+| Platform                                       | x86_64 / amd64 | arm64 / aarch64 | arm (32-bit) | ppc64le | s390x |
+| :--------------------------------------------- | :------------: | :-------------: | :----------: | :-----: | :---: |
+| [CentOS](centos.md)                            |       ✅       |       ✅        |              |   ✅    |       |
+| [Debian](debian.md)                            |       ✅       |       ✅        |      ✅      |   ✅    |       |
+| [Fedora](fedora.md)                            |       ✅       |       ✅        |              |   ✅    |       |
+| [Raspberry Pi OS (32-bit)](raspberry-pi-os.md) |                |                 |      ✅      |         |       |
+| [RHEL](rhel.md)                                |       ✅       |       ✅        |              |         |  ✅   |
+| [SLES](sles.md)                                |                |                 |              |         |  ✅   |
+| [Ubuntu](ubuntu.md)                            |       ✅       |       ✅        |      ✅      |   ✅    |  ✅   |
+| [Binaries](binaries.md)                        |       ✅       |       ✅        |      ✅      |         |       |
 
-- 本教程支持各种云服务器
+| Ubuntu                   | CentOS            | RHEL   | Debian                         | Fedora    |
+| ------------------------ | ----------------- | ------ | ------------------------------ | --------- |
+| Ubuntu Oracular 24.10    | CentOS 9 (stream) | RHEL 8 | Debian Bookworm 12 (stable)    | Fedora 40 |
+| Ubuntu Noble 24.04 (LTS) |                   | RHEL 9 | Debian Bullseye 11 (oldstable) | Fedora 41 |
+| Ubuntu Jammy 22.04 (LTS) |                   |        |                                |           |
+| Ubuntu Focal 20.04 (LTS) |                   |        |                                |           |
 
+- 本教程支持各种云服务器，虚拟机系统，可在线，可离线
 - 增加敏感配置项可以自定义，简单方便。如：数据库密码，端口等
-
 - 集成分步调试开服的命令，可以更好的排错
-
 - 本操作手册仅供学习使用，请勿用于商业用途，如有侵权，请与本人联系！
 
 ### 前期准备
@@ -101,7 +108,7 @@ runtop
 
 ### 二、安装步骤（客户端）
 
-- 安装最新官方[客户端](http://tl.changyou.com/download/index.shtml) ,或者下载指定版本的[客户端](https://qm.qq.com/cgi-bin/qm/qr?k=U88GIGoFjAcy9kkX3hJ-Xv0qRvSXB3ej) （进技术交流群:234788882 获取）
+- 安装最新官方[客户端](http://tl.changyou.com/download/index.shtml) ,或者下载指定版本的[客户端](https://qm.qq.com/cgi-bin/qm/qr?k=U88GIGoFjAcy9kkX3hJ-Xv0qRvSXB3ej) （进技术交流群:902281567 获取）
 
 - 解压补丁包
 - 更新补丁
@@ -118,16 +125,16 @@ runtop
 - 使用 `gs` 命令进入命令帮助提示
 
 ### 五、最后有如果感觉项目对你有点帮助，请支持一下我们
-| 支付宝扫码捐赠    | 微信支付捐赠         |
-| ----------------- | -------------------- |
-| ![](images/alipay.png) | ![](images/wechatpay.png) |
+| 支付宝扫码捐赠    | 交流群（QQ） | 微信支付捐赠         |
+| ----------------- | -------------------- | -------------------- |
+| <img src="images/alipay.png" style="zoom:50%;" /> | <img src="images/qqgroup.png" style="zoom:40%;" /> | <img src="images/wechatpay.png" alt="w" style="zoom:50%;" /> |
 
 ### 六、提供免费环境配套的视频教程。适合新手小白以及想了解本环境的流程的朋友
--   技术交流群：234788882
+
+-   技术交流群：902281567(原群被封)
 -   有需要可以进电报群（PS:不经常看）[https://t.me/gstlenv](https://t.me/gstlenv)
 
+### 七、常见问题集合（不定期查看，欢迎反馈，我们一起把环境壮大）
 
-### 七、常见问题集合
-
-[https://github.com/yulinzhihou/gstlenv/wiki](https://github.com/yulinzhihou/gstlenv/wiki)
-[https://gitee.com/yulinzhihou/gstlenv/wiki](https://gitee.com/yulinzhihou/gstlenv/wiki)
+- [https://github.com/yulinzhihou/gstlenv/wiki](https://github.com/yulinzhihou/gstlenv/wiki)
+- [https://gitee.com/yulinzhihou/gstlenv/wiki](https://gitee.com/yulinzhihou/gstlenv/wiki)
