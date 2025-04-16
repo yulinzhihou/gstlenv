@@ -26,7 +26,30 @@ if [ $? -eq 0 ]; then
     done
     echo -ne "\n\r"
     echo -ne "${CYELLOW}正在重启…………\n\r${CEND}"
+
+    if [ $# -eq 0 ]; then
+      while :; do
+        echo
+        echo -e "${CYELLOW}重启数据库有可能导致存档丢失，请注意谨慎操作！${CEND}"
+        read -e -p "${CYELLOW}请输入数字1，表示所有服务全部重启(默认: 0表示不重启数据库):${CEND} " IS_MODIFY
+        IS_MODIFY=${IS_MODIFY:-'0'}
+        case ${IS_MODIFY} in
+        1)
+          cd ${ROOT_PATH}/${GSDIR} && docker-compose restart gsnginx && docker-compose restart gsserver && docker-compose restart gsmysql
+          break
+          ;;
+        *)
+          cd ${ROOT_PATH}/${GSDIR} && docker-compose restart gsnginx && docker-compose restart gsserver
+          break
+          ;;
+        esac
+      done
+    else
+      cd ${ROOT_PATH}/${GSDIR} && docker-compose restart gsnginx && docker-compose restart gsserver
+    fi
+
     # cd ${ROOT_PATH}/${GSDIR} && docker-compose restart && docker exec -it gsmysql /bin/bash /usr/local/bin/init_db.sh
+    # 暂时不重启数据库，只重启nginx gsserver 如果需要重启数据库，则加参数1
     cd ${ROOT_PATH}/${GSDIR} && docker-compose restart gsnginx && docker-compose restart gsserver
     if [ $? -eq 0 ]; then
       # 删除因为改版本导致引擎启动失败的dump文件
