@@ -158,7 +158,7 @@ do_install_docker() {
         else
             # 直接将 v2.20.0 版本的 docker-compose 下载到码云进行加速
             # curl -L "https://github.com/docker/compose/releases/download/v2.20.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-            curl -L https://gitee.com/yulinzhihou/docker-compose/releases/download/v2.16.0/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+            curl -L https://gitee.com/yulinzhihou/docker-compose/releases/download/v2.35.0/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
         fi
 
         if [ -f /usr/local/bin/docker-compose ]; then
