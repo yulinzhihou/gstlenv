@@ -79,7 +79,7 @@ set -e
 
 # Git commit from https://github.com/docker/docker-install when
 # the script was uploaded (Should only be modified by upload job):
-SCRIPT_COMMIT_SHA="c2de0811708b6d9015ed1a2c80f02c9b70c8ce7b"
+SCRIPT_COMMIT_SHA="4c94a56999e10efcf48c5b8e3f6afea464f9108e"
 
 # strip "v" prefix if present
 VERSION="${VERSION#v}"
@@ -87,9 +87,7 @@ VERSION="${VERSION#v}"
 # The channel to install from:
 #   * stable
 #   * test
-#   * edge (deprecated)
-#   * nightly (unmaintained)
-DEFAULT_CHANNEL_VALUE="stable"
+DEFAULT_CHANNEL_VALUE="test"
 if [ -z "$CHANNEL" ]; then
 	CHANNEL=$DEFAULT_CHANNEL_VALUE
 fi
@@ -146,10 +144,6 @@ esac
 
 case "$CHANNEL" in
 stable | test) ;;
-edge | nightly)
-	echo >&2 "DEPRECATED: the $CHANNEL channel has been deprecated and no longer supported by this script."
-	exit 1
-	;;
 *)
 	echo >&2 "unknown CHANNEL '$CHANNEL': use either stable or test."
 	exit 1
@@ -171,12 +165,12 @@ command_exists() {
 # version_gte 23.0  // 0 (success)
 # version_gte 20.10 // 0 (success)
 # version_gte 19.03 // 0 (success)
-# version_gte 21.10 // 1 (fail)
+# version_gte 26.1  // 1 (fail)
 version_gte() {
 	if [ -z "$VERSION" ]; then
 		return 0
 	fi
-	eval version_compare "$VERSION" "$1"
+	version_compare "$VERSION" "$1"
 }
 
 # version_compare compares two version strings (either SemVer (Major.Minor.Path),
@@ -371,7 +365,9 @@ do_install() {
 			installation.
 
 			If you installed the current Docker package using this script and are using it
-			again to update Docker, you can safely ignore this message.
+			again to update Docker, you can ignore this message, but be aware that the
+			script resets any custom changes in the deb and rpm repo configuration
+			files to match the parameters passed to the script.
 
 			You may press Ctrl+C now to abort this script.
 		EOF
@@ -453,7 +449,7 @@ do_install() {
 		esac
 		;;
 
-	centos | rhel | sles)
+	centos | rhel)
 		if [ -z "$dist_version" ] && [ -r /etc/os-release ]; then
 			dist_version="$(. /etc/os-release && echo "$VERSION_ID")"
 		fi
@@ -476,20 +472,23 @@ do_install() {
 	# Print deprecation warnings for distro versions that recently reached EOL,
 	# but may still be commonly used (especially LTS versions).
 	case "$lsb_dist.$dist_version" in
-	debian.stretch | debian.jessie)
+	centos.8 | centos.7 | rhel.7)
 		deprecation_notice "$lsb_dist" "$dist_version"
 		;;
-	raspbian.stretch | raspbian.jessie)
+	debian.buster | debian.stretch | debian.jessie)
 		deprecation_notice "$lsb_dist" "$dist_version"
 		;;
-	ubuntu.xenial | ubuntu.trusty)
+	raspbian.buster | raspbian.stretch | raspbian.jessie)
 		deprecation_notice "$lsb_dist" "$dist_version"
 		;;
-	ubuntu.impish | ubuntu.hirsute | ubuntu.groovy | ubuntu.eoan | ubuntu.disco | ubuntu.cosmic)
+	ubuntu.bionic | ubuntu.xenial | ubuntu.trusty)
+		deprecation_notice "$lsb_dist" "$dist_version"
+		;;
+	ubuntu.mantic | ubuntu.lunar | ubuntu.kinetic | ubuntu.impish | ubuntu.hirsute | ubuntu.groovy | ubuntu.eoan | ubuntu.disco | ubuntu.cosmic)
 		deprecation_notice "$lsb_dist" "$dist_version"
 		;;
 	fedora.*)
-		if [ "$dist_version" -lt 36 ]; then
+		if [ "$dist_version" -lt 40 ]; then
 			deprecation_notice "$lsb_dist" "$dist_version"
 		fi
 		;;
@@ -498,22 +497,19 @@ do_install() {
 	# Run setup for each distro accordingly
 	case "$lsb_dist" in
 	ubuntu | debian | raspbian)
-		pre_reqs="apt-transport-https ca-certificates curl"
-		if ! command -v gpg >/dev/null; then
-			pre_reqs="$pre_reqs gnupg"
-		fi
-		apt_repo="deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] $DOWNLOAD_URL/linux/$lsb_dist $dist_version $CHANNEL"
+		pre_reqs="ca-certificates curl"
+		apt_repo="deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] $DOWNLOAD_URL/linux/$lsb_dist $dist_version $CHANNEL"
 		(
 			if ! is_dry_run; then
 				set -x
 			fi
-			$sh_c 'apt-get update -qq >/dev/null'
-			$sh_c "DEBIAN_FRONTEND=noninteractive apt-get install -y -qq $pre_reqs >/dev/null"
+			$sh_c 'apt-get -qq update >/dev/null'
+			$sh_c "DEBIAN_FRONTEND=noninteractive apt-get -y -qq install $pre_reqs >/dev/null"
 			$sh_c 'install -m 0755 -d /etc/apt/keyrings'
-			$sh_c "curl -fsSL \"$DOWNLOAD_URL/linux/$lsb_dist/gpg\" | gpg --dearmor --yes -o /etc/apt/keyrings/docker.gpg"
-			$sh_c "chmod a+r /etc/apt/keyrings/docker.gpg"
+			$sh_c "curl -fsSL \"$DOWNLOAD_URL/linux/$lsb_dist/gpg\" -o /etc/apt/keyrings/docker.asc"
+			$sh_c "chmod a+r /etc/apt/keyrings/docker.asc"
 			$sh_c "echo \"$apt_repo\" > /etc/apt/sources.list.d/docker.list"
-			$sh_c 'apt-get update -qq >/dev/null'
+			$sh_c 'apt-get -qq update >/dev/null'
 		)
 		pkg_version=""
 		if [ -n "$VERSION" ]; then
@@ -555,50 +551,65 @@ do_install() {
 			if ! is_dry_run; then
 				set -x
 			fi
-			$sh_c "DEBIAN_FRONTEND=noninteractive apt-get install -y -qq $pkgs >/dev/null"
+			$sh_c "DEBIAN_FRONTEND=noninteractive apt-get -y -qq install $pkgs >/dev/null"
 		)
 		echo_docker_as_nonroot
 		exit 0
 		;;
 	centos | fedora | rhel)
-		if [ "$(uname -m)" != "s390x" ] && [ "$lsb_dist" = "rhel" ]; then
-			echo "Packages for RHEL are currently only available for s390x."
-			exit 1
-		fi
-		if [ "$lsb_dist" = "fedora" ]; then
-			pkg_manager="dnf"
-			config_manager="dnf config-manager"
-			enable_channel_flag="--set-enabled"
-			disable_channel_flag="--set-disabled"
-			pre_reqs="dnf-plugins-core"
-			pkg_suffix="fc$dist_version"
-		else
-			pkg_manager="yum"
-			config_manager="yum-config-manager"
-			enable_channel_flag="--enable"
-			disable_channel_flag="--disable"
-			pre_reqs="yum-utils"
-			pkg_suffix="el"
-		fi
 		repo_file_url="$DOWNLOAD_URL/linux/$lsb_dist/$REPO_FILE"
 		(
 			if ! is_dry_run; then
 				set -x
 			fi
-			$sh_c "$pkg_manager install -y -q $pre_reqs"
-			$sh_c "$config_manager --add-repo $repo_file_url"
+			if command_exists dnf5; then
+				$sh_c "dnf -y -q --setopt=install_weak_deps=False install dnf-plugins-core"
+				$sh_c "dnf5 config-manager addrepo --overwrite --save-filename=docker-ce.repo --from-repofile='$repo_file_url'"
 
-			if [ "$CHANNEL" != "stable" ]; then
-				$sh_c "$config_manager $disable_channel_flag 'docker-ce-*'"
-				$sh_c "$config_manager $enable_channel_flag 'docker-ce-$CHANNEL'"
+				if [ "$CHANNEL" != "stable" ]; then
+					$sh_c "dnf5 config-manager setopt \"docker-ce-*.enabled=0\""
+					$sh_c "dnf5 config-manager setopt \"docker-ce-$CHANNEL.enabled=1\""
+				fi
+				$sh_c "dnf makecache"
+			elif command_exists dnf; then
+				$sh_c "dnf -y -q --setopt=install_weak_deps=False install dnf-plugins-core"
+				$sh_c "rm -f /etc/yum.repos.d/docker-ce.repo  /etc/yum.repos.d/docker-ce-staging.repo"
+				$sh_c "dnf config-manager --add-repo $repo_file_url"
+
+				if [ "$CHANNEL" != "stable" ]; then
+					$sh_c "dnf config-manager --set-disabled \"docker-ce-*\""
+					$sh_c "dnf config-manager --set-enabled \"docker-ce-$CHANNEL\""
+				fi
+				$sh_c "dnf makecache"
+			else
+				$sh_c "yum -y -q install yum-utils"
+				$sh_c "rm -f /etc/yum.repos.d/docker-ce.repo  /etc/yum.repos.d/docker-ce-staging.repo"
+				$sh_c "yum-config-manager --add-repo $repo_file_url"
+
+				if [ "$CHANNEL" != "stable" ]; then
+					$sh_c "yum-config-manager --disable \"docker-ce-*\""
+					$sh_c "yum-config-manager --enable \"docker-ce-$CHANNEL\""
+				fi
+				$sh_c "yum makecache"
 			fi
-			$sh_c "$pkg_manager makecache"
 		)
 		pkg_version=""
+		if command_exists dnf; then
+			pkg_manager="dnf"
+			pkg_manager_flags="-y -q --best"
+		else
+			pkg_manager="yum"
+			pkg_manager_flags="-y -q"
+		fi
 		if [ -n "$VERSION" ]; then
 			if is_dry_run; then
 				echo "# WARNING: VERSION pinning is not supported in DRY_RUN"
 			else
+				if [ "$lsb_dist" = "fedora" ]; then
+					pkg_suffix="fc$dist_version"
+				else
+					pkg_suffix="el"
+				fi
 				pkg_pattern="$(echo "$VERSION" | sed 's/-ce-/\\\\.ce.*/g' | sed 's/-/.*/g').*$pkg_suffix"
 				search_command="$pkg_manager list --showduplicates docker-ce | grep '$pkg_pattern' | tail -1 | awk '{print \$2}'"
 				pkg_version="$($sh_c "$search_command")"
@@ -638,7 +649,7 @@ do_install() {
 			if ! is_dry_run; then
 				set -x
 			fi
-			$sh_c "$pkg_manager install -y -q $pkgs"
+			$sh_c "$pkg_manager $pkg_manager_flags install $pkgs"
 		)
 		echo_docker_as_nonroot
 		exit 0
@@ -648,12 +659,6 @@ do_install() {
 			echo "Packages for SLES are currently only available for s390x"
 			exit 1
 		fi
-		if [ "$dist_version" = "15.3" ]; then
-			sles_version="SLE_15_SP3"
-		else
-			sles_minor_version="${dist_version##*.}"
-			sles_version="15.$sles_minor_version"
-		fi
 		repo_file_url="$DOWNLOAD_URL/linux/$lsb_dist/$REPO_FILE"
 		pre_reqs="ca-certificates curl libseccomp2 awk"
 		(
@@ -661,21 +666,26 @@ do_install() {
 				set -x
 			fi
 			$sh_c "zypper install -y $pre_reqs"
+			$sh_c "rm -f /etc/zypp/repos.d/docker-ce-*.repo"
 			$sh_c "zypper addrepo $repo_file_url"
-			if ! is_dry_run; then
-				cat >&2 <<-'EOF'
-					WARNING ！！！
-					openSUSE repository (https://download.opensuse.org/repositories/security:SELinux) will be enabled now.
-					Do you wish to continue?
-					You may press Ctrl+C now to abort this script.
-				EOF
-				(
-					set -x
-					sleep 30
-				)
+
+			opensuse_factory_url="https://download.opensuse.org/repositories/security:/SELinux/openSUSE_Factory/"
+			if ! zypper lr -d | grep -q "${opensuse_factory_url}"; then
+				opensuse_repo="${opensuse_factory_url}security:SELinux.repo"
+				if ! is_dry_run; then
+					cat >&2 <<-EOF
+						WARNING!!
+						openSUSE repository ($opensuse_repo) will be enabled now.
+						Do you wish to continue?
+						You may press Ctrl+C now to abort this script.
+					EOF
+					(
+						set -x
+						sleep 20
+					)
+				fi
+				$sh_c "zypper addrepo $opensuse_repo"
 			fi
-			opensuse_repo="https://download.opensuse.org/repositories/security:SELinux/$sles_version/security:SELinux.repo"
-			$sh_c "zypper addrepo $opensuse_repo"
 			$sh_c "zypper --gpg-auto-import-keys refresh"
 			$sh_c "zypper lr -d"
 		)
