@@ -110,10 +110,10 @@ do_install_docker() {
         else
             # 在线安装 docker
             if [ -f ./gsdocker.sh ]; then
-                bash gsdocker.sh -s docker --mirror Aliyun --version 24.0
+                bash gsdocker.sh -s docker --mirror Aliyun --version 28.0
             else
                 # 制作的国内镜像安装脚本
-                curl -sSL https://gsgameshare.com/gsdocker | bash -s docker --mirror Aliyun --version 24.0
+                curl -sSL https://gsgameshare.com/gsdocker | bash -s docker --mirror Aliyun --version 28.0
             fi
         fi
 
@@ -244,6 +244,7 @@ fi
 
 if [ ! -f /root/.gs/.env ]; then
     \cp -rf env.sample /root/.gs/.env
+    \cp -rf env.sample /root/.tlgame/.env
     \cp -rf docker-compose.yml /root/.gs
 fi
 # 加载配置
