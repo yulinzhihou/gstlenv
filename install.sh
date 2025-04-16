@@ -191,6 +191,9 @@ set_command() {
 set_timezone() {
     echo -e "${CYELLOW}开始设置时区 ！！！${CEND}"
     rm -rf /etc/localtime
+    timedatectl set-timezone Asia/Shanghai
+    timedatectl set-ntp true
+    hwclock --systohc
     ln -sf /usr/share/zoneinfo/${TZ} /etc/localtime
 }
 
