@@ -78,7 +78,7 @@ do_install_docker() {
     fi
 
     # 获取系统版本 及安装命令
-    if [ "${OS}" == "CentOS" ] || [ "${OS}" == "CentOSStream" ] || [ "${OS}" == "CentOS Stream release 9" ]; then
+    if [ "${OS}" == "CentOS" ] || [ "${OS}" == "CentOSStream" ] || [ "${OS}" == "CentOS Stream release 9" ] || [ "${OS}" == "CentOS Stream release 10" ]; then
         # 导入rpm公钥
         rpm --import config/gpg
         INSTALL_COMMAND="rpm -Uvh --nodeps --force *.rpm"
@@ -113,7 +113,7 @@ do_install_docker() {
                 bash gsdocker.sh -s docker --mirror Aliyun --version 24.0
             else
                 # 制作的国内镜像安装脚本
-                curl -sSL https://gsgameshare.com/gsdocker | bash -s docker --mirror Aliyun --version 24.0
+                curl -sSL https://gsgameshare.com/gsdocker | bash -s docker --mirror Aliyun --version 28
             fi
         fi
 
@@ -127,7 +127,7 @@ do_install_docker() {
 
         # 安装成功后，根据不同系统，进行服务的启动与开机自动启动
         [ "${OS}" == "Debian" ] || [ "${OS}" == "Ubuntu" ] && systemctl docker start && systemctl enable docker
-        [ "${OS}" == "CentOS" ] || [ "${OS}" == "CentOSStream" ] || [ "${OS}" == "CentOS Stream release 9" ] && systemctl daemon-reload && systemctl start docker && systemctl enable docker
+        [ "${OS}" == "CentOS" ] || [ "${OS}" == "CentOSStream" ] || [ "${OS}" == "CentOS Stream release 9" ] || [ "${OS}" == "CentOS Stream release 10" ] && systemctl daemon-reload && systemctl start docker && systemctl enable docker
 
     fi
 
@@ -158,7 +158,7 @@ do_install_docker() {
         else
             # 直接将 v2.20.0 版本的 docker-compose 下载到码云进行加速
             # curl -L "https://github.com/docker/compose/releases/download/v2.20.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-            curl -L https://gitee.com/yulinzhihou/docker-compose/releases/download/v2.16.0/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+            curl -L https://gitee.com/yulinzhihou/docker-compose/releases/download/v2.35.0/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
         fi
 
         if [ -f /usr/local/bin/docker-compose ]; then

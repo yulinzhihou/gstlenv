@@ -1,3 +1,15 @@
 {
-    "registry-mirrors": ["https://f0tv1cst.mirror.aliyuncs.com"]
+    "registry-mirrors": [
+        "https://f0tv1cst.mirror.aliyuncs.com",
+        "https://docker.1ms.run",
+        "https://docker.xuanyuan.me",
+        "https://dockerproxy.com",
+        "https://docker.mirrors.ustc.edu.cn",
+        "https://docker.nju.edu.cn",
+        "https://docker.m.daocloud.io",
+        "https://dockerhub.azk8s.cn",
+        "https://docker.mirrors.ustc.edu.cn",
+        "https://dockerproxy.com",
+        "https://mirror.baidubce.com"
+    ]
 }
