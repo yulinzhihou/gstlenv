@@ -94,7 +94,7 @@ do_install_docker() {
     # echo "$INSTALL_COMMAND"
     # 先使用本地安装脚本
     docker info >/dev/null 2>&1
-    if [ $? -eq 0 ]; then
+    if [ $? -ne 0 ]; then
         # 表示没有安装过docker,先检测离线安装包
         if [ -f /root/gs_docker_ce.tar.gz ]; then
             # 解压离线包
@@ -150,7 +150,7 @@ do_install_docker() {
     # darwin：苹果公司的操作系统 macOS 的系统架构名称，基于 x86 和 ARM 架构。
     # ppc64le：IBM Power 架构的 64 位处理器，使用小端字节序。
     # riscv64：RISC-V 架构的 64 位处理器，是一种开放指令集架构。
-    if [ ! $(command_exists docker-compose) ] && [ ! -f /usr/local/bin/docker-compose ]; then
+    if [ ! -f /usr/local/bin/docker-compose ]; then
         NAME=$(uname -s)
         # 转换成小写 linux，因为不是通过网络下载，不会自动转换成小写，所以这里会报错
         NAME=${NAME,,}
