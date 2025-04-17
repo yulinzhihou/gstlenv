@@ -1,0 +1,1 @@
+GMDATA_ISOPEN_GMTOOLS = 1 -- 是否开启在线GM 0关闭 1开启
