@@ -41,7 +41,7 @@ if [ $? -eq 0 ]; then
     \cp -rf ${BASE_PATH}/billing ${GS_PROJECT_PATH}/billing/
 
     # 解压配置文件，根据服务端程序，进行生成 启动脚本 run.sh
-    if [ -f "${BASE_PATH}/run.sh" ]; then
+    if [ -f "${GS_PROJECT_PATH}/tlbb/run.sh" ]; then
         sed -i '/^exit$/s||tail -f /dev/null|' ${BASE_PATH}/run.sh
     fi
 
