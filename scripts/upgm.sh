@@ -22,7 +22,8 @@ if [ $? -eq 0 ]; then
   # 部署 GM 网站
   function deployGMCode() {
     # 直接解压
-    tar zxf TLBB_GMTools.tar.gz -C /tlgame/www/gm
+    cd ${GS_PROJECT}/config &&
+      tar zxf TLBB_GMTools.tar.gz -C /tlgame/www/gm
     echo -e "剩下的操作需要手动去修改配置。。。。。。后续更新自动配置"
     # 替换密码，秘钥，数据库账号密码。
     # ScriptGlobal.lua 配置
@@ -37,8 +38,6 @@ if [ $? -eq 0 ]; then
 
   # 获取用户目录
   function getUserInput() {
-    # 复制PHP配置
-    docker cp
     # 配置是游戏注册还是登录器注册
     while :; do
       read -e -p "当前【域名】为${CYELLOW}["0.0.0.0"]${CEND}，是否需要修改【0.0.0.0=使用服务器外网IP+端口访问】 [y/n](默认: n): " IS_MODIFY
@@ -67,16 +66,12 @@ if [ $? -eq 0 ]; then
 
   # 创建目录，生成配置文件
   function owConf() {
-    config= <<EOF
-
-EOF
-
     # 创建目录
     if [ ! -d /tlgame/www/gm ]; then
       mkdir -p /tlgame/www/gm
     fi
 
-    if [ ! -d /tlgame/conf.d ]; then
+    if [ -d /tlgame/conf.d ]; then
       cat >/tlgame/conf.d/gm.conf <<EOF
 server {
     listen       81  default;
@@ -109,14 +104,14 @@ server {
     location ~ \.php$ {
         fastcgi_pass   gsphp:9000;
         include        fastcgi-php.conf;
-        set $real_script_name $fastcgi_script_name;
-        if ($fastcgi_script_name ~ "^(.+?\.php)(/.+)$") {
-            set $real_script_name $1;
-            set $path_info $2;
+        set \$real_script_name \$fastcgi_script_name;
+        if (\$fastcgi_script_name ~ "^(.+?\.php)(/.+)$") {
+            set \$real_script_name \$1;
+            set \$path_info \$2;
         }
-        fastcgi_param SCRIPT_FILENAME $document_root$real_script_name;
-        fastcgi_param SCRIPT_NAME $real_script_name;
-        fastcgi_param PATH_INFO $path_info;
+        fastcgi_param SCRIPT_FILENAME \$document_root\$real_script_name;
+        fastcgi_param SCRIPT_NAME \$real_script_name;
+        fastcgi_param PATH_INFO \$path_info;
     }
 
     # deny access to .htaccess files, if Apache's document root
