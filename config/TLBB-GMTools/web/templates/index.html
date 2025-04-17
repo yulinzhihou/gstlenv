@@ -1,18 +1,18 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 
 <head>
-	<meta charset="gbk">
+	<meta charset="utf8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<!-- ÉÏÊö3¸ömeta±êÇ©*±ØĞë*·ÅÔÚ×îÇ°Ãæ£¬ÈÎºÎÆäËûÄÚÈİ¶¼*±ØĞë*¸úËæÆäºó£¡ -->
-	<title>GSÓÎÏíÔÚÏßGM¹ÜÀí¹¤¾ß</title>
+	<!-- ä¸Šè¿°3ä¸ªmetaæ ‡ç­¾*å¿…é¡»*æ”¾åœ¨æœ€å‰é¢ï¼Œä»»ä½•å…¶ä»–å†…å®¹éƒ½*å¿…é¡»*è·Ÿéšå…¶åï¼ -->
+	<title>GSæ¸¸äº«åœ¨çº¿GMç®¡ç†å·¥å…·</title>
 	<!-- Bootstrap -->
 	<link href="./css/bootstrap.min.css" rel="stylesheet">
-	<!-- Bootstrap ¹Ù·½ÎÄµµÑùÊ½ -->
+	<!-- Bootstrap å®˜æ–¹æ–‡æ¡£æ ·å¼ -->
 	<link href="./css/bs.css" rel="stylesheet">
-	<!-- HTML5 shim ºÍ Respond.js ÊÇÎªÁËÈÃ IE8 Ö§³Ö HTML5 ÔªËØºÍÃ½Ìå²éÑ¯£¨media queries£©¹¦ÄÜ -->
-	<!-- ¾¯¸æ£ºÍ¨¹ı file:// Ğ­Òé£¨¾ÍÊÇÖ±½Ó½« html Ò³ÃæÍÏ×§µ½ä¯ÀÀÆ÷ÖĞ£©·ÃÎÊÒ³ÃæÊ± Respond.js ²»Æğ×÷ÓÃ -->
+	<!-- HTML5 shim å’Œ Respond.js æ˜¯ä¸ºäº†è®© IE8 æ”¯æŒ HTML5 å…ƒç´ å’Œåª’ä½“æŸ¥è¯¢ï¼ˆmedia queriesï¼‰åŠŸèƒ½ -->
+	<!-- è­¦å‘Šï¼šé€šè¿‡ file:// åè®®ï¼ˆå°±æ˜¯ç›´æ¥å°† html é¡µé¢æ‹–æ‹½åˆ°æµè§ˆå™¨ä¸­ï¼‰è®¿é—®é¡µé¢æ—¶ Respond.js ä¸èµ·ä½œç”¨ -->
 	<!--[if lt IE 9]>
       <script src="./js/html5shiv.min.js"></script>
       <script src="./js/respond.min.js"></script>
@@ -106,25 +106,25 @@
 	<div class="bs-docs-header" id="content" tabindex="-1">
 		<div class="container">
 			<h1>ZJS GmTools</h1>
-			<p>ÔÚÕâÀï¿ÉÒÔ¶ÔGMÊÂ¼ş½øĞĞ´´½¨¡¢¹ÜÀí</p>
+			<p>åœ¨è¿™é‡Œå¯ä»¥å¯¹GMäº‹ä»¶è¿›è¡Œåˆ›å»ºã€ç®¡ç†</p>
 		</div>
 	</div>
 	<div class="row">
 		<div class="col-md-1"></div>
 		<div class="col-md-10">
-			<button type="button" class="btn btn-success create" style="margin-bottom:10px">Ìí¼ÓÖ´ĞĞÊÂ¼ş</button>
+			<button type="button" class="btn btn-success create" style="margin-bottom:10px">æ·»åŠ æ‰§è¡Œäº‹ä»¶</button>
 			<button type="button" class="btn btn-danger quick"
-				style="margin-bottom:10px;margin-left:10px;float: right;">ÍË³ö</button>
-			<button type="button" class="btn btn-danger clear" style="margin-bottom:10px;float: right;">Çå¿ÕËùÓĞÊÂ¼ş</button>
+				style="margin-bottom:10px;margin-left:10px;float: right;">é€€å‡º</button>
+			<button type="button" class="btn btn-danger clear" style="margin-bottom:10px;float: right;">æ¸…ç©ºæ‰€æœ‰äº‹ä»¶</button>
 			<table class="table-hover">
 				<thead>
 					<tr>
-						<th>ÊÂ¼şID</th>
-						<th>ÊÂ¼ş±êÊ¶</th>
-						<th>ÊÂ¼şËµÃ÷</th>
-						<th>Ö´ĞĞ×´Ì¬</th>
-						<th>Ö´ĞĞÊ±¼ä</th>
-						<th>ÏêÏ¸²ÎÊı</th>
+						<th>äº‹ä»¶ID</th>
+						<th>äº‹ä»¶æ ‡è¯†</th>
+						<th>äº‹ä»¶è¯´æ˜</th>
+						<th>æ‰§è¡ŒçŠ¶æ€</th>
+						<th>æ‰§è¡Œæ—¶é—´</th>
+						<th>è¯¦ç»†å‚æ•°</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -133,16 +133,16 @@
 						<td>{$item.event}</td>
 						<td>{$item.eventnote}</td>
 
-						<td php-if="$item['status'] == 1"><span class="btn btn-success btn-xs">Ö´ĞĞ³É¹¦</span></td>
-						<td php-else=""><span class="btn btn-danger btn-xs">µÈ´ıÖ´ĞĞ</span></td>
+						<td php-if="$item['status'] == 1"><span class="btn btn-success btn-xs">æ‰§è¡ŒæˆåŠŸ</span></td>
+						<td php-else=""><span class="btn btn-danger btn-xs">ç­‰å¾…æ‰§è¡Œ</span></td>
 
 						<td php-if="$item['requesttime'] > 0"><span class="btn btn-xs">{:date('Y-m-d H:i:s',
 								$item['requesttime'])}</span></td>
 						<td php-else=""><span class="btn btn-xs"
-								style="background-color: black;color: #fff;">µÈ´ıÖ´ĞĞ</span></td>
+								style="background-color: black;color: #fff;">ç­‰å¾…æ‰§è¡Œ</span></td>
 
 						<td><button type="button" class="btn btn-primary btn-xs info"
-								data-info="ÊÂ¼şID:{$item['id']}<br>ÊÂ¼ş±êÊ¶:{$item['event']}<br>ÊÂ¼şËµÃ÷:{$item['eventnote']}<br>²ÎÊı1:{$item['param1']}<br>²ÎÊı2:{$item['param2']}<br>²ÎÊı3:{$item['param3']}<br>²ÎÊı4:{$item['param4']}<br>">µã»÷²é¿´</button>
+								data-info="äº‹ä»¶ID:{$item['id']}<br>äº‹ä»¶æ ‡è¯†:{$item['event']}<br>äº‹ä»¶è¯´æ˜:{$item['eventnote']}<br>å‚æ•°1:{$item['param1']}<br>å‚æ•°2:{$item['param2']}<br>å‚æ•°3:{$item['param3']}<br>å‚æ•°4:{$item['param4']}<br>">ç‚¹å‡»æŸ¥çœ‹</button>
 						</td>
 					</tr>
 				</tbody>
@@ -151,7 +151,7 @@
 		<div class="col-md-1"></div>
 	</div>
 
-	<!-- ´´½¨/ĞŞ¸ÄÄ£Ì¬¿ò -->
+	<!-- åˆ›å»º/ä¿®æ”¹æ¨¡æ€æ¡† -->
 	<div class="modal fade" id="createBox" tabindex="-1" role="dialog">
 		<form id="createBoxFrom">
 			<div class="modal-dialog" role="document">
@@ -159,64 +159,64 @@
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
 								aria-hidden="true">&times;</span></button>
-						<h4 class="modal-title">Ìí¼ÓÖ´ĞĞÊÂ¼ş</h4>
+						<h4 class="modal-title">æ·»åŠ æ‰§è¡Œäº‹ä»¶</h4>
 					</div>
 					<div class="modal-body">
 						<form>
 							<div class="form-group">
-								<label for="event" class="control-label">Ñ¡ÔñÖ´ĞĞÊÂ¼ş:</label>
+								<label for="event" class="control-label">é€‰æ‹©æ‰§è¡Œäº‹ä»¶:</label>
 								<select id="event" class="form-control">
 									<option php-foreach="$eventsList as $key => $item" value="{$item}">{$key}</option>
 								</select>
-								<span style="color: red">×¢Òâ£ºËùÓĞÊÂ¼ş²»ĞèÒªÍæ¼ÒÏÂÏß£¬ÊµÊ±ÓÎÏ·ÄÚÉúĞ§</span>
+								<span style="color: red">æ³¨æ„ï¼šæ‰€æœ‰äº‹ä»¶ä¸éœ€è¦ç©å®¶ä¸‹çº¿ï¼Œå®æ—¶æ¸¸æˆå†…ç”Ÿæ•ˆ</span>
 							</div>
 							<div class="form-group param1">
-								<label for="param1" class="control-label param1_label">²ÎÊı1:</label>
-								<input type="text" class="form-control" id="param1" placeholder="ÇëÌîĞ´²ÎÊı£¬Èç¹ûÈ±ÉÙ¿É²»ÌîĞ´">
+								<label for="param1" class="control-label param1_label">å‚æ•°1:</label>
+								<input type="text" class="form-control" id="param1" placeholder="è¯·å¡«å†™å‚æ•°ï¼Œå¦‚æœç¼ºå°‘å¯ä¸å¡«å†™">
 							</div>
 							<div class="form-group param2">
-								<label for="param2" class="control-label param2_label">²ÎÊı2:</label>
-								<input type="text" class="form-control" id="param2" placeholder="ÇëÌîĞ´²ÎÊı£¬Èç¹ûÈ±ÉÙ¿É²»ÌîĞ´">
+								<label for="param2" class="control-label param2_label">å‚æ•°2:</label>
+								<input type="text" class="form-control" id="param2" placeholder="è¯·å¡«å†™å‚æ•°ï¼Œå¦‚æœç¼ºå°‘å¯ä¸å¡«å†™">
 							</div>
-							<!-- ·¢·ÅÎïÆ·×¨ÓÃ -->
+							<!-- å‘æ”¾ç‰©å“ä¸“ç”¨ -->
 							<div class="form-group searchForm" style="display: none;">
-								<label for="searchForm" class="control-label searchForm_label">²ÎÊı2:</label>
+								<label for="searchForm" class="control-label searchForm_label">å‚æ•°2:</label>
 								<div class="form-inline searchFormDiv">
-									<input type="text" class="form-control" id="searchForm" placeholder="ÊäÈëÎïÆ·ID»òÕßÃû³Æ">
-									<button type="button" class="form-control btn btn-default searchItem">²éÑ¯</button>
+									<input type="text" class="form-control" id="searchForm" placeholder="è¾“å…¥ç‰©å“IDæˆ–è€…åç§°">
+									<button type="button" class="form-control btn btn-default searchItem">æŸ¥è¯¢</button>
 									<button type="button"
-										class="form-control btn btn-default resetSearchForm">ÖØÖÃ</button>
+										class="form-control btn btn-default resetSearchForm">é‡ç½®</button>
 								</div>
 							</div>
 							<div class="form-group param3">
-								<label for="param3" class="control-label param3_label">²ÎÊı3:</label>
-								<input type="text" class="form-control" id="param3" placeholder="ÇëÌîĞ´²ÎÊı£¬Èç¹ûÈ±ÉÙ¿É²»ÌîĞ´">
+								<label for="param3" class="control-label param3_label">å‚æ•°3:</label>
+								<input type="text" class="form-control" id="param3" placeholder="è¯·å¡«å†™å‚æ•°ï¼Œå¦‚æœç¼ºå°‘å¯ä¸å¡«å†™">
 							</div>
 							<div class="form-group param4">
-								<label for="param4" class="control-label param4_label">²ÎÊı4:</label>
-								<input type="text" class="form-control" id="param4" placeholder="ÇëÌîĞ´²ÎÊı£¬Èç¹ûÈ±ÉÙ¿É²»ÌîĞ´">
+								<label for="param4" class="control-label param4_label">å‚æ•°4:</label>
+								<input type="text" class="form-control" id="param4" placeholder="è¯·å¡«å†™å‚æ•°ï¼Œå¦‚æœç¼ºå°‘å¯ä¸å¡«å†™">
 							</div>
 						</form>
 					</div>
 					<div class="modal-footer">
 						<input type="hidden" id="edit_id">
 						<input type="reset" style="display: none" id="reset">
-						<button type="button" class="btn btn-default" data-dismiss="modal">È¡Ïû</button>
-						<button type="button" class="btn btn-primary setting_qrcode">·¢ËÍ</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal">å–æ¶ˆ</button>
+						<button type="button" class="btn btn-primary setting_qrcode">å‘é€</button>
 					</div>
 				</div>
 			</div>
 		</form>
 	</div>
 
-	<!-- ÏêÏ¸²ÎÊıµ¯´° -->
+	<!-- è¯¦ç»†å‚æ•°å¼¹çª— -->
 	<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" id="lookinfo">
 		<div class="modal-dialog modal-sm" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-							aria-hidden="true">¡Á</span></button>
-					<h4 class="modal-title info_title">ÏêÏ¸²ÎÊı</h4>
+							aria-hidden="true">Ã—</span></button>
+					<h4 class="modal-title info_title">è¯¦ç»†å‚æ•°</h4>
 				</div>
 				<div class="modal-body info_body">
 				</div>
@@ -225,14 +225,14 @@
 	</div>
 
 
-	<!-- ĞÅÏ¢ÌáÊ¾¿ò -->
+	<!-- ä¿¡æ¯æç¤ºæ¡† -->
 	<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" id="msg_alert">
 		<div class="modal-dialog modal-sm" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-							aria-hidden="true">¡Á</span></button>
-					<h4 class="modal-title msg_title">Í¨ÖªĞÅÏ¢</h4>
+							aria-hidden="true">Ã—</span></button>
+					<h4 class="modal-title msg_title">é€šçŸ¥ä¿¡æ¯</h4>
 				</div>
 				<div class="modal-body msg_body">
 				</div>
@@ -240,104 +240,104 @@
 		</div><!-- /.modal-dialog -->
 	</div>
 
-	<!-- Çå¿ÕÌáÊ¾¿ò -->
+	<!-- æ¸…ç©ºæç¤ºæ¡† -->
 	<div class="modal fade" tabindex="-1" role="dialog" id="del_view">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
 							aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title">Çå¿ÕÌáÊ¾</h4>
+					<h4 class="modal-title">æ¸…ç©ºæç¤º</h4>
 				</div>
 				<div class="modal-body text-center">
-					<p>ÄãÈ·¶¨ÒªÇå¿ÕËùÓĞÊÂ¼şÂğ£¿Çå¿ÕÖ®ºó²»¿É»Ö¸´¡£</p>
+					<p>ä½ ç¡®å®šè¦æ¸…ç©ºæ‰€æœ‰äº‹ä»¶å—ï¼Ÿæ¸…ç©ºä¹‹åä¸å¯æ¢å¤ã€‚</p>
 				</div>
 				<div class="modal-footer">
 					<input type="hidden" id="del_id">
-					<button type="button" class="btn btn-default" data-dismiss="modal">È¡Ïû</button>
-					<button type="button" class="btn btn-primary" id="del">È·¶¨</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">å–æ¶ˆ</button>
+					<button type="button" class="btn btn-primary" id="del">ç¡®å®š</button>
 				</div>
 			</div><!-- /.modal-content -->
 		</div><!-- /.modal-dialog -->
 	</div><!-- /.modal -->
 
 
-	<!-- jQuery (Bootstrap µÄËùÓĞ JavaScript ²å¼ş¶¼ÒÀÀµ jQuery£¬ËùÒÔ±ØĞë·ÅÔÚÇ°±ß) -->
+	<!-- jQuery (Bootstrap çš„æ‰€æœ‰ JavaScript æ’ä»¶éƒ½ä¾èµ– jQueryï¼Œæ‰€ä»¥å¿…é¡»æ”¾åœ¨å‰è¾¹) -->
 	<script src="./js/jquery.min.js"></script>
-	<!-- JQ ¸´ÖÆ¼ôÇĞ°å×é¼ş -->
+	<!-- JQ å¤åˆ¶å‰ªåˆ‡æ¿ç»„ä»¶ -->
 	<script src="./js/clipboard.min.js"></script>
-	<!-- ¼ÓÔØ Bootstrap µÄËùÓĞ JavaScript ²å¼ş¡£ÄãÒ²¿ÉÒÔ¸ù¾İĞèÒªÖ»¼ÓÔØµ¥¸ö²å¼ş¡£ -->
+	<!-- åŠ è½½ Bootstrap çš„æ‰€æœ‰ JavaScript æ’ä»¶ã€‚ä½ ä¹Ÿå¯ä»¥æ ¹æ®éœ€è¦åªåŠ è½½å•ä¸ªæ’ä»¶ã€‚ -->
 	<script src="./js/bootstrap.min.js"></script>
-	<!-- Ò³Ãæ¹¦ÄÜ -->
+	<!-- é¡µé¢åŠŸèƒ½ -->
 	<script>
 
 		$(document).ready(function () {
-			// ³õÊ¼»¯Ä¬ÈÏÎª·¢¹«¸æÊÂ¼ş
+			// åˆå§‹åŒ–é»˜è®¤ä¸ºå‘å…¬å‘Šäº‹ä»¶
 			$('.param1').show();
-			$('.param1_label').text('¹«¸æÄÚÈİ£º');
+			$('.param1_label').text('å…¬å‘Šå†…å®¹ï¼š');
 			$('.param2').hide();
 			$('.param3').hide();
 			$('.param4').hide();
 			/**
-			* [¼àÌıÑ¡ÔñÊÂ¼ş²¢×÷³ö±íµ¥¸Ä¶¯]
+			* [ç›‘å¬é€‰æ‹©äº‹ä»¶å¹¶ä½œå‡ºè¡¨å•æ”¹åŠ¨]
 			*/
 			$('#event').change(function () {
 				var event = $(this).val();
 				switch (event) {
 					case 'SendGlobalNews':
-						//·¢¹«¸æ
+						//å‘å…¬å‘Š
 						$('.param1').show();
-						$('.param1_label').text('¹«¸æÄÚÈİ£º');
+						$('.param1_label').text('å…¬å‘Šå†…å®¹ï¼š');
 						$('.param2').hide();
 						$('.param3').hide();
 						$('.param4').hide();
 						$('.searchForm').hide();
 						break;
 					case 'AddGamePoint':
-						// ³äÖµµãÊı
+						// å……å€¼ç‚¹æ•°
 						$('.param1').show();
-						$('.param1_label').text('³äÖµÕËºÅ£º');
+						$('.param1_label').text('å……å€¼è´¦å·ï¼š');
 						$('.param2').show();
-						$('.param2_label').text('³äÖµµãÊı£º');
+						$('.param2_label').text('å……å€¼ç‚¹æ•°ï¼š');
 						$('.param3').hide();
 						$('.param4').hide();
 						$('.searchForm').hide();
 						break;
 					case 'GivePlayerItem':
-						// ·¢ÎïÆ·
+						// å‘ç‰©å“
 						$('.param1').show();
-						$('.param1_label').text('½ÇÉ«Ãû£º');
+						$('.param1_label').text('è§’è‰²åï¼š');
 						$('.searchForm').show();
-						$('.searchForm_label').text('·¢·ÅÎïÆ·£º');
+						$('.searchForm_label').text('å‘æ”¾ç‰©å“ï¼š');
 						$('.param2').hide();
 						$('.param3').show();
-						$('.param3_label').text('·¢·ÅÊıÁ¿£º');
+						$('.param3_label').text('å‘æ”¾æ•°é‡ï¼š');
 						$('.param4').hide();
 						break;
 					case 'SetPlayerLevel':
-						// ÉèÖÃµÈ¼¶
+						// è®¾ç½®ç­‰çº§
 						$('.param1').show();
-						$('.param1_label').text('½ÇÉ«Ãû£º');
+						$('.param1_label').text('è§’è‰²åï¼š');
 						$('.param2').show();
-						$('.param2_label').text('µÈ¼¶£º');
+						$('.param2_label').text('ç­‰çº§ï¼š');
 						$('.param3').hide();
 						$('.param4').hide();
 						$('.searchForm').hide();
 						break;
 					case 'GivePlayerYuanBao':
-						// ·¢Ôª±¦
+						// å‘å…ƒå®
 						$('.param1').show();
-						$('.param1_label').text('½ÇÉ«Ãû£º');
+						$('.param1_label').text('è§’è‰²åï¼š');
 						$('.param2').show();
-						$('.param2_label').text('Ôª±¦ÊıÁ¿£º');
+						$('.param2_label').text('å…ƒå®æ•°é‡ï¼š');
 						$('.param3').hide();
 						$('.param4').hide();
 						$('.searchForm').hide();
 						break;
 					default:
-						//·¢¹«¸æ
+						//å‘å…¬å‘Š
 						$('.param1').show();
-						$('.param1_label').text('¹«¸æÄÚÈİ£º');
+						$('.param1_label').text('å…¬å‘Šå†…å®¹ï¼š');
 						$('.param2').hide();
 						$('.param3').hide();
 						$('.param4').hide();
@@ -347,20 +347,20 @@
 
 
 			/**
-			 * [ÍË³öµÇÂ¼]
+			 * [é€€å‡ºç™»å½•]
 			 */
 			$('.quick').click(function () {
 				$.post('index.php?r=quickLogin', {
 				}, function (result) {
 					console.log(result);
 					if (result.status == 'success') {
-						$('.msg_body').html('ÍË³ö³É¹¦');
+						$('.msg_body').html('é€€å‡ºæˆåŠŸ');
 						$('#msg_alert').modal('show');
 						setTimeout(function () {
 							window.location.href = "index.php";
 						}, 1000);
 					} else {
-						$('.msg_body').html('ÍË³öÊ§°Ü');
+						$('.msg_body').html('é€€å‡ºå¤±è´¥');
 						$('#msg_alert').modal('show');
 					}
 					return;
@@ -368,7 +368,7 @@
 			})
 
 			/**
-			 * [Ìí¼Ó/±à¼­Ä£Ì¬¿òµ¯³ö]
+			 * [æ·»åŠ /ç¼–è¾‘æ¨¡æ€æ¡†å¼¹å‡º]
 			 */
 			$('.create,.edit').click(function () {
 				if ($(this).attr('data-id')) {
@@ -378,14 +378,14 @@
 					$('#note').val($(this).attr('data-note'));
 					$("#jump_domain").val($(this).attr('data-jump-domain'));
 				} else {
-					$("#reset").click(); //ÖØÖÃ±íµ¥
+					$("#reset").click(); //é‡ç½®è¡¨å•
 				}
 				$('#createBox').modal('show');
 			})
 
 
 			/**
-			 * [²ÎÊıÏêÇé]
+			 * [å‚æ•°è¯¦æƒ…]
 			 */
 			$('.info').click(function () {
 				var info = $(this).attr('data-info');
@@ -394,7 +394,7 @@
 			})
 
 			/**
-			 * [Ìí¼Ó/±à¼­]
+			 * [æ·»åŠ /ç¼–è¾‘]
 			 */
 			$('.setting_qrcode').click(function () {
 				var event = $('#event').val();
@@ -420,14 +420,14 @@
 					console.log(result);
 					if (result.status == 'success') {
 						$('#createBox').modal('hide');
-						$('.msg_body').html('ÉèÖÃ³É¹¦');
+						$('.msg_body').html('è®¾ç½®æˆåŠŸ');
 						$('#msg_alert').modal('show');
 						setTimeout(function () {
 							window.location.href = "index.php";
 						}, 1000);
 					} else {
 						$('#createBox').modal('hide');
-						$('.msg_body').html('ÉèÖÃÊ§°Ü');
+						$('.msg_body').html('è®¾ç½®å¤±è´¥');
 						$('#msg_alert').modal('show');
 					}
 					return;
@@ -435,12 +435,12 @@
 			})
 
 			/**
-			 * [²éÑ¯ÎïÆ·]
+			 * [æŸ¥è¯¢ç‰©å“]
 			 */
 			$(document).on('click', '.searchItem', function () {
 				var item = $('#searchForm').val();
 				if (item == '') {
-					$('.msg_body').html('ÎïÆ·ËÑË÷Ìõ¼ş²»ÄÜÎª¿Õ');
+					$('.msg_body').html('ç‰©å“æœç´¢æ¡ä»¶ä¸èƒ½ä¸ºç©º');
 					$('#msg_alert').modal('show');
 					return
 				}
@@ -455,10 +455,10 @@
 							newFormContent += '<option value="' + result[index].id + '">' + decodeURI(itemName) + '</option>';
 						}
 						newFormContent += '</select>';
-						newFormContent += '<button type="button" class="form-control btn btn-default resetSearchForm">ÖØÖÃ</button>';
+						newFormContent += '<button type="button" class="form-control btn btn-default resetSearchForm">é‡ç½®</button>';
 						$('.searchFormDiv').html(newFormContent);
 					} else {
-						$('.msg_body').html('Ã»ÓĞ²éÑ¯µ½Ïà¹ØÎïÆ·');
+						$('.msg_body').html('æ²¡æœ‰æŸ¥è¯¢åˆ°ç›¸å…³ç‰©å“');
 						$('#msg_alert').modal('show');
 					}
 					return;
@@ -466,27 +466,27 @@
 			});
 
 			/**
-			 * [ÖØÖÃ²éÑ¯]
+			 * [é‡ç½®æŸ¥è¯¢]
 			 */
 			$(document).on('click', '.resetSearchForm', function () {
 				$('.searchFormDiv').html('');
 				var newFormContent = '';
-				newFormContent += '<input type="text" class="form-control" id="searchForm" placeholder="ÊäÈëÎïÆ·ID»òÕßÃû³Æ">';
-				newFormContent += '<button type="button" class="form-control btn btn-default searchItem">²éÑ¯</button>';
-				newFormContent += '<button type="button" class="form-control btn btn-default resetSearchForm">ÖØÖÃ</button>';
+				newFormContent += '<input type="text" class="form-control" id="searchForm" placeholder="è¾“å…¥ç‰©å“IDæˆ–è€…åç§°">';
+				newFormContent += '<button type="button" class="form-control btn btn-default searchItem">æŸ¥è¯¢</button>';
+				newFormContent += '<button type="button" class="form-control btn btn-default resetSearchForm">é‡ç½®</button>';
 				$('.searchFormDiv').html(newFormContent);
 			});
 
 
 			/**
-			 * [É¾³ıÄ£Ì¬¿ò]
+			 * [åˆ é™¤æ¨¡æ€æ¡†]
 			 */
 			$(".clear").click(function () {
 				$("#del_view").modal('show');
 			});
 
 			/**
-			 * [É¾³ı]
+			 * [åˆ é™¤]
 			 */
 			$('#del').click(function () {
 				$.post('index.php?r=clearAllEvents', {
@@ -494,14 +494,14 @@
 					console.log(result);
 					if (result.status == 'success') {
 						$('#del_view').modal('hide');
-						$('.msg_body').html('É¾³ı³É¹¦');
+						$('.msg_body').html('åˆ é™¤æˆåŠŸ');
 						$('#msg_alert').modal('show');
 						setTimeout(function () {
 							window.location.href = "index.php";
 						}, 1000);
 					} else {
 						$('#del_view').modal('hide');
-						$('.msg_body').html('É¾³ıÊ§°Ü');
+						$('.msg_body').html('åˆ é™¤å¤±è´¥');
 						$('#msg_alert').modal('show');
 					}
 					return;

@@ -2,9 +2,9 @@
 <html lang="en">
 
 <head>
-    <meta charset="GBK">
+    <meta charset="utf8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>GSÓÎÏíÔÚÏßGM¹ÜÀí¹¤¾ß</title>
+    <title>GSæ¸¸äº«åœ¨çº¿GMç®¡ç†å·¥å…·</title>
     <style>
         * {
             margin: 0;
@@ -197,15 +197,15 @@
             <img src="./images/logo.png" alt="" style="background-color: #fff;border-radius: 60px;">
         </div>
         <div class="form-item">
-            <input type="text" id="username" placeholder="ÓÃ»§Ãû">
-            <p class="tip">ÇëÊäÈëºÏ·¨ÓÃ»§Ãû</p>
+            <input type="text" id="username" placeholder="ç”¨æˆ·å">
+            <p class="tip">è¯·è¾“å…¥åˆæ³•ç”¨æˆ·å</p>
         </div>
         <div class="form-item">
-            <input type="password" id="password" placeholder="µÇÂ¼ÃÜÂë">
-            <p class="tip">ÃÜÂë²»ÕıÈ·</p>
+            <input type="password" id="password" placeholder="ç™»å½•å¯†ç ">
+            <p class="tip">å¯†ç ä¸æ­£ç¡®</p>
         </div>
         <div class="form-item">
-            <button id="submit" class="button button-1" data-color="#2f5398">µÇ Â¼</button>
+            <button id="submit" class="button button-1" data-color="#2f5398">ç™» å½•</button>
         </div>
     </div>
     <script src="./js/jquery.min.js"></script>
@@ -213,7 +213,11 @@
         $(document).ready(function () {
             $('#submit').on('click', function () {
                 var password = $('#password').val();
-                $.post("index.php", { username, username, password, password }, function (result) {
+                var username = $('#username').val();
+                console.log("password = " + password);
+                console.log("username = " + username);
+
+                $.post("index.php", { "username": username, "password": password }, function (result) {
                     console.log(result);
                     if (result.status == 'success') {
                         window.location.href = "index.php";
