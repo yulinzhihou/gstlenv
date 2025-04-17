@@ -32,15 +32,15 @@ while :; do
     fi
   done
 
-  docker stop gsmysql gsnginx gsserver &&
-    docker rm -f gsmysql gsnginx gsserver &&
+  docker stop gsmysql gsnginx gsserver gsphp gsredis &&
+    docker rm -f gsmysql gsnginx gsserver gsphp gsredis &&
     mv /tlgame /tlgame-$(date +%Y%m%d%H%I%S) &&
-    \cp -rf ${ROOT_PATH}/${GSDIR}/.env /root/env-$(date +%Y%m%d%H%I%S) &&
+    \cp -rf ${ROOT_PATH}/${GSDIR}/.env /root/gsenv-$(date +%Y%m%d%H%I%S) &&
     chattr -i ${GS_WHOLE_PATH} &&
     rm -rf /usr/local/bin/.env &&
     rm -rf ${ROOT_PATH}/${GSDIR} &&
     rm -rf ${GS_PROJECT} &&
-    docker rmi -f ${HUB_ALIYUN}yulinzhihou/gs_mysql51 ${HUB_ALIYUN}yulinzhihou/gs_server ${HUB_ALIYUN}yulinzhihou/gs_nginx
+    docker rmi -f ${HUB_ALIYUN}yulinzhihou/gs_mysql51 ${HUB_ALIYUN}yulinzhihou/gs_server ${HUB_ALIYUN}yulinzhihou/gs_nginx ${HUB_ALIYUN}yulinzhihou/gs_php ${HUB_ALIYUN}yulinzhihou/gs_redis
 
   if [ $? -eq 0 ]; then
     echo -e "${CSUCCESS} 数据清除成功，请重新安装环境 ！！！ 可以重新输入 【 curl -sSL https://gitee.com/yulinzhihou/gstlenv/raw/master/gsenv.sh | bash 】进行重新安装 ！！！${CEND}"
