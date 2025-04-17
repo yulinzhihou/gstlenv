@@ -103,7 +103,7 @@ server {
     #
     location ~ \.php$ {
         fastcgi_pass   gsphp:9000;
-        include        fastcgi-php.conf;
+        include        fastcgi.conf;
         set \$real_script_name \$fastcgi_script_name;
         if (\$fastcgi_script_name ~ "^(.+?\.php)(/.+)$") {
             set \$real_script_name \$1;
