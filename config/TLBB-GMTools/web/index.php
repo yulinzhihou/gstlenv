@@ -6,7 +6,7 @@ header("Pragma: no-cache");
 
 require_once './Angular.php';
 require_once './Db.php';
-require_once './Redis.php';
+require_once './RedisSingle.php';
 require_once 'GMTools.php';
 require_once './TextFileData.php';
 
@@ -20,7 +20,7 @@ require_once './TextFileData.php';
 
 // 初始化 GmTools
 $GmTools = new GmTools;
-$redis = new Redis;
+$redis = new RedisSingle;
 
 // 正常抓取流程
 if (isset($_GET['privateKey']) && !empty($_GET['privateKey'])) {
