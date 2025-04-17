@@ -40,9 +40,9 @@ class TextFileData
      * [TEXT_FILE_PATH 文本数据常量]
      */
     const TEXT_FILE_PATH = [
-        'gemInfo'    => '/tlgame/tlbb/Public/Config/GemInfo.txt',
-        'commonItem' => '/tlgame/tlbb/Public/Config/CommonItem.txt',
-        'equipBase'  => '/tlgame/tlbb/Public/Config/EquipBase.txt',
+        'gemInfo'    => '/home/tlbb/Public/Config/GemInfo.txt',
+        'commonItem' => '/home/tlbb/Public/Config/CommonItem.txt',
+        'equipBase'  => '/home/tlbb/Public/Config/EquipBase.txt',
     ];
 
     /**

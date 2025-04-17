@@ -2,7 +2,6 @@
 /**
  * EasyAPI PHP Framework
  * Db操作类 (MYSQL PDO)
- * @author  Wigiesen <[<wigiesen.cn@gmail.com>]>
  */
 
 class Db
