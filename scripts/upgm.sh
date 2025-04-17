@@ -21,6 +21,8 @@ if [ $? -eq 0 ]; then
 
   # 获取用户目录
   function getUserInput() {
+    # 复制PHP配置
+    docker cp
     # 配置是游戏注册还是登录器注册
     while :; do
       echo
@@ -37,7 +39,7 @@ if [ $? -eq 0 ]; then
             read -e -p "请输入【IP地址或者解析过来的域名】(默认: [0.0.0.0]): " DOMAIN_IP
             DOMAIN_IP=${DOMAIN_IP:-"0.0.0.0"}
             if [ ${DOMAIN_IP} ]; then
-              sed -i "s/server_name  .*/server_name  ${DOMAIN_IP}/g" /tlgame/conf.d/ow.conf
+              sed -i "s/server_name  .*/server_name  ${DOMAIN_IP}/g" /tlgame/conf.d/gm.conf
               break
             else
               echo "${CWARNING}输入错误!${CEND}"
@@ -47,7 +49,7 @@ if [ $? -eq 0 ]; then
         break
       fi
     done
-    docker restart gsnginx
+    docker restart gsnginx gsphp gsredis
   }
 
   # 创建目录，生成配置文件
@@ -64,9 +66,9 @@ EOF
     if [ ! -d /tlgame/conf.d ]; then
       cat >/tlgame/conf.d/gm.conf <<EOF
 server {
-    listen       80  default;
+    listen       81  default;
     server_name  0.0.0.0;
-    root   /www/gm/public;
+    root   /www/gm;
     index  index.php index.html index.htm;
     #charset koi8-r;
     
@@ -94,7 +96,14 @@ server {
     location ~ \.php$ {
         fastcgi_pass   gsphp:9000;
         include        fastcgi-php.conf;
-        include        fastcgi_params;
+        set $real_script_name $fastcgi_script_name;
+        if ($fastcgi_script_name ~ "^(.+?\.php)(/.+)$") {
+            set $real_script_name $1;
+            set $path_info $2;
+        }
+        fastcgi_param SCRIPT_FILENAME $document_root$real_script_name;
+        fastcgi_param SCRIPT_NAME $real_script_name;
+        fastcgi_param PATH_INFO $path_info;
     }
 
     # deny access to .htaccess files, if Apache's document root
