@@ -40,7 +40,7 @@ while :; do
     rm -rf /usr/local/bin/.env &&
     rm -rf ${ROOT_PATH}/${GSDIR} &&
     rm -rf ${GS_PROJECT} &&
-    docker rmi -f ${HUB_ALIYUN}gs_mysql51 ${HUB_ALIYUN}gs_server ${HUB_ALIYUN}gs_nginx
+    docker rmi -f ${HUB_ALIYUN}yulinzhihou/gs_mysql51 ${HUB_ALIYUN}yulinzhihou/gs_server ${HUB_ALIYUN}yulinzhihou/gs_nginx
 
   if [ $? -eq 0 ]; then
     echo -e "${CSUCCESS} 数据清除成功，请重新安装环境 ！！！ 可以重新输入 【 curl -sSL https://gitee.com/yulinzhihou/gstlenv/raw/master/gsenv.sh | bash 】进行重新安装 ！！！${CEND}"
