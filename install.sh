@@ -150,15 +150,16 @@ do_install_docker() {
     # ppc64le：IBM Power 架构的 64 位处理器，使用小端字节序。
     # riscv64：RISC-V 架构的 64 位处理器，是一种开放指令集架构。
     if [ ! $(command_exists docker-compose) ] && [ ! -f /usr/local/bin/docker-compose ]; then
+        NAME=$(uname -s)
+        # 转换成小写 linux，因为不是通过网络下载，不会自动转换成小写，所以这里会报错
+        NAME=${NAME,,}
         if [ -f /root/gs_docker_compose.tar.gz ]; then
-            local NAME=$(uname -s)
-            # 转换成小写 linux，因为不是通过网络下载，不会自动转换成小写，所以这里会报错
-            NAME=${NAME,,}
+
             cd /root && tar zxf gs_docker_compose.tar.gz && cd gs_docker_compose && mv docker-compose-$NAME-$(uname -m) /usr/local/bin/docker-compose
         else
             # 直接将 v2.20.0 版本的 docker-compose 下载到码云进行加速
             # curl -L "https://github.com/docker/compose/releases/download/v2.20.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-            curl -L https://gitee.com/yulinzhihou/docker-compose/releases/download/v2.35.0/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+            curl -L https://gitee.com/yulinzhihou/docker-compose/releases/download/v2.35.0/docker-compose-${NAME}-$(uname -m) -o /usr/local/bin/docker-compose
         fi
 
         if [ -f /usr/local/bin/docker-compose ]; then
