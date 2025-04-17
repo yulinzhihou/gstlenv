@@ -217,6 +217,32 @@ setconfig_rebuild() {
             fi
         done
 
+        # 修改 WEB_GM_PORT
+        while :; do
+            echo
+            read -e -p "当前【网站端口】为：${CYELLOW}[${WEB_GM_PORT}]${CEND}，是否需要修改【GM网站端口】 [y/n](默认: n): " IS_MODIFY
+            IS_MODIFY=${IS_MODIFY:-'n'}
+            if [[ ! ${IS_MODIFY} =~ ^[y,n]$ ]]; then
+                echo "${CWARNING}输入错误! 请输入 'y' 或者 'n',当前【网站端口】为：[${WEB_GM_PORT}]${CEND}"
+            else
+                if [ "${IS_MODIFY}" == 'y' ]; then
+                    while :; do
+                        echo
+                        read -e -p "请输入【网站端口】：(默认: ${WEB_GM_DEFAULT_PORT}): " WEB_NEW_PORT
+                        WEB_GM_NEW_PORT=${WEB_GM_NEW_PORT:-${WEB_GM_PORT}}
+                        if [ ${WEB_GM_NEW_PORT} -eq ${WEB_GM_DEFAULT_PORT} -o ${WEB_GM_NEW_PORT} -gt 1 -a ${WEB_GM_NEW_PORT} -lt 65535 ] >/dev/null 2>&1 >/dev/null 2>&1 >/dev/null 2>&1; then
+                            sed -i "s/WEB_GM_PORT=.*/WEB_GM_PORT=${WEB_GM_NEW_PORT}/g" ${GS_WHOLE_PATH}
+                            break
+                        else
+                            echo -e "${CRED}输入错误! 端口范围: 1~65534${CEND}"
+                            exit 1
+                        fi
+                    done
+                fi
+                break
+            fi
+        done
+
         # 修改数据库密码
         while :; do
             echo

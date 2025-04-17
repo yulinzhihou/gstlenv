@@ -42,6 +42,7 @@ ${CYELLOW}
 ◎  登录网关端口:  $([ ${LOGIN_PORT} == ${LOGIN_DEFAULT_PORT} ] && echo ${LOGIN_DEFAULT_PORT} || echo ${LOGIN_PORT})
 ◎  游戏网关端口:  $([ ${SERVER_PORT} == ${SERVER_DEFAULT_PORT} ] && echo ${SERVER_DEFAULT_PORT} || echo ${SERVER_PORT})
 ◎  网站对外端口:  $([ ${WEB_PORT} == ${WEB_DEFAULT_PORT} ] && echo ${WEB_DEFAULT_PORT} || echo ${WEB_PORT})
+◎  GM工具对外端口:  $([ ${WEB_GM_PORT} == ${WEB_GM_DEFAULT_PORT} ] && echo ${WEB_GM_DEFAULT_PORT} || echo ${WEB_GM_PORT})
 ◎  是否单服务器:  $([ ${IS_DLQ} == '0' ] && echo "是" || echo "否")
 ◎  转发机器地址:  $([ ${BILLING_DEFAULT_SERVER_IPADDR} == ${BILLING_SERVER_IPADDR} ] && echo ${BILLING_DEFAULT_SERVER_IPADDR} || echo ${BILLING_SERVER_IPADDR})
 ◎  备份目录路径:  $(echo ${BACKUP_DIR})
