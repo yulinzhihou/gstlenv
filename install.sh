@@ -93,7 +93,8 @@ do_install_docker() {
 
     # echo "$INSTALL_COMMAND"
     # 先使用本地安装脚本
-    if [ ! $(command_exists docker) ]; then
+    docker info >/dev/null 2>&1
+    if [ $? -eq 0 ]; then
         # 表示没有安装过docker,先检测离线安装包
         if [ -f /root/gs_docker_ce.tar.gz ]; then
             # 解压离线包
@@ -113,7 +114,7 @@ do_install_docker() {
                 bash gsdocker.sh -s docker --mirror Aliyun
             else
                 # 制作的国内镜像安装脚本
-                curl -sSL https://gsgameshare.com/gsdocker | bash -s docker --mirror Aliyun
+                curl -sSL https://gitee.com/yulinzhihou/gstlenv/raw/master/gsdocker.sh | bash -s docker --mirror Aliyun
             fi
         fi
 
