@@ -19,15 +19,28 @@ if [ $? -eq 0 ]; then
     . /usr/local/bin/color
   fi
 
+  # 部署 GM 网站
+  function deployGMCode() {
+    # 直接解压
+    tar zxf TLBB_GMTools.tar.gz -C /tlgame/www/gm
+    echo -e "剩下的操作需要手动去修改配置。。。。。。后续更新自动配置"
+    # 替换密码，秘钥，数据库账号密码。
+    # ScriptGlobal.lua 配置
+    # echo "GMDATA_ISOPEN_GMTOOLS = 1" >> /tlgame/tlbb/Server/Public/Data/Script/ScriptGlobal.lua
+    # 洛阳，苏州，大理，楼兰增加心跳NPC
+
+    # PHP 验证KEY
+
+    # 替换数据加密码端口。
+
+  }
+
   # 获取用户目录
   function getUserInput() {
     # 复制PHP配置
     docker cp
     # 配置是游戏注册还是登录器注册
     while :; do
-      echo
-      echo -e "${CRED}正在开发中……，请关注论坛与群的动态${CEND}"
-      exit 1
       read -e -p "当前【域名】为${CYELLOW}["0.0.0.0"]${CEND}，是否需要修改【0.0.0.0=使用服务器外网IP+端口访问】 [y/n](默认: n): " IS_MODIFY
       IS_MODIFY=${IS_MODIFY:-'n'}
       if [[ ! ${IS_MODIFY} =~ ^[y,n]$ ]]; then
@@ -165,6 +178,7 @@ EOF
 
   owConf
   getUserInput
+  deployGMCode
 else
   echo -e "${GSISSUE}\r\n"
   echo -e "${CRED}环境毁坏，需要重新安装或者移除现有的环境重新安装！！！${CEND}"
