@@ -8,9 +8,9 @@ class RedisSingle
 {
     private $redis;
     private $config = [
-        'host'       => '127.0.0.1',
+        'host'       => 'gsredis',
         'port'       => 6379,
-        'password'   => 'GS_REDIS_PASS',
+        'password'   => '',
         'database'   => 0,
         'timeout'    => 0,
         'persistent' => false
