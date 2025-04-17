@@ -110,10 +110,10 @@ do_install_docker() {
         else
             # 在线安装 docker
             if [ -f ./gsdocker.sh ]; then
-                bash gsdocker.sh -s docker --mirror Aliyun --version 27.0
+                bash gsdocker.sh -s docker --mirror Aliyun
             else
                 # 制作的国内镜像安装脚本
-                curl -sSL https://gsgameshare.com/gsdocker | bash -s docker --mirror Aliyun --version 27.0
+                curl -sSL https://gsgameshare.com/gsdocker | bash -s docker --mirror Aliyun
             fi
         fi
 
