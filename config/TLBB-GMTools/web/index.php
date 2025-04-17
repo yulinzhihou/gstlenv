@@ -4,11 +4,11 @@ header("Content-type: text/html; charset=utf8");
 header("Cache-Control: no-cache");
 header("Pragma: no-cache");
 
-require_once './Angular.php';
-require_once './Db.php';
-require_once './RedisSingle.php';
+require_once 'Angular.php';
+require_once 'Db.php';
+require_once 'RedisSingle.php';
 require_once 'GMTools.php';
-require_once './TextFileData.php';
+require_once 'TextFileData.php';
 
 /**
  *====================================================
