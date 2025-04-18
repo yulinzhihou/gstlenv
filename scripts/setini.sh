@@ -42,13 +42,13 @@ if [ $? -eq 0 ]; then
 
     # 解压配置文件，根据服务端程序，进行生成 启动脚本 run.sh
     if [ -f "${GS_PROJECT_PATH}/tlbb/run.sh" ]; then
-        sed -i '/^exit$/s||tail -f /dev/null|' ${BASE_PATH}/run.sh
+        sed -i '/^exit$/s||tail -f /dev/null|' ${GS_PROJECT_PATH}/tlbb/run.sh
     fi
 
     # 游戏内注册=0，登录器注册=1
     if [ ${IS_DLQ} == 1 ]; then
         sed -i "s/127.0.0.2/${BILLING_SERVER_IPADDR}/g" ${BASE_PATH}/ServerInfo.ini
-        sed -i "s/GS_BILLING/sleep 0/g" ${BASE_PATH}/run.sh
+        sed -i "s/GS_BILLING/sleep 0/g" ${GS_PROJECT_PATH}/tlbb/run.sh
     else
         sed -i "s/127.0.0.2/127.0.0.1/g" ${BASE_PATH}/ServerInfo.ini
     fi
@@ -95,11 +95,11 @@ if [ $? -eq 0 ]; then
 
         #每次更新后，先重置更改过的文件
         if [ ${IS_DLQ} -eq 0 ]; then
-            sed -i "s/GS_BILLING/\/home\/billing\/billing up -d/g" ${BASE_PATH}/run.sh
+            sed -i "s/GS_BILLING/\/home\/billing\/billing up -d/g" ${GS_PROJECT_PATH}/tlbb/run.sh
         fi
         \cp -rf ${BASE_PATH}/run.sh ${GS_PROJECT_PATH}/tlbb &&
             cd ${BASE_PATH}/ &&
-            rm -rf ${BASE_PATH}/*.ini ${BASE_PATH}/config.yaml ${BASE_PATH}/billing ${BASE_PATH}/run.sh
+            rm -rf ${BASE_PATH}/*.ini ${BASE_PATH}/config.yaml ${BASE_PATH}/billing ${GS_PROJECT_PATH}/tlbb/run.sh
         # chown -R root:root ${GS_PROJECT_PATH} &&
         chmod -R 777 ${GS_PROJECT_PATH}/billing ${GS_PROJECT_PATH}/tlbb
         if [ $? -eq 0 ]; then
