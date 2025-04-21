@@ -42,7 +42,8 @@ if [ $? -eq 0 ]; then
 
     # 解压配置文件，根据服务端程序，进行生成 启动脚本 run.sh
     if [ -f "${GS_PROJECT_PATH}/tlbb/run.sh" ]; then
-        sed -i '/^exit$/s||tail -f /dev/null|' ${GS_PROJECT_PATH}/tlbb/run.sh
+        sed -i '/^exit$/s||sleep 1|' ${GS_PROJECT_PATH}/tlbb/run.sh
+        echo "tail -f /dev/null" >>${GS_PROJECT_PATH}/tlbb/run.sh
     fi
 
     # 游戏内注册=0，登录器注册=1
