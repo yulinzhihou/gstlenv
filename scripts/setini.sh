@@ -97,9 +97,8 @@ if [ $? -eq 0 ]; then
         if [ ${IS_DLQ} -eq 0 ]; then
             sed -i "s/GS_BILLING/\/home\/billing\/billing up -d/g" ${GS_PROJECT_PATH}/tlbb/run.sh
         fi
-        \cp -rf ${BASE_PATH}/run.sh ${GS_PROJECT_PATH}/tlbb &&
-            cd ${BASE_PATH}/ &&
-            rm -rf ${BASE_PATH}/*.ini ${BASE_PATH}/config.yaml ${BASE_PATH}/billing ${GS_PROJECT_PATH}/tlbb/run.sh
+        cd ${BASE_PATH}/ &&
+            rm -rf ${BASE_PATH}/*.ini ${BASE_PATH}/config.yaml ${BASE_PATH}/billing
         # chown -R root:root ${GS_PROJECT_PATH} &&
         chmod -R 777 ${GS_PROJECT_PATH}/billing ${GS_PROJECT_PATH}/tlbb
         if [ $? -eq 0 ]; then
