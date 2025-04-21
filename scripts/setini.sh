@@ -40,6 +40,10 @@ if [ $? -eq 0 ]; then
     fi
     \cp -rf ${BASE_PATH}/billing ${GS_PROJECT_PATH}/billing/
 
+    #每次更新后，先重置更改过的文件
+    if [ ${IS_DLQ} -eq 0 ]; then
+        echo "/home/billing/billing up -d" >>${GS_PROJECT_PATH}/tlbb/run.sh
+    fi
     # 解压配置文件，根据服务端程序，进行生成 启动脚本 run.sh
     if [ -f "${GS_PROJECT_PATH}/tlbb/run.sh" ]; then
         sed -i '/^exit$/s||sleep 1|' ${GS_PROJECT_PATH}/tlbb/run.sh
@@ -94,10 +98,6 @@ if [ $? -eq 0 ]; then
             fi
         done
 
-        #每次更新后，先重置更改过的文件
-        if [ ${IS_DLQ} -eq 0 ]; then
-            sed -i "s/GS_BILLING/\/home\/billing\/billing up -d/g" ${GS_PROJECT_PATH}/tlbb/run.sh
-        fi
         cd ${BASE_PATH}/ &&
             rm -rf ${BASE_PATH}/*.ini ${BASE_PATH}/config.yaml ${BASE_PATH}/billing
         # chown -R root:root ${GS_PROJECT_PATH} &&
