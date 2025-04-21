@@ -26,7 +26,7 @@ WHOLE_NAME=${FILENAME}${SUFFIX}
 #解压后重全名文件夹名称
 ENVDIR='.tlgame'
 #环境版本号
-VERSION='v2.6.0'
+VERSION='v2.7.0'
 # 展示信息
 if [ -f info.txt ]; then
     INFO=$(cat info.txt)
