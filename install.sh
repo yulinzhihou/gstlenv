@@ -33,7 +33,7 @@ command_exists() {
 # 系统组件安装
 sys_plugins_install() {
     echo -e "${CYELLOW}开始安装系统常用组件 ！！！${CEND}"
-    local packages="gcc wget curl git jq vim unzip zip"
+    local packages="gcc wget curl git jq vim unzip zip unix2dos"
     # 安装 wget gcc curl git python
     ${PM} -y install python $packages
     [ "${OS_VERSION}" == "8" ] && {
@@ -280,15 +280,69 @@ if [ $# -eq 1 ]; then
         mkdir /root/.tlgame && \cp -rf * /root/.tlgame
     fi
 
+    # 判断是否需要选择环境版本。
+    cat <<EOF
+${CYELLOW}
+※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※
+◎           
+◎  GS游戏享网服务器环境 gstlenv
+◎           
+◎  编号1：Centos 6 + Mysql5.1 (默认环境，输入1或者不输入，回车)
+◎  编号2：Centos 7 + Mysql5.1 (输入2，按回车)
+◎  编号3：Centos 7 + Mysql5.7 (输入3，按回车)
+◎  编号4：Centos 8 + Mysql5.7 (输入4，按回车)
+◎  编号5：Centos 8 + Mysql8.0 (输入5，按回车)
+◎           
+※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※
+${CEND}
+EOF
+
+    echo -e "${GSISSUE}\r\n"
+    read -e -p "请输入你需要安装的环境编号【默认不输入则为1，直接回车即可】(默认: ${DEFAULT_ENV_INDEX}): " DEFAULT_ENV_INDEX
+
     # 解压防线安装包
     if [ -f /root/gstlenv_offline.tar.gz ]; then
         [ ! -d ${SHARED_DIR} ] && mkdir -p ${SHARED_DIR}
         [ ! -d ${GS_PROJECT} ] && mkdir -p ${GS_PROJECT}
 
-        \cp -rf ./* ${GS_PROJECT} &&
-            \cp -rf docker-compose.yml /root/.gs/docker-compose.yml &&
-            . ${GS_WHOLE_PATH} &&
-            chmod -R 777 ${GS_PROJECT}
+        case "$DEFAULT_ENV_INDEX" in
+        '01' | '1')
+            \cp -rf ./* ${GS_PROJECT} &&
+                \cp -rf docker-compose.yml /root/.gs/docker-compose.yml &&
+                . ${GS_WHOLE_PATH} &&
+                chmod -R 777 ${GS_PROJECT}
+            ;;
+        '02' | '2')
+            \cp -rf ./* ${GS_PROJECT} &&
+                \cp -rf docker-compose751.yml /root/.gs/docker-compose.yml &&
+                . ${GS_WHOLE_PATH} &&
+                chmod -R 777 ${GS_PROJECT}
+            ;;
+        '03' | '3')
+            \cp -rf ./* ${GS_PROJECT} &&
+                \cp -rf docker-compose757.yml /root/.gs/docker-compose.yml &&
+                . ${GS_WHOLE_PATH} &&
+                chmod -R 777 ${GS_PROJECT}
+            ;;
+        '04' | '4')
+            \cp -rf ./* ${GS_PROJECT} &&
+                \cp -rf docker-compose857.yml /root/.gs/docker-compose.yml &&
+                . ${GS_WHOLE_PATH} &&
+                chmod -R 777 ${GS_PROJECT}
+            ;;
+        '05' | '5')
+            \cp -rf ./* ${GS_PROJECT} &&
+                \cp -rf docker-compose880.yml /root/.gs/docker-compose.yml &&
+                . ${GS_WHOLE_PATH} &&
+                chmod -R 777 ${GS_PROJECT}
+            ;;
+        *)
+            \cp -rf ./* ${GS_PROJECT} &&
+                \cp -rf docker-compose.yml /root/.gs/docker-compose.yml &&
+                . ${GS_WHOLE_PATH} &&
+                chmod -R 777 ${GS_PROJECT}
+            ;;
+        esac
     fi
 else
     # 调用系统组件
