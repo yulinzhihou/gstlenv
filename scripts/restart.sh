@@ -50,7 +50,6 @@ if [ $? -eq 0 ]; then
 
     # cd ${ROOT_PATH}/${GSDIR} && docker-compose restart && docker exec -it gsmysql /bin/bash /usr/local/bin/init_db.sh
     # 暂时不重启数据库，只重启nginx gsserver 如果需要重启数据库，则加参数1
-    cd ${ROOT_PATH}/${GSDIR} && docker-compose restart gsnginx && docker-compose restart gsserver
     if [ $? -eq 0 ]; then
       # 删除因为改版本导致引擎启动失败的dump文件
       cd ${ROOT_PATH}/${GSDIR} && rm -rf core.*
