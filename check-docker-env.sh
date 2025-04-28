@@ -251,7 +251,6 @@ deprecation_notice() {
 	echo
 	printf "Press \033[1mCtrl+C\033[0m now to abort this script, or wait for the installation to continue."
 	echo
-	sleep 10
 }
 
 get_distribution() {
@@ -377,7 +376,6 @@ do_install() {
 		EOF
 		(
 			set -x
-			sleep 20
 		)
 	fi
 
@@ -417,7 +415,6 @@ do_install() {
 		EOF
 		(
 			set -x
-			sleep 20
 		)
 	fi
 
@@ -671,7 +668,6 @@ do_install() {
 				EOF
 				(
 					set -x
-					sleep 30
 				)
 			fi
 			opensuse_repo="https://download.opensuse.org/repositories/security:SELinux/$sles_version/security:SELinux.repo"
