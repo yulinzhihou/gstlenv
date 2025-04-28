@@ -174,6 +174,7 @@ do_install_docker() {
     if [ $? -eq 0 ]; then
         echo -e "${CYELLOW}GS游享环境核心软件 docker-compose 安装成功 ！！！ ${CEND}"
     else
+        rm -rf /usr/local/bin/docker-compose
         echo -e "${CRED}GS游享环境核心软件 docker-compose 安装失败 ！！！ ${CEND}"
         exit 1
     fi
@@ -227,11 +228,13 @@ init_mysql51() {
 # GS环境安装开始
 ##################################################################
 startTime=$(date +%s)
+echo "第1步"$(date +%s)
 # 检测是不是root用户。不是则退出
 [ $(id -u) != "0" ] && {
     echo "${CFAILURE}错误: 你必须使用ROOT用户${CEND}"
     exit 1
 }
+echo "第2步"$(date +%s)
 #获取当前脚本路径
 GSTL_DIR=$(dirname "$(readlink -f $0)")
 pushd ${GSTL_DIR} >/dev/null
@@ -241,12 +244,12 @@ IS_OFFLINE=0
 . ./scripts/color.sh
 # 检测服务器，并获取系统的发行版本及版本号
 . ./include/get_os.sh
-
+echo "第3步"$(date +%s)
 # 分配资源及配置参数
 if [ ! -d /root/.gs ]; then
     mkdir -p /root/.gs
 fi
-
+echo "第4步"$(date +%s)
 if [ ! -f /root/.gs/.env ]; then
     \cp -rf env.sample /root/.gs/.env
     \cp -rf env.sample /root/.tlgame/.env
@@ -254,14 +257,14 @@ if [ ! -f /root/.gs/.env ]; then
 fi
 # 加载配置
 . /root/.gs/.env
-
+echo "第5步"$(date +%s)
 # 第一步，检测当前系统是否可以安装 docker 及 docker-compose
 bash check-docker-env.sh --dry-run >/dev/null 2>&1
 if [ $? != 0 ]; then
     echo -e "${CRED}当前服务器系统暂不支持本环境，请联系客服QQ:1303588722 反馈并获取适合安装的环境 ${CEND}"
     exit 1
 fi
-
+echo "第6步"$(date +%s)
 # 第二步：判断并兼容离线环境
 if [ $# -eq 1 ]; then
 
@@ -280,6 +283,8 @@ if [ $# -eq 1 ]; then
         mkdir /root/.tlgame && \cp -rf * /root/.tlgame
     fi
 
+else
+echo "第7步"$(date +%s)
     # 判断是否需要选择环境版本。
     cat <<EOF
 ${CYELLOW}
@@ -296,8 +301,7 @@ ${CYELLOW}
 ※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※
 ${CEND}
 EOF
-
-    echo -e "${GSISSUE}\r\n"
+echo "第8步"$(date +%s)
     read -e -p "请输入你需要安装的环境编号【默认不输入则为1，直接回车即可】(默认: ${DEFAULT_ENV_INDEX}): " DEFAULT_ENV_INDEX
 
     # 解压防线安装包
@@ -344,7 +348,7 @@ EOF
             ;;
         esac
     fi
-else
+    echo "第9步"$(date +%s)
     # 调用系统组件
     sys_plugins_install
     clear
