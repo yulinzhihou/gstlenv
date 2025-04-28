@@ -249,6 +249,14 @@ IS_OFFLINE=0
 if [ ! -d /root/.gs ]; then
     mkdir -p /root/.gs
 fi
+# 脚本核心目录
+if [ ! -d ${GS_PROJECT} ]; then
+    mkdir -p ${GS_PROJECT}
+fi
+# 公共配置目录
+if [ ! -d ${SHARED_DIR} ]; then
+    mkdir -p ${SHARED_DIR}
+fi
 
 if [ ! -f /root/.gs/.env ]; then
     \cp -rf env.sample /root/.gs/.env
@@ -277,10 +285,10 @@ if [ $# -eq 1 ]; then
     fi
 
     # 生成环境目录
-    if [ -d /root/.tlgame ]; then
-        \cp -rf * /root/.tlgame
+    if [ -d ${GS_PROJECT} ]; then
+        \cp -rf * mkdir -p ${GS_PROJECT}
     else
-        mkdir /root/.tlgame && \cp -rf * /root/.tlgame
+        mkdir -p ${GS_PROJECT} && \cp -rf * ${GS_PROJECT}
     fi
 
 else
@@ -309,8 +317,6 @@ EOF
         [ ! -d ${SHARED_DIR} ] && mkdir -p ${SHARED_DIR}
         [ ! -d ${GS_PROJECT} ] && mkdir -p ${GS_PROJECT}
     fi
-    # 部署脚本
-    \cp -rf ./* ${GS_PROJECT} >/dev/null 2>&1
 
     case "${DEFAULT_ENV_INDEX}" in
     '01' | '1')
