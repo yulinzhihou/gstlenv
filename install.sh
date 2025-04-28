@@ -308,46 +308,45 @@ EOF
     if [ -f /root/gstlenv_offline.tar.gz ]; then
         [ ! -d ${SHARED_DIR} ] && mkdir -p ${SHARED_DIR}
         [ ! -d ${GS_PROJECT} ] && mkdir -p ${GS_PROJECT}
-
-        case "$DEFAULT_ENV_INDEX" in
-        '01' | '1')
-            \cp -rf ./* ${GS_PROJECT} &&
-                \cp -rf docker-compose.yml /root/.gs/docker-compose.yml &&
-                . ${GS_WHOLE_PATH} &&
-                chmod -R 777 ${GS_PROJECT}
-            ;;
-        '02' | '2')
-            \cp -rf ./* ${GS_PROJECT} &&
-                \cp -rf docker-compose751.yml /root/.gs/docker-compose.yml &&
-                . ${GS_WHOLE_PATH} &&
-                chmod -R 777 ${GS_PROJECT}
-            ;;
-        '03' | '3')
-            \cp -rf ./* ${GS_PROJECT} &&
-                \cp -rf docker-compose757.yml /root/.gs/docker-compose.yml &&
-                . ${GS_WHOLE_PATH} &&
-                chmod -R 777 ${GS_PROJECT}
-            ;;
-        '04' | '4')
-            \cp -rf ./* ${GS_PROJECT} &&
-                \cp -rf docker-compose857.yml /root/.gs/docker-compose.yml &&
-                . ${GS_WHOLE_PATH} &&
-                chmod -R 777 ${GS_PROJECT}
-            ;;
-        '05' | '5')
-            \cp -rf ./* ${GS_PROJECT} &&
-                \cp -rf docker-compose880.yml /root/.gs/docker-compose.yml &&
-                . ${GS_WHOLE_PATH} &&
-                chmod -R 777 ${GS_PROJECT}
-            ;;
-        *)
-            \cp -rf ./* ${GS_PROJECT} &&
-                \cp -rf docker-compose.yml /root/.gs/docker-compose.yml &&
-                . ${GS_WHOLE_PATH} &&
-                chmod -R 777 ${GS_PROJECT}
-            ;;
-        esac
     fi
+    case "${DEFAULT_ENV_INDEX}" in
+    '01' | '1')
+        \cp -rf ./* ${GS_PROJECT} >/dev/null 2>&1 &&
+            \cp -rf docker-compose.yml /root/.gs/docker-compose.yml &&
+            . ${GS_WHOLE_PATH} &&
+            chmod -R 777 ${GS_PROJECT}
+        ;;
+    '02' | '2')
+        \cp -rf ./* ${GS_PROJECT} >/dev/null 2>&1 &&
+            \cp -rf docker-compose751.yml /root/.gs/docker-compose.yml &&
+            . ${GS_WHOLE_PATH} &&
+            chmod -R 777 ${GS_PROJECT}
+        ;;
+    '03' | '3')
+        \cp -rf ./* ${GS_PROJECT} >/dev/null 2>&1 &&
+            \cp -rf docker-compose757.yml /root/.gs/docker-compose.yml &&
+            . ${GS_WHOLE_PATH} &&
+            chmod -R 777 ${GS_PROJECT}
+        ;;
+    '04' | '4')
+        \cp -rf ./* ${GS_PROJECT} >/dev/null 2>&1 &&
+            \cp -rf docker-compose857.yml /root/.gs/docker-compose.yml &&
+            . ${GS_WHOLE_PATH} &&
+            chmod -R 777 ${GS_PROJECT}
+        ;;
+    '05' | '5')
+        \cp -rf ./* ${GS_PROJECT} >/dev/null 2>&1 &&
+            \cp -rf docker-compose880.yml /root/.gs/docker-compose.yml &&
+            . ${GS_WHOLE_PATH} &&
+            chmod -R 777 ${GS_PROJECT}
+        ;;
+    *)
+        \cp -rf ./* ${GS_PROJECT} >/dev/null 2>&1 &&
+            \cp -rf docker-compose.yml /root/.gs/docker-compose.yml &&
+            . ${GS_WHOLE_PATH} &&
+            chmod -R 777 ${GS_PROJECT}
+        ;;
+    esac
     # 调用系统组件
     sys_plugins_install
     clear
