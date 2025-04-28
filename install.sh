@@ -348,7 +348,6 @@ EOF
             ;;
         esac
     fi
-    echo "第9步"$(date +%s)
     # 调用系统组件
     sys_plugins_install
     clear
