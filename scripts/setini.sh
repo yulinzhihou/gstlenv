@@ -186,9 +186,42 @@ SOCKET		=
 
 EOF
 
-    # 输出结果验证
-    echo "$ODBCConfig" >>${BASE_PATH}/odbc.ini
+    # 使用双引号包裹EOF以启用变量替换
+    ODBCConfig64= <<"EOF"
+[tlbbdb]
+Driver		= /usr/lib64/libmyodbc5w.so
+Description	= MyODBC Driver DSN
+SERVER		= ${SERVER_VAR}
+PORT		= ${PORT_VAR}
+USER		= ${USER_VAR}
+Password	= ${PASSWORD_VAR}
+Database	= ${DATABASE_VAR}
+OPTION		= 3
+SOCKET		=
+ 
+[Default]
+Driver		= /usr/lib64/libmyodbc5w.so
+Description	= MyODBC Driver DSN
+SERVER	   	= ${SERVER_VAR}
+PORT		= ${PORT_VAR}
+USER		= ${USER_VAR}
+Password	= ${PASSWORD_VAR}
+Database	= ${DATABASE_VAR}
+OPTION		= 3
+SOCKET		=
 
+EOF
+
+    # 判断使用的是 centos 8
+    docker images | grep gs_mysql80
+
+    if [ $? -eq 0 ]; then
+        # 输出结果验证
+        echo "$ODBCConfig64" >>${BASE_PATH}/odbc.ini
+    else
+        # 输出结果验证
+        echo "$ODBCConfig" >>${BASE_PATH}/odbc.ini
+    fi
     # 定义变量（根据你的需求修改值）
     BILLING_DB_HOST="gsmysql"
     BILLING_DB_PORT="3306"
