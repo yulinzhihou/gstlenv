@@ -92,7 +92,7 @@ BEGIN {
 }
 ' "${GS_PROJECT_PATH}/tlbb/Server/Config/ServerInfo.ini" >${BASE_PATH}/tmp1 &&
         # 1. 强制转换换行符为 CRLF（双重保障）
-        unix2dos ${BASE_PATH}/tmp1 &&
+        unix2dos ${BASE_PATH}/tmp1  >/dev/null 2>&1 & &&
         # 2. 清理孤立 \r 字符（避免 \015 问题）
         # sed -i 's/\r$//' tmp1 &&
         # 3. 强制转为 ASCII 编码（清理特殊字符）
@@ -120,7 +120,7 @@ in_system && /^DBPassword=/ { $0="DBPassword=" dbpassword }
 { print }  # 打印所有行（包括未修改的）
 ' "${GS_PROJECT_PATH}/tlbb/Server/Config/LoginInfo.ini" >${BASE_PATH}/tmp2 &&
         # 1. 强制转换换行符为 CRLF（双重保障）
-        unix2dos ${BASE_PATH}/tmp2 &&
+        unix2dos ${BASE_PATH}/tmp2  >/dev/null 2>&1 & &&
         # 2. 清理孤立 \r 字符（避免 \015 问题）
         # sed -i 's/\r$//' tmp2 &&
         # 3. 强制转为 ASCII 编码（清理特殊字符）
@@ -147,7 +147,7 @@ in_system && /^DBPassword=/ { $0="DBPassword=" dbpassword }
 { print }
 ' "${GS_PROJECT_PATH}/tlbb/Server/Config/ShareMemInfo.ini" >${BASE_PATH}/tmp3 &&
         # 1. 强制转换换行符为 CRLF
-        unix2dos ${BASE_PATH}/tmp3 &&
+        unix2dos ${BASE_PATH}/tmp3  >/dev/null 2>&1 & &&
         # 2. 清理孤立 \r 字符
         # sed -i 's/\r$//' tmp3 &&
         # 3. 强制转为 ASCII 编码
@@ -213,7 +213,7 @@ SOCKET		=
 EOF
 
     # 判断使用的是 centos 8
-    docker images | grep gs_mysql80
+    docker images | grep gs_mysql80 >/dev/null 2>&1 &
 
     if [ $? -eq 0 ]; then
         # 输出结果验证
