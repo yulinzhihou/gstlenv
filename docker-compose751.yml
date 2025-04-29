@@ -26,6 +26,7 @@ services:
       - "${TL_MYSQL_PORT}:3306"
     environment:
       MYSQL_USER: ${TL_MYSQL_USER}
+      MYSQL_PASSWORD: ${TL_MYSQL_PASSWORD}
       MYSQL_ROOT_PASSWORD: ${TL_MYSQL_PASSWORD}
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
       MYSQL_DATABASE: "tlbbdb"
