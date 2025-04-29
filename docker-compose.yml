@@ -16,23 +16,6 @@ services:
       - gsnginx:gsnginx
       - gsphp:gsphp
       - gsredis:gsredis
-  # # Database mysql5.7 世面上大多合区工具暂时不支持，降级到5.1
-  # gsmysql:
-  #   image: ${HUB_ALIYUN}yulinzhihou/gs_mysql:latest
-  #   container_name: gsmysql
-  #   volumes:
-  #     - "${SHARED_DIR}/gsmysql/:/var/lib/mysql"
-  #   ports:
-  #     - "${TL_MYSQL_PORT}:3306"
-  #   environment:
-  #     MYSQL_ROOT_PASSWORD: ${TL_MYSQL_PASSWORD}
-  #     MYSQL_DATABASE: "tlbbdb"
-  #     MYSQL_DATABASE_TLBBDB: "tlbbdb"
-  #     MYSQL_DATABASE_WEB: "web"
-  #     MYSQL_DATABASE_GSGM: "gsgm"
-  #     MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
-  #   restart: ${RESTART}
-  # Database mysql5.1
   gsmysql:
     image: ${HUB_ALIYUN}yulinzhihou/gs_mysql51:latest
     container_name: gsmysql
@@ -42,10 +25,13 @@ services:
     ports:
       - "${TL_MYSQL_PORT}:3306"
     environment:
+      MYSQL_USER: ${TL_MYSQL_USER}
       MYSQL_ROOT_PASSWORD: ${TL_MYSQL_PASSWORD}
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
       MYSQL_DATABASE: "tlbbdb"
       MYSQL_DATABASE_WEB: "web"
+      MYSQL_DATABASE_GSGM: "gs_gmtools"
+      TZ: "$TZ"
     restart: ${RESTART}
   # WEBSERVER
   gsnginx:
