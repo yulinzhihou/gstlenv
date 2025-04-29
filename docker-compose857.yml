@@ -29,10 +29,9 @@ services:
       MYSQL_PASSWORD: ${TL_MYSQL_PASSWORD}
       MYSQL_ROOT_PASSWORD: ${TL_MYSQL_PASSWORD}
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
-      MYSQL_DATABASE: "tlbbdb"
+      MYSQL_DATABASE_TLBBDB: "tlbbdb"
       MYSQL_DATABASE_WEB: "web"
       MYSQL_DATABASE_GSGM: "gs_gmtools"
-      TZ: "$TZ"
     restart: ${RESTART}
   # WEBSERVER
   gsnginx:
