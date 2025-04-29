@@ -92,15 +92,15 @@ BEGIN {
 }
 ' "${GS_PROJECT_PATH}/tlbb/Server/Config/ServerInfo.ini" >${BASE_PATH}/tmp1 &&
         # 1. 强制转换换行符为 CRLF（双重保障）
-        unix2dos ${BASE_PATH}/tmp1  >/dev/null 2>&1 & &&
-        # 2. 清理孤立 \r 字符（避免 \015 问题）
-        # sed -i 's/\r$//' tmp1 &&
-        # 3. 强制转为 ASCII 编码（清理特殊字符）
-        # iconv -f ASCII -t ASCII//TRANSLIT//IGNORE -o tmp1 tmp1 &&
+        unix2dos ${BASE_PATH}/tmp1 >/dev/null 2>&1
+    # 2. 清理孤立 \r 字符（避免 \015 问题）
+    # sed -i 's/\r$//' tmp1 &&
+    # 3. 强制转为 ASCII 编码（清理特殊字符）
+    # iconv -f ASCII -t ASCII//TRANSLIT//IGNORE -o tmp1 tmp1 &&
 
-        # 定义新值（根据你的需求修改）
-        # 定义新值（根据你的需求修改）
-        DBIP_NEW="gsmysql"
+    # 定义新值（根据你的需求修改）
+    # 定义新值（根据你的需求修改）
+    DBIP_NEW="gsmysql"
     DBPort_NEW="3306"
     DBName_NEW="tlbbdb"
     DBUser_NEW="root"
@@ -120,14 +120,14 @@ in_system && /^DBPassword=/ { $0="DBPassword=" dbpassword }
 { print }  # 打印所有行（包括未修改的）
 ' "${GS_PROJECT_PATH}/tlbb/Server/Config/LoginInfo.ini" >${BASE_PATH}/tmp2 &&
         # 1. 强制转换换行符为 CRLF（双重保障）
-        unix2dos ${BASE_PATH}/tmp2  >/dev/null 2>&1 & &&
-        # 2. 清理孤立 \r 字符（避免 \015 问题）
-        # sed -i 's/\r$//' tmp2 &&
-        # 3. 强制转为 ASCII 编码（清理特殊字符）
-        # iconv -f ASCII -t ASCII//TRANSLIT//IGNORE -o tmp2 tmp2 &&
+        unix2dos ${BASE_PATH}/tmp2 >/dev/null 2>&1
+    # 2. 清理孤立 \r 字符（避免 \015 问题）
+    # sed -i 's/\r$//' tmp2 &&
+    # 3. 强制转为 ASCII 编码（清理特殊字符）
+    # iconv -f ASCII -t ASCII//TRANSLIT//IGNORE -o tmp2 tmp2 &&
 
-        # 定义新值（根据你的需求修改）
-        DBIP_NEW="gsmysql"
+    # 定义新值（根据你的需求修改）
+    DBIP_NEW="gsmysql"
     DBPort_NEW="3306"
     DBName_NEW="tlbbdb"
     DBUser_NEW="root"
@@ -147,14 +147,14 @@ in_system && /^DBPassword=/ { $0="DBPassword=" dbpassword }
 { print }
 ' "${GS_PROJECT_PATH}/tlbb/Server/Config/ShareMemInfo.ini" >${BASE_PATH}/tmp3 &&
         # 1. 强制转换换行符为 CRLF
-        unix2dos ${BASE_PATH}/tmp3  >/dev/null 2>&1 & &&
-        # 2. 清理孤立 \r 字符
-        # sed -i 's/\r$//' tmp3 &&
-        # 3. 强制转为 ASCII 编码
-        # iconv -f ASCII -t ASCII//TRANSLIT//IGNORE -o tmp3 tmp3 &&
+        unix2dos ${BASE_PATH}/tmp3 >/dev/null 2>&1
+    # 2. 清理孤立 \r 字符
+    # sed -i 's/\r$//' tmp3 &&
+    # 3. 强制转为 ASCII 编码
+    # iconv -f ASCII -t ASCII//TRANSLIT//IGNORE -o tmp3 tmp3 &&
 
-        # 定义变量（根据你的需求修改值）
-        SERVER_VAR="gsmysql"
+    # 定义变量（根据你的需求修改值）
+    SERVER_VAR="gsmysql"
     PORT_VAR="3306"
     USER_VAR="root"
     PASSWORD_VAR="${TL_MYSQL_PASSWORD}"
