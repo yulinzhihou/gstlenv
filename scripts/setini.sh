@@ -213,7 +213,7 @@ SOCKET		=
 EOF
 
     # 判断使用的是 centos 8
-    docker images | grep gs_mysql80 >/dev/null 2>&1 &
+    docker images | grep gs_mysql80 >/dev/null 2>&1
 
     if [ $? -eq 0 ]; then
         # 输出结果验证
