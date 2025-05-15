@@ -159,68 +159,66 @@ in_system && /^DBPassword=/ { $0="DBPassword=" dbpassword }
     USER_VAR="root"
     PASSWORD_VAR="${TL_MYSQL_PASSWORD}"
     DATABASE_VAR="tlbbdb"
-
-    # 使用双引号包裹EOF以启用变量替换
-    ODBCConfig= <<"EOF"
-[tlbbdb]
-Driver		= /usr/lib/libmyodbc5.so
-Description	= MyODBC Driver DSN
-SERVER		= ${SERVER_VAR}
-PORT		= ${PORT_VAR}
-USER		= ${USER_VAR}
-Password	= ${PASSWORD_VAR}
-Database	= ${DATABASE_VAR}
-OPTION		= 3
-SOCKET		=
- 
-[Default]
-Driver		= /usr/lib/libmyodbc5.so
-Description	= MyODBC Driver DSN
-SERVER	   	= ${SERVER_VAR}
-PORT		= ${PORT_VAR}
-USER		= ${USER_VAR}
-Password	= ${PASSWORD_VAR}
-Database	= ${DATABASE_VAR}
-OPTION		= 3
-SOCKET		=
-
-EOF
-
-    # 使用双引号包裹EOF以启用变量替换
-    ODBCConfig64= <<"EOF"
-[tlbbdb]
-Driver		= /usr/lib64/libmyodbc5w.so
-Description	= MyODBC Driver DSN
-SERVER		= ${SERVER_VAR}
-PORT		= ${PORT_VAR}
-USER		= ${USER_VAR}
-Password	= ${PASSWORD_VAR}
-Database	= ${DATABASE_VAR}
-OPTION		= 3
-SOCKET		=
- 
-[Default]
-Driver		= /usr/lib64/libmyodbc5w.so
-Description	= MyODBC Driver DSN
-SERVER	   	= ${SERVER_VAR}
-PORT		= ${PORT_VAR}
-USER		= ${USER_VAR}
-Password	= ${PASSWORD_VAR}
-Database	= ${DATABASE_VAR}
-OPTION		= 3
-SOCKET		=
-
-EOF
+    # 默认设置L机的验证为0
+    BILLING_GAME_SRC=0
 
     # 判断使用的是 centos 8
-    docker images | grep gs_mysql80 >/dev/null 2>&1
+    docker ps -a | grep gs_mysql80 >/dev/null 2>&1
 
     if [ $? -eq 0 ]; then
         # 输出结果验证
-        echo "$ODBCConfig64" >>${BASE_PATH}/odbc.ini
+        cat >${BASE_PATH}/odbc.ini <<EOF
+[tlbbdb]
+Driver		= /usr/lib64/libmyodbc5w.so
+Description	= MyODBC Driver DSN
+SERVER		= ${SERVER_VAR}
+PORT		= ${PORT_VAR}
+USER		= ${USER_VAR}
+Password	= ${PASSWORD_VAR}
+Database	= ${DATABASE_VAR}
+OPTION		= 3
+SOCKET		=
+ 
+[Default]
+Driver		= /usr/lib64/libmyodbc5w.so
+Description	= MyODBC Driver DSN
+SERVER	   	= ${SERVER_VAR}
+PORT		= ${PORT_VAR}
+USER		= ${USER_VAR}
+Password	= ${PASSWORD_VAR}
+Database	= ${DATABASE_VAR}
+OPTION		= 3
+SOCKET		=
+
+EOF
+        # 设置验证为源端
+        BILLING_GAME_SRC=1
     else
         # 输出结果验证
-        echo "$ODBCConfig" >>${BASE_PATH}/odbc.ini
+        cat >${BASE_PATH}/odbc.ini <<EOF
+[tlbbdb]
+Driver		= /usr/lib/libmyodbc5.so
+Description	= MyODBC Driver DSN
+SERVER		= ${SERVER_VAR}
+PORT		= ${PORT_VAR}
+USER		= ${USER_VAR}
+Password	= ${PASSWORD_VAR}
+Database	= ${DATABASE_VAR}
+OPTION		= 3
+SOCKET		=
+ 
+[Default]
+Driver		= /usr/lib/libmyodbc5.so
+Description	= MyODBC Driver DSN
+SERVER	   	= ${SERVER_VAR}
+PORT		= ${PORT_VAR}
+USER		= ${USER_VAR}
+Password	= ${PASSWORD_VAR}
+Database	= ${DATABASE_VAR}
+OPTION		= 3
+SOCKET		=
+
+EOF
     fi
     # 定义变量（根据你的需求修改值）
     BILLING_DB_HOST="gsmysql"
@@ -246,6 +244,8 @@ auto_reg: true
 point_fix: 0
 max_client_count: 500
 pc_max_client_count: 3
+# billing类型 0经典 1怀旧
+bill_type: ${BILLING_GAME_SRC}
 
 EOF
 
