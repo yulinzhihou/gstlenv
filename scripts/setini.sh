@@ -169,7 +169,7 @@ in_system && /^DBPassword=/ { $0="DBPassword=" dbpassword }
         # 输出结果验证
         cat >${BASE_PATH}/odbc.ini <<EOF
 [tlbbdb]
-Driver		= /usr/lib64/libmyodbc5w.so
+Driver		= /usr/lib64/libmyodbc8w.so
 Description	= MyODBC Driver DSN
 SERVER		= ${SERVER_VAR}
 PORT		= ${PORT_VAR}
@@ -180,7 +180,7 @@ OPTION		= 3
 SOCKET		=
  
 [Default]
-Driver		= /usr/lib64/libmyodbc5w.so
+Driver		= /usr/lib64/libmyodbc8w.so
 Description	= MyODBC Driver DSN
 SERVER	   	= ${SERVER_VAR}
 PORT		= ${PORT_VAR}
