@@ -303,8 +303,7 @@ ${CYELLOW}
 ◎  编号1：Centos 6 + Mysql5.1 (默认，输入1或不输，按回车)  ---> （老品种，没有改引擎和数据库）
 ◎  编号2：Centos 7 + Mysql5.1 (输入2，按回车) ---> （老品种，没有改引擎和数据库）
 ◎  编号3：Centos 7 + Mysql5.7 (输入3，按回车) --->  (大河马引擎，大背包，逍遥子引擎，有改引擎和数据库的)
-◎  编号4：Centos 8 + Mysql5.7 (输入4，按回车) --->  (大河马引擎，大背包，逍遥子引擎，有改引擎和数据库的)
-◎  编号5：Centos 8 + Mysql8.0 (输入5，按回车) ---> （源端64位引擎专用）
+◎  编号4：Centos 8 + Mysql8.0 (输入4，按回车) ---> （源端64位引擎专用）
 ◎           
 ※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※
 ${CEND}
@@ -336,11 +335,6 @@ EOF
             chmod -R 777 ${GS_PROJECT}
         ;;
     '04' | '4')
-        \cp -rf docker-compose857.yml /root/.gs/docker-compose.yml &&
-            . ${GS_WHOLE_PATH} &&
-            chmod -R 777 ${GS_PROJECT}
-        ;;
-    '05' | '5')
         \cp -rf docker-compose880.yml /root/.gs/docker-compose.yml &&
             . ${GS_WHOLE_PATH} &&
             chmod -R 777 ${GS_PROJECT}
