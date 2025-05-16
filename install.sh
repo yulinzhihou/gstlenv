@@ -335,7 +335,7 @@ EOF
             chmod -R 777 ${GS_PROJECT}
         ;;
     '04' | '4')
-        \cp -rf docker-compose880.yml /root/.gs/docker-compose.yml &&
+        \cp -rf docker-compose980.yml /root/.gs/docker-compose.yml &&
             . ${GS_WHOLE_PATH} &&
             chmod -R 777 ${GS_PROJECT}
         ;;
