@@ -67,7 +67,8 @@ if [ ! -f /root/gs_docker_ce.tar.gz ] && [ ! -f /root/gstlenv_offline.tar.gz ] &
     # 下载环境源码
     download
     # 安装并写入安装日志
-    cd /root/.tlgame && bash install.sh | tee -a /root/.tlgame/install.log
+    cd /root/.tlgame && { bash install.sh 2>&1 | tee -a install.log; }
+    # cd /root/.tlgame && bash install.sh | tee -a /root/.tlgame/install.log
 else
     # 安装并写入安装日志
     cd /root/.tlgame && bash install.sh local | tee -a /root/.tlgame/install.log
