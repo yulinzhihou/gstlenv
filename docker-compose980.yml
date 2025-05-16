@@ -1,7 +1,7 @@
 services:
   # Game server
   gsserver:
-    image: ${HUB_ALIYUN}yulinzhihou/gs_server8:latest
+    image: ${HUB_ALIYUN}yulinzhihou/gs_server9:latest
     container_name: gsserver
     volumes:
       - "${SHARED_DIR}/:/home"
@@ -17,7 +17,7 @@ services:
       - gsphp:gsphp
       - gsredis:gsredis
   gsmysql:
-    image: ${HUB_ALIYUN}yulinzhihou/gs_mysql57:latest
+    image: ${HUB_ALIYUN}yulinzhihou/gs_mysql80:latest
     container_name: gsmysql
     volumes:
       - "${SHARED_DIR}/gsmysql/:/var/lib/mysql"
@@ -32,6 +32,7 @@ services:
       MYSQL_DATABASE_TLBBDB: "tlbbdb"
       MYSQL_DATABASE_WEB: "web"
       MYSQL_DATABASE_GSGM: "gs_gmtools"
+      TZ: "$TZ"
     restart: ${RESTART}
   # WEBSERVER
   gsnginx:

@@ -32,7 +32,7 @@ if [ $? -eq 0 ]; then
         exit 1
     fi
 
-    tar zxf ${BASE_PATH}/ini.tar.gz -C ${BASE_PATH}
+    tar zxf ${BASE_PATH}/ini.tar.gz -C ${BASE_PATH} >/dev/null 2>&1
     if [ ! -d "${GS_PROJECT_PATH}/billing/" ]; then
         mkdir -p ${GS_PROJECT_PATH}/billing/ &&
             chown -R root:root ${GS_PROJECT_PATH}/billing ${GS_PROJECT_PATH}/tlbb &&
@@ -227,8 +227,8 @@ EOF
     BILLING_DB_PASS="${TL_MYSQL_PASSWORD}"
     BILLING_DB_NAME="web"
 
-    # 使用双引号包裹EOF以启用变量替换
-    BillingConfig= <<"EOF"
+    # 输出结果验证
+    cat >${BASE_PATH}/config.yaml <<EOF
 ip: 127.0.0.1
 port: 21818
 db_host:  ${BILLING_DB_HOST}
@@ -248,9 +248,6 @@ pc_max_client_count: 3
 bill_type: ${BILLING_GAME_SRC}
 
 EOF
-
-    # 输出结果验证
-    echo "$BillingConfig" >>${BASE_PATH}/config.yaml
 
     if [ ! -d /tlgame/tlbb/Server ]; then
         echo -e "${GSISSUE}\r\n"
