@@ -42,12 +42,18 @@ if [ $? -eq 0 ]; then
 
     #每次更新后，先重置更改过的文件
     if [ ${IS_DLQ} -eq 0 ]; then
-        echo "/home/billing/billing up -d" >>${GS_PROJECT_PATH}/tlbb/run.sh
+        cat ${GS_PROJECT_PATH}/tlbb/run.sh | grep "/home/billing/billing up -d" >/dev/null 2>&1
+        if [ $? -eq 0 ]; then
+            echo "/home/billing/billing up -d" >>${GS_PROJECT_PATH}/tlbb/run.sh
+        fi
     fi
     # 解压配置文件，根据服务端程序，进行生成 启动脚本 run.sh
     if [ -f "${GS_PROJECT_PATH}/tlbb/run.sh" ]; then
         sed -i '/exit/s||sleep 1|' ${GS_PROJECT_PATH}/tlbb/run.sh
-        echo "tail -f /dev/null" >>${GS_PROJECT_PATH}/tlbb/run.sh
+        cat ${GS_PROJECT_PATH}/tlbb/run.sh | grep "tail -f /dev/null" >/dev/null 2>&1
+        if [ $? -eq 0 ]; then
+            echo "tail -f /dev/null" >>${GS_PROJECT_PATH}/tlbb/run.sh
+        fi
     fi
 
     # 游戏内注册=0，登录器注册=1
