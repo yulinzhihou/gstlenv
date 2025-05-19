@@ -43,7 +43,7 @@ if [ $? -eq 0 ]; then
     #每次更新后，先重置更改过的文件
     if [ ${IS_DLQ} -eq 0 ]; then
         cat ${GS_PROJECT_PATH}/tlbb/run.sh | grep "/home/billing/billing up -d" >/dev/null 2>&1
-        if [ $? -eq 0 ]; then
+        if [ $? -eq 1 ]; then
             echo "/home/billing/billing up -d" >>${GS_PROJECT_PATH}/tlbb/run.sh
         fi
     fi
