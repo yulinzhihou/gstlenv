@@ -26,7 +26,7 @@ WHOLE_NAME=${FILENAME}${SUFFIX}
 #解压后重全名文件夹名称
 ENVDIR='.tlgame'
 #环境版本号
-VERSION='v2.8.2'
+VERSION='v2.8.3'
 # 展示信息
 if [ -f info.txt ]; then
     INFO=$(cat info.txt)
@@ -67,8 +67,8 @@ if [ ! -f /root/gs_docker_ce.tar.gz ] && [ ! -f /root/gstlenv_offline.tar.gz ] &
     # 下载环境源码
     download
     # 安装并写入安装日志
-    cd /root/.tlgame && { bash install.sh 2>&1 | tee -a install.log; }
-    # cd /root/.tlgame && script -a -f /root/.tlgame/install.log -c "bash install.sh"
+    # cd /root/.tlgame && { bash install.sh 2>&1 | tee -a install.log; }
+    cd /root/.tlgame && script -a -f /root/.tlgame/install.log -c "bash install.sh"
 
     # cd /root/.tlgame && bash install.sh | tee -a /root/.tlgame/install.log
 else
