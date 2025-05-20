@@ -46,6 +46,7 @@ services:
       - ${SHARED_DIR}/ssl/:/ssl:rw # 如果有ssl证书，请放在此目录里面
       - ${SHARED_DIR}/conf.d/:/etc/nginx/conf.d/:rw #新增网站，需要将配置放在此目录
       - ${SHARED_DIR}/log/nginx/:/var/log/nginx/:rw
+      - ${SHARED_DIR}/tlbb:/home/tlbb
     environment:
       TZ: "$TZ"
     restart: always
