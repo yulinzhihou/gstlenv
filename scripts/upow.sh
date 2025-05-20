@@ -63,87 +63,15 @@ server {
     server_name  0.0.0.0;
     root   /www/ow;
     index  index.html index.htm default.html default.htm;
-    #charset koi8-r;
-    
-    access_log /dev/null;
-    #access_log  /var/log/nginx/nginx.localhost.access.log  main;
-    error_log  /var/log/nginx/nginx.localhost.error.log  warn;
-    
-    #error_page  404              /404.html;
 
-    # redirect server error pages to the static page /50x.html
-    #
+    access_log  /var/log/nginx/nginx.ow.access.log  main;
+    error_log  /var/log/nginx/nginx.ow.error.log  warn;
+    
     error_page   500 502 503 504  /50x.html;
     location = /50x.html {
         root   /usr/share/nginx/html;
     }
-
-    # proxy the PHP scripts to Apache listening on 127.0.0.1:80
-    #
-    #location ~ \.php$ {
-    #    proxy_pass   http://127.0.0.1;
-    #}
-
-    # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
-    #
-    # location ~ \.php$ {
-    #     fastcgi_pass   gsphp:9000;
-    #     include        fastcgi-php.conf;
-    #     include        fastcgi_params;
-    # }
-
-    # deny access to .htaccess files, if Apache's document root
-    # concurs with nginx's one
-    #
-    #location ~ /\.ht {
-    #    deny  all;
-    #}
 }
-
-# server {
-#     listen 443  default ssl http2;
-#     server_name  ow;
-#     root   /www/ow/;
-#     index  index.html index.htm default.html default.htm;
-#     #charset koi8-r;
-
-#     # access_log /dev/null;
-#     access_log  /var/log/nginx/nginx.localhost.access.log  main;
-#     error_log  /var/log/nginx/nginx.localhost.error.log  warn;
-
-#     #error_page  404              /404.html;
-
-#     ssl_certificate /ssl/localhost/localhost.crt;
-#     ssl_certificate_key /ssl/localhost/localhost.key;
-
-#     # redirect server error pages to the static page /50x.html
-#     #
-#     error_page   500 502 503 504  /50x.html;
-#     location = /50x.html {
-#         root   /usr/share/nginx/html;
-#     }
-
-#     # proxy the PHP scripts to Apache listening on 127.0.0.1:80
-#     #
-#     #location ~ \.php$ {
-#     #    proxy_pass   http://127.0.0.1;
-#     #}
-
-#     # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
-#     #
-#     # location ~ \.php$ {
-#     #     fastcgi_pass   gsphp:9000;
-#     #     include        fastcgi-php.conf;
-#     #     include        fastcgi_params;
-#     # }
-
-#     # deny access to .htaccess files, if Apache's document root
-#     # concurs with nginx's one
-#     #
-#     #location ~ /\.ht {
-#     #    deny  all;
-#     #}
-# }
 EOF
     fi
   }
