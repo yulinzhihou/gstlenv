@@ -46,6 +46,8 @@ shop1=-1
 shop2=-1
 shop3=-1
 ReputationID=-1
+
+
 EOF
   )
   # 部署 GM 网站
@@ -83,7 +85,7 @@ EOF
                 # 修改配置文件
                 sed -i "s/LOGIN_USER_NAME=.*/LOGIN_USER_NAME=${LOGIN_NEW_USER_NAME}/g" ${GS_WHOLE_PATH}
                 # 更改程序
-                sed -i "s/LOGIN_USER_NAME/${LOGIN_USER_NAME}/g" ${SHARED_DIR}/www/gm/GmTools.php
+                sed -i "s/LOGIN_USER_NAME/${LOGIN_NEW_USER_NAME}/g" ${SHARED_DIR}/www/gm/GmTools.php
                 break
               else
                 echo "${CWARNING}输入错误! 请输入6-12位的账号名！${CEND}"
@@ -111,7 +113,7 @@ EOF
               if ((${#LOGIN_NEW_PASSWORD} >= 5)); then
                 sed -i "s/LOGIN_PASSWORD=.*/LOGIN_PASSWORD=${LOGIN_NEW_PASSWORD}/g" ${GS_WHOLE_PATH}
                 # 更改程序
-                sed -i "s/LOGIN_PASSWORD/${LOGIN_PASSWORD}/g" ${SHARED_DIR}/www/gm/GmTools.php
+                sed -i "s/LOGIN_PASSWORD/${LOGIN_NEW_PASSWORD}/g" ${SHARED_DIR}/www/gm/GmTools.php
                 break
               else
                 echo "${CRED}密码最少要6个字符! ${CEND}"
@@ -150,6 +152,10 @@ EOF
           break
         fi
       done
+      # 替换账号密码
+      sed -i "s/DB_ROOT_PASSWORD/${TL_MYSQL_PASSWORD}/g" ${SHARED_DIR}/www/gm/GmTools.php
+      sed -i "s/WEB_ROOT_PASSWORD/${TL_MYSQL_PASSWORD}/g" ${SHARED_DIR}/www/gm/GmTools.php
+
     else
       echo -e "${CRED} 请联系GS游享网购买在线GM软件包!!! https://gsgameshare.com, 客服Q：1303588722 ${CEND}"
       exit
@@ -251,7 +257,7 @@ server {
     root   /www/gm;
     index  index.php index.html index.htm;
 
-    access_log  /var/log/nginx/nginx.mg.access.log  main;
+    access_log  /var/log/nginx/nginx.mg.access.log;
     error_log  /var/log/nginx/nginx.gm.error.log  warn;
     
     error_page   500 502 503 504  /50x.html;
@@ -278,6 +284,7 @@ EOF
   owConf
   getUserInput
   deployGMCode
+  chmod -R 777 /tlgame/www
 else
   echo -e "${GSISSUE}\r\n"
   echo -e "${CRED}环境毁坏，需要重新安装或者移除现有的环境重新安装！！！${CEND}"
