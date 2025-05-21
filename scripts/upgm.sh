@@ -2,7 +2,7 @@
 # Author: yulinzhihou <yulinzhihou@gmail.com>
 # Forum:  https://gsgamesahre.com
 # Project: https://github.com/yulinzhihou/gstlenv.git
-# Date :  2021-09-16
+# Date :  2025-05-21
 # Notes:  gstlenv for CentOS/RedHat 7+ Debian 10+ and Ubuntu 18+
 # comment: 用来配置在线GM网站访问。默认网站内容请自觉上传到/tlgame/www/gm目录下
 # 增加容器是否存在的判断
@@ -26,6 +26,28 @@ if [ $? -eq 0 ]; then
   SU_ZHOU_SCENE="/tlgame/tlbb/Public/Scene/suzhou_monster.ini"
   LOULAN_SCENE="/tlgame/tlbb/Public/Scene/loulangucheng_monster.ini"
 
+  MONSTER_INI=$(
+    cat <<EOF
+[monster.xx]
+guid=8623891
+type=0
+pos_x=0
+pos_z=0
+dir=27
+script_id=591818
+respawn_time=1800000
+base_ai=3
+scripttimer=2000
+group_id=-1
+team_id=-1
+patrol_id=-1
+shop0=-1
+shop1=-1
+shop2=-1
+shop3=-1
+ReputationID=-1
+EOF
+  )
   # 部署 GM 网站
   function deployGMCode() {
     if [ ! -f "${GS_PROJECT}/config/GS_GMTools.tar.gz" ]; then
@@ -36,7 +58,7 @@ if [ $? -eq 0 ]; then
     # 直接解压
     cd ${GS_PROJECT}/config &&
       tar zxf GS_GMTools.tar.gz &&
-      \cp -rf web\* /tlgame/www/gm
+      \cp -rf ${GS_PROJECT}/config/web/* /tlgame/www/gm
 
     if [ -f "/tlgame/www/gm/GmTools.php" ]; then
       echo "${CMAGENTA}开始部署在线GM工具！${CEND}"
@@ -151,6 +173,7 @@ if [ $? -eq 0 ]; then
     if [ -f "${SCRIPT_DAT}" ]; then
       cat "${SCRIPT_DAT}" | grep "591818" >/dev/null 2>&1
       if [ $? -eq 1 ]; then
+        \cp -rf ${GS_PROJECT}/config/tlbb/Public/Data/Script/GmSecondsTimer.lua /tlgame/tlbb/Public/Data/Script
         # 表示没有这个脚本编号，
         echo "591818=\\GmSecondsTimer.lua" >>${SCRIPT_DAT}
       fi
@@ -158,68 +181,30 @@ if [ $? -eq 0 ]; then
 
     # 部署地图隐藏NPC
     if [ -f "${LUOYANG_SCENE}" ]; then
-      current_count=$(awk -F'=' '/\[info\]/{f=1} f&&/monstercount/{print $2; exit}' "$LUOYANG_SCENE")
-      new_count=$((current_count + 1))
-      SCENE_FILE=${LUOYANG_SCENE}
+      echo -e "${CYELLOW}${DALI_SCENE} 下载下来，在windows上用记事本打开，在后面粘贴下面的内容，把第二行 monstercount的数值加1，下面的 [monster.xx] 中的 .xx 改成 monstercoutn 后的数值。${CEND}"
     else
       echo -e "${CRED} 洛阳场景未加入GM功能，请手动检查！ ${CEND}"
     fi
 
     if [ -f "${DALI_SCENE}" ]; then
-      current_count=$(awk -F'=' '/\[info\]/{f=1} f&&/monstercount/{print $2; exit}' "$DALI_SCENE")
-      new_count=$((current_count + 1))
-      SCENE_FILE=${DALI_SCENE}
+      echo -e "${CYELLOW}${DALI_SCENE} 下载下来，在windows上用记事本打开，在后面粘贴下面的内容，把第二行 monstercount的数值加1，下面的 [monster.xx] 中的 .xx 改成 monstercoutn 后的数值。${CEND}"
     else
       echo -e "${CRED} 大理场景未加入GM功能，请手动检查！ ${CEND}"
     fi
 
     if [ -f "${SU_ZHOU_SCENE}" ]; then
-      current_count=$(awk -F'=' '/\[info\]/{f=1} f&&/monstercount/{print $2; exit}' "$SU_ZHOU_SCENE")
-      new_count=$((current_count + 1))
-      SCENE_FILE=${SU_ZHOU_SCENE}
+      echo -e "${CYELLOW}${DALI_SCENE} 下载下来，在windows上用记事本打开，在后面粘贴下面的内容，把第二行 monstercount的数值加1，下面的 [monster.xx] 中的 .xx 改成 monstercoutn 后的数值。${CEND}"
     else
       echo -e "${CRED} 苏州场景未加入GM功能，请手动检查！ ${CEND}"
     fi
 
     if [ -f "${LOULAN_SCENE}" ]; then
-      current_count=$(awk -F'=' '/\[info\]/{f=1} f&&/monstercount/{print $2; exit}' "$LOULAN_SCENE")
-      new_count=$((current_count + 1))
-      SCENE_FILE=${LOULAN_SCENE}
+      echo -e "${CYELLOW}${DALI_SCENE} 下载下来，在windows上用记事本打开，在后面粘贴下面的内容，把第二行 monstercount的数值加1，下面的 [monster.xx] 中的 .xx 改成 monstercoutn 后的数值。${CEND}"
     else
       echo -e "${CRED} 楼兰场景未加入GM功能，请手动检查！ ${CEND}"
     fi
 
-    awk -v new="$new_count" '
-    /\[info\]/ {in_section=1; next}
-    in_section && /monstercount=/ {
-        $0 = "monstercount=" new  # 直接替换整行
-        in_section=0             # 只处理第一个匹配项
-    }
-    {print}
-' "$SCENE_FILE" >tmp && mv tmp "$SCENE_FILE" && unix2dos "$SCENE_FILE" >/dev/null 2>&1
-
-    echo "monstercount 已更新为：$new_count"
-
-    cat >${SCENE_FILE} <<EOF
-[monster${new_count}]
-guid=8623891
-type=0
-pos_x=0
-pos_z=0
-dir=27
-script_id=591818
-respawn_time=1800000
-base_ai=3
-scripttimer=2000
-group_id=-1
-team_id=-1
-patrol_id=-1
-shop0=-1
-shop1=-1
-shop2=-1
-shop3=-1
-ReputationID=-1
-EOF
+    echo -ne "${CYELLOW}$MONSTER_INI${CEND}"
 
   }
 
