@@ -56,7 +56,7 @@ services:
     container_name: gsphp
     volumes:
       - ${SHARED_DIR}/www/:/www/:rw
-      - ${SHARED_DIR}/tlbb/:/home/:rw
+      - ${SHARED_DIR}/tlbb/:/home/tlbb:rw
       - ${SHARED_DIR}/log/php/:/var/log/php
     restart: always
     cap_add:

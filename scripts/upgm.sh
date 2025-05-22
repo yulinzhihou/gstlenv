@@ -79,18 +79,13 @@ EOF
           if [ "${IS_MODIFY}" == 'y' ]; then
             while :; do
               echo
-              read -e -p "请输入【GM后台登录账号】：(默认: ${LOGIN_DEFAULT_USER_NAME}): " LOGIN_USER_NAME
-              LOGIN_NEW_USER_NAME=${LOGIN_NEW_USER_NAME:-${LOGIN_DEFAULT_USER_NAME}}
-              if [ ${LOGIN_NEW_USER_NAME} == ${LOGIN_DEFAULT_USER_NAME} ] >/dev/null 2>&1; then
-                # 修改配置文件
-                sed -i "s/LOGIN_USER_NAME=.*/LOGIN_USER_NAME=${LOGIN_NEW_USER_NAME}/g" ${GS_WHOLE_PATH}
-                # 更改程序
-                sed -i "s/LOGIN_USER_NAME/${LOGIN_NEW_USER_NAME}/g" ${SHARED_DIR}/www/gm/GmTools.php
-                break
-              else
-                echo "${CWARNING}输入错误! 请输入6-12位的账号名！${CEND}"
-                exit 1
-              fi
+              read -e -p "请输入【GM后台登录账号】：(默认: ${LOGIN_DEFAULT_USER_NAME}): " LOGIN_NEW_USER_NAME
+              LOGIN_NEW_USER_NAME=${LOGIN_NEW_USER_NAME:-${LOGIN_USER_NAME}}
+              # 修改配置文件
+              sed -i "s/LOGIN_USER_NAME=.*/LOGIN_USER_NAME=${LOGIN_NEW_USER_NAME}/g" ${GS_WHOLE_PATH}
+              # 更改程序
+              sed -i "s/LOGIN_USER_NAME/${LOGIN_NEW_USER_NAME}/g" ${SHARED_DIR}/www/gm/GmTools.php
+              break
             done
           fi
           break
@@ -141,7 +136,7 @@ EOF
               if ((${#PRIVATE_NEW_KEY} >= 5)); then
                 sed -i "s/PRIVATE_KEY=.*/PRIVATE_KEY=${PRIVATE_NEW_KEY}/g" ${GS_WHOLE_PATH}
                 # 更改程序
-                sed -i "s/PRIVATE_KEY/${PRIVATE_KEY}/g" ${SHARED_DIR}/www/gm/GmTools.php
+                sed -i "s/PRIVATE_KEY/${PRIVATE_NEW_KEY}/g" ${SHARED_DIR}/www/gm/GmTools.php
                 break
               else
                 echo "${CRED}密码最少要6个字符! ${CEND}"
@@ -173,6 +168,9 @@ EOF
         # 表示没开启
         echo "GMDATA_ISOPEN_GMTOOLS=1" >>"${GLOBAL_SCRIPT}"
       fi
+      # 表示没开启
+      echo "PRIVATE_KEY=${PRIVATE_KEY}" >>"${GLOBAL_SCRIPT}"
+
     fi
 
     # 增加脚本
@@ -285,6 +283,10 @@ EOF
   getUserInput
   deployGMCode
   chmod -R 777 /tlgame/www
+
+  echo -ne "\r\n"
+  echo -ne "${CYELLOW} http://IP地址:${WEB_GM_PORT} 访问！ ${CEND}"
+
 else
   echo -e "${GSISSUE}\r\n"
   echo -e "${CRED}环境毁坏，需要重新安装或者移除现有的环境重新安装！！！${CEND}"
