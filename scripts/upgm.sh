@@ -87,6 +87,11 @@ EOF
               sed -i "s/LOGIN_USER_NAME/${LOGIN_NEW_USER_NAME}/g" ${SHARED_DIR}/www/gm/GmTools.php
               break
             done
+          else
+            # 修改配置文件
+            sed -i "s/LOGIN_USER_NAME=.*/LOGIN_USER_NAME=${LOGIN_USER_NAME}/g" ${GS_WHOLE_PATH}
+            # 更改程序
+            sed -i "s/LOGIN_USER_NAME/${LOGIN_USER_NAME}/g" ${SHARED_DIR}/www/gm/GmTools.php
           fi
           break
         fi
@@ -115,6 +120,11 @@ EOF
                 exit 1
               fi
             done
+          else
+            sed -i "s/LOGIN_PASSWORD=.*/LOGIN_PASSWORD=${LOGIN_PASSWORD}/g" ${GS_WHOLE_PATH}
+            # 更改程序
+            sed -i "s/LOGIN_PASSWORD/${LOGIN_PASSWORD}/g" ${SHARED_DIR}/www/gm/GmTools.php
+            break
           fi
           break
         fi
@@ -143,6 +153,11 @@ EOF
                 exit 1
               fi
             done
+          else
+            sed -i "s/PRIVATE_KEY=.*/PRIVATE_KEY=${PRIVATE_KEY}/g" ${GS_WHOLE_PATH}
+            # 更改程序
+            sed -i "s/PRIVATE_KEY/${PRIVATE_KEY}/g" ${SHARED_DIR}/www/gm/GmTools.php
+            break
           fi
           break
         fi
@@ -182,33 +197,6 @@ EOF
         echo "591818=\\GmSecondsTimer.lua" >>${SCRIPT_DAT}
       fi
     fi
-
-    # 部署地图隐藏NPC
-    if [ -f "${LUOYANG_SCENE}" ]; then
-      echo -e "${CYELLOW}${DALI_SCENE} 下载下来，在windows上用记事本打开，在后面粘贴下面的内容，把第二行 monstercount的数值加1，下面的 [monster.xx] 中的 .xx 改成 monstercoutn 后的数值。${CEND}"
-    else
-      echo -e "${CRED} 洛阳场景未加入GM功能，请手动检查！ ${CEND}"
-    fi
-
-    if [ -f "${DALI_SCENE}" ]; then
-      echo -e "${CYELLOW}${DALI_SCENE} 下载下来，在windows上用记事本打开，在后面粘贴下面的内容，把第二行 monstercount的数值加1，下面的 [monster.xx] 中的 .xx 改成 monstercoutn 后的数值。${CEND}"
-    else
-      echo -e "${CRED} 大理场景未加入GM功能，请手动检查！ ${CEND}"
-    fi
-
-    if [ -f "${SU_ZHOU_SCENE}" ]; then
-      echo -e "${CYELLOW}${DALI_SCENE} 下载下来，在windows上用记事本打开，在后面粘贴下面的内容，把第二行 monstercount的数值加1，下面的 [monster.xx] 中的 .xx 改成 monstercoutn 后的数值。${CEND}"
-    else
-      echo -e "${CRED} 苏州场景未加入GM功能，请手动检查！ ${CEND}"
-    fi
-
-    if [ -f "${LOULAN_SCENE}" ]; then
-      echo -e "${CYELLOW}${DALI_SCENE} 下载下来，在windows上用记事本打开，在后面粘贴下面的内容，把第二行 monstercount的数值加1，下面的 [monster.xx] 中的 .xx 改成 monstercoutn 后的数值。${CEND}"
-    else
-      echo -e "${CRED} 楼兰场景未加入GM功能，请手动检查！ ${CEND}"
-    fi
-
-    echo -ne "${CYELLOW}$MONSTER_INI${CEND}"
 
   }
 
@@ -285,8 +273,10 @@ EOF
   chmod -R 777 /tlgame/www
 
   echo -ne "\r\n"
-  echo -ne "${CYELLOW} http://IP地址:${WEB_GM_PORT} 访问！ ${CEND}"
-
+  echo -ne "\r\n${CYELLOW} http://IP地址:${WEB_GM_PORT} 访问！ ${CEND}"
+  echo -ne "\r\n${CYELLOW} 访问网站进行后面的配置工作，配置完后需要重启服务端才能生效！！！ ${CEND}"
+  echo -ne "\r\n"
+  echo -ne "\r\n"
 else
   echo -e "${GSISSUE}\r\n"
   echo -e "${CRED}环境毁坏，需要重新安装或者移除现有的环境重新安装！！！${CEND}"

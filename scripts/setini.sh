@@ -42,9 +42,9 @@ if [ $? -eq 0 ]; then
 
     #每次更新后，先重置更改过的文件
     if [ ${IS_DLQ} -eq 0 ]; then
-        cat ${GS_PROJECT_PATH}/tlbb/run.sh | grep "/home/billing/billing up -d" >/dev/null 2>&1
+        cat ${GS_PROJECT_PATH}/tlbb/run.sh | grep "cd /home/billing && ./billing up -d" >/dev/null 2>&1
         if [ $? -eq 1 ]; then
-            echo "/home/billing/billing up -d" >>${GS_PROJECT_PATH}/tlbb/run.sh
+            echo "cd /home/billing && ./billing up -d" >>${GS_PROJECT_PATH}/tlbb/run.sh
         fi
     fi
     # 解压配置文件，根据服务端程序，进行生成 启动脚本 run.sh
@@ -237,7 +237,7 @@ EOF
     cat >${BASE_PATH}/config.yaml <<EOF
 ip: 127.0.0.1
 port: 21818
-db_host:  ${BILLING_DB_HOST}
+db_host: ${BILLING_DB_HOST}
 db_port: ${BILLING_DB_PORT}
 db_user: ${BILLING_DB_USER}
 db_password: ${BILLING_DB_PASS}
