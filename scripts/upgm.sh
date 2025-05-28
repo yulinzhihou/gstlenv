@@ -195,6 +195,12 @@ EOF
         \cp -rf ${GS_PROJECT}/config/tlbb/Public/Data/Script/GmSecondsTimer.lua /tlgame/tlbb/Public/Data/Script
         # 表示没有这个脚本编号，
         echo "591818=\\GmSecondsTimer.lua" >>${SCRIPT_DAT}
+        if [ -f "/tlgame/tlbb/Public/Data/Script/GmSecondsTimer.lua" ]; then
+          cat /tlgame/tlbb/Public/Data/Script/GmSecondsTimer.lua | grep "PRIVATE_KEY" >/dev/null 2>&1
+          if [ $? -eq 1 ]; then
+            sed -i "s/PRIVATE_KEY/${PRIVATE_KEY}/g" /tlgame/tlbb/Public/Data/Script/GmSecondsTimer.lua
+          fi
+        fi
       fi
     fi
 
