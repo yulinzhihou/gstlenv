@@ -84,14 +84,14 @@ EOF
               # 修改配置文件
               sed -i "s/LOGIN_USER_NAME=.*/LOGIN_USER_NAME=${LOGIN_NEW_USER_NAME}/g" ${GS_WHOLE_PATH}
               # 更改程序
-              sed -i "s/LOGIN_USER_NAME/${LOGIN_NEW_USER_NAME}/g" ${SHARED_DIR}/www/gm/GmTools.php
+              # sed -i "s/LOGIN_USER_NAME/${LOGIN_NEW_USER_NAME}/g" ${SHARED_DIR}/www/gm/GmTools.php
               break
             done
           else
             # 修改配置文件
             sed -i "s/LOGIN_USER_NAME=.*/LOGIN_USER_NAME=${LOGIN_USER_NAME}/g" ${GS_WHOLE_PATH}
             # 更改程序
-            sed -i "s/LOGIN_USER_NAME/${LOGIN_USER_NAME}/g" ${SHARED_DIR}/www/gm/GmTools.php
+            # sed -i "s/LOGIN_USER_NAME/${LOGIN_USER_NAME}/g" ${SHARED_DIR}/www/gm/GmTools.php
           fi
           break
         fi
@@ -113,7 +113,7 @@ EOF
               if ((${#LOGIN_NEW_PASSWORD} >= 5)); then
                 sed -i "s/LOGIN_PASSWORD=.*/LOGIN_PASSWORD=${LOGIN_NEW_PASSWORD}/g" ${GS_WHOLE_PATH}
                 # 更改程序
-                sed -i "s/LOGIN_PASSWORD/${LOGIN_NEW_PASSWORD}/g" ${SHARED_DIR}/www/gm/GmTools.php
+                # sed -i "s/LOGIN_PASSWORD/${LOGIN_NEW_PASSWORD}/g" ${SHARED_DIR}/www/gm/GmTools.php
                 break
               else
                 echo "${CRED}密码最少要6个字符! ${CEND}"
@@ -123,7 +123,7 @@ EOF
           else
             sed -i "s/LOGIN_PASSWORD=.*/LOGIN_PASSWORD=${LOGIN_PASSWORD}/g" ${GS_WHOLE_PATH}
             # 更改程序
-            sed -i "s/LOGIN_PASSWORD/${LOGIN_PASSWORD}/g" ${SHARED_DIR}/www/gm/GmTools.php
+            # sed -i "s/LOGIN_PASSWORD/${LOGIN_PASSWORD}/g" ${SHARED_DIR}/www/gm/GmTools.php
             break
           fi
           break
@@ -146,7 +146,7 @@ EOF
               if ((${#PRIVATE_NEW_KEY} >= 5)); then
                 sed -i "s/PRIVATE_KEY=.*/PRIVATE_KEY=${PRIVATE_NEW_KEY}/g" ${GS_WHOLE_PATH}
                 # 更改程序
-                sed -i "s/PRIVATE_KEY/${PRIVATE_NEW_KEY}/g" ${SHARED_DIR}/www/gm/GmTools.php
+                # sed -i "s/PRIVATE_KEY/${PRIVATE_NEW_KEY}/g" ${SHARED_DIR}/www/gm/GmTools.php
                 break
               else
                 echo "${CRED}密码最少要6个字符! ${CEND}"
@@ -156,15 +156,15 @@ EOF
           else
             sed -i "s/PRIVATE_KEY=.*/PRIVATE_KEY=${PRIVATE_KEY}/g" ${GS_WHOLE_PATH}
             # 更改程序
-            sed -i "s/PRIVATE_KEY/${PRIVATE_KEY}/g" ${SHARED_DIR}/www/gm/GmTools.php
+            # sed -i "s/PRIVATE_KEY/${PRIVATE_KEY}/g" ${SHARED_DIR}/www/gm/GmTools.php
             break
           fi
           break
         fi
       done
       # 替换账号密码
-      sed -i "s/DB_ROOT_PASSWORD/${TL_MYSQL_PASSWORD}/g" ${SHARED_DIR}/www/gm/GmTools.php
-      sed -i "s/WEB_ROOT_PASSWORD/${TL_MYSQL_PASSWORD}/g" ${SHARED_DIR}/www/gm/GmTools.php
+      # sed -i "s/DB_ROOT_PASSWORD/${TL_MYSQL_PASSWORD}/g" ${SHARED_DIR}/www/gm/GmTools.php
+      # sed -i "s/WEB_ROOT_PASSWORD/${TL_MYSQL_PASSWORD}/g" ${SHARED_DIR}/www/gm/GmTools.php
 
     else
       echo -e "${CRED} 请联系GS游享网购买在线GM软件包!!! https://gsgameshare.com, 客服Q：1303588722 ${CEND}"
@@ -181,10 +181,10 @@ EOF
       cat "${GLOBAL_SCRIPT}" | grep "GMDATA_ISOPEN_GMTOOLS" >/dev/null 2>&1
       if [ $? -eq 1 ]; then
         # 表示没开启
-        echo "GMDATA_ISOPEN_GMTOOLS=1" >>"${GLOBAL_SCRIPT}"
+        echo -e "\r\nGMDATA_ISOPEN_GMTOOLS=1\r\n" >>"${GLOBAL_SCRIPT}"
       fi
       # 表示没开启
-      echo "PRIVATE_KEY=${PRIVATE_KEY}" >>"${GLOBAL_SCRIPT}"
+      echo -e "\r\nPRIVATE_KEY=\'${PRIVATE_KEY}\'\r\n" >>"${GLOBAL_SCRIPT}"
 
     fi
 
@@ -194,15 +194,114 @@ EOF
       if [ $? -eq 1 ]; then
         \cp -rf ${GS_PROJECT}/config/tlbb/Public/Data/Script/GmSecondsTimer.lua /tlgame/tlbb/Public/Data/Script
         # 表示没有这个脚本编号，
-        echo "591818=\\GmSecondsTimer.lua" >>${SCRIPT_DAT}
-        if [ -f "/tlgame/tlbb/Public/Data/Script/GmSecondsTimer.lua" ]; then
-          cat /tlgame/tlbb/Public/Data/Script/GmSecondsTimer.lua | grep "PRIVATE_KEY" >/dev/null 2>&1
-          if [ $? -eq 1 ]; then
-            sed -i "s/PRIVATE_KEY/${PRIVATE_KEY}/g" /tlgame/tlbb/Public/Data/Script/GmSecondsTimer.lua
-          fi
-        fi
+        echo "\r\n591818=\\GmSecondsTimer.lua\r\n" >>${SCRIPT_DAT}
       fi
     fi
+
+    DB_IP=$(docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' gsmysql)
+    REDIS_IP=$(docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' gsredis)
+
+    # 定义配置变量（按需修改这些值）
+    LOGIN_USER_NAME="${LOGIN_USER_NAME}"
+    LOGIN_PASSWORD="${LOGIN_PASSWORD}"
+    PRIVATE_KEY="${PRIVATE_KEY}"
+    DB_HOST="${DB_IP}"
+    DB_NAME="gs_gmtools"
+    DB_USER="root"
+    DB_PASS="${TL_MYSQL_PASSWORD}"
+    DB_PORT="3306"
+    DB_CHARSET="utf8"
+    WEB_HOST="${DB_IP}"
+    WEB_NAME="web"
+    WEB_PORT="3306"
+    WEB_USER="root"
+    WEB_PASS="${TL_MYSQL_PASSWORD}"
+    WEB_charset="utf8"
+    REDIS_HOST="${REDIS_IP}"
+    REDIS_PORT="6379"
+    REDIS_PASSWORD="${REDIS_PASSWORD}"
+    REDIS_DATABASE="0"
+    REDIS_TIMEOUT=30
+    REDIS_PERSISTENT=false
+
+    # 定义替换规则（PHP变量名 -> Shell变量名）
+    declare -A replacements=(
+      ["db_host"]="DB_HOST"
+      ["db_name"]="DB_NAME"
+      ["db_user"]="DB_USER"
+      ["db_pass"]="DB_PASS"
+      ["db_port"]="DB_PORT"
+      ["db_charset"]="DB_CHARSET"
+      ["web_host"]="WEB_HOST"
+      ["web_name"]="WEB_NAME"
+      ["web_port"]="WEB_PORT"
+      ["web_user"]="WEB_USER"
+      ["web_pass"]="WEB_PASS"
+      ["web_charset"]="WEB_charset"
+      ["redis_host"]="REDIS_HOST"
+      ["redis_port"]="REDIS_PORT"
+      ["redis_password"]="REDIS_PASSWORD"
+      ["redis_database"]="REDIS_DATABASE"
+      ["redis_timeout"]="REDIS_TIMEOUT"
+      ["redis_persistent"]="REDIS_PERSISTENT"
+      ["privateKey"]="PRIVATE_KEY"
+      ["loginUserName"]="LOGIN_USER_NAME"
+      ["loginPassword"]="LOGIN_PASSWORD"
+    )
+
+    # 构建sed替换命令（关键修复点）
+    sed_commands=()
+    for php_key in "${!replacements[@]}"; do
+      shell_var="${replacements[$php_key]}"
+      value="${!shell_var}"
+
+      # 修复转义逻辑：仅处理必要字符，避免末尾添加反斜杠
+      escaped_value=$(printf '%s' "$value" | sed -e 's/[\/&]/\\&/g' -e 's/\\/\\\\/g' | tr -d '\n')
+
+      # 构建精确匹配模式（匹配PHP类属性赋值语法）
+      sed_commands+=("-e" "s|public static \\\$${php_key} = '[^']*'|public static \\\$${php_key} = '${escaped_value}'|g")
+    done
+
+    # 执行替换并保留文件格式
+    sed "${sed_commands[@]}" <<'EOF' >/tlgame/www/gm/DBConfig.php
+<?php
+ 
+class DBConfig
+{
+    // GM工具数据库配置
+    public static $db_host = 'DB_HOST';
+    public static $db_name = 'DB_NAME';
+    public static $db_user = 'DB_USER';
+    public static $db_pass = 'DB_PASS';
+    public static $db_port = 'DB_PORT';
+    public static $db_prefix = '';
+    public static $db_charset = 'DB_CHARSET';
+ 
+    // 账号数据库配置
+    public static $web_host = 'WEB_HOST';
+    public static $web_name = '~';
+    public static $web_user = 'WEB_USER';
+    public static $web_pass = 'WEB_PASS';
+    public static $web_port = 'WEB_PORT';
+    public static $web_prefix = '';
+    public static $web_charset = 'WEB_CHARSET';
+ 
+    // Redis配置
+    public static $redis_host = 'REDIS_HOST';
+    public static $redis_port = 'REDIS_PORT';
+    public static $redis_password = 'REDIS_PASSWORD';
+    public static $redis_database = 'REDIS_DATABASE';
+    public static $redis_timeout = 'REDIS_TIMEOUT';
+    public static $redis_persistent = 'REDIS_PERSISTENT';
+ 
+    // 业务配置
+    public static $privateKey = 'PRIVATE_KEY';
+    public static $loginUserName = 'LOGIN_USER_NAME';
+    public static $loginPassword = 'LOGIN_PASSWORD';
+}
+EOF
+
+    echo "配置文件生成成功：DBConfig.php"
 
   }
 
@@ -249,7 +348,6 @@ server {
     root   /www/gm;
     index  index.php index.html index.htm;
 
-    access_log  /var/log/nginx/nginx.mg.access.log;
     error_log  /var/log/nginx/nginx.gm.error.log  warn;
     
     error_page   500 502 503 504  /50x.html;
