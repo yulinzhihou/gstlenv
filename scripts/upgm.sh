@@ -47,7 +47,6 @@ shop2=-1
 shop3=-1
 ReputationID=-1
 
-
 EOF
   )
   # 部署 GM 网站
@@ -83,15 +82,11 @@ EOF
               LOGIN_NEW_USER_NAME=${LOGIN_NEW_USER_NAME:-${LOGIN_USER_NAME}}
               # 修改配置文件
               sed -i "s/LOGIN_USER_NAME=.*/LOGIN_USER_NAME=${LOGIN_NEW_USER_NAME}/g" ${GS_WHOLE_PATH}
-              # 更改程序
-              # sed -i "s/LOGIN_USER_NAME/${LOGIN_NEW_USER_NAME}/g" ${SHARED_DIR}/www/gm/GmTools.php
               break
             done
           else
             # 修改配置文件
             sed -i "s/LOGIN_USER_NAME=.*/LOGIN_USER_NAME=${LOGIN_USER_NAME}/g" ${GS_WHOLE_PATH}
-            # 更改程序
-            # sed -i "s/LOGIN_USER_NAME/${LOGIN_USER_NAME}/g" ${SHARED_DIR}/www/gm/GmTools.php
           fi
           break
         fi
@@ -112,8 +107,6 @@ EOF
               LOGIN_NEW_PASSWORD=${LOGIN_NEW_PASSWORD:-${LOGIN_PASSWORD}}
               if ((${#LOGIN_NEW_PASSWORD} >= 5)); then
                 sed -i "s/LOGIN_PASSWORD=.*/LOGIN_PASSWORD=${LOGIN_NEW_PASSWORD}/g" ${GS_WHOLE_PATH}
-                # 更改程序
-                # sed -i "s/LOGIN_PASSWORD/${LOGIN_NEW_PASSWORD}/g" ${SHARED_DIR}/www/gm/GmTools.php
                 break
               else
                 echo "${CRED}密码最少要6个字符! ${CEND}"
@@ -122,8 +115,6 @@ EOF
             done
           else
             sed -i "s/LOGIN_PASSWORD=.*/LOGIN_PASSWORD=${LOGIN_PASSWORD}/g" ${GS_WHOLE_PATH}
-            # 更改程序
-            # sed -i "s/LOGIN_PASSWORD/${LOGIN_PASSWORD}/g" ${SHARED_DIR}/www/gm/GmTools.php
             break
           fi
           break
@@ -145,8 +136,6 @@ EOF
               PRIVATE_NEW_KEY=${PRIVATE_NEW_KEY:-${PRIVATE_KEY}}
               if ((${#PRIVATE_NEW_KEY} >= 5)); then
                 sed -i "s/PRIVATE_KEY=.*/PRIVATE_KEY=${PRIVATE_NEW_KEY}/g" ${GS_WHOLE_PATH}
-                # 更改程序
-                # sed -i "s/PRIVATE_KEY/${PRIVATE_NEW_KEY}/g" ${SHARED_DIR}/www/gm/GmTools.php
                 break
               else
                 echo "${CRED}密码最少要6个字符! ${CEND}"
@@ -155,25 +144,14 @@ EOF
             done
           else
             sed -i "s/PRIVATE_KEY=.*/PRIVATE_KEY=${PRIVATE_KEY}/g" ${GS_WHOLE_PATH}
-            # 更改程序
-            # sed -i "s/PRIVATE_KEY/${PRIVATE_KEY}/g" ${SHARED_DIR}/www/gm/GmTools.php
             break
           fi
           break
         fi
       done
-      # 替换账号密码
-      # sed -i "s/DB_ROOT_PASSWORD/${TL_MYSQL_PASSWORD}/g" ${SHARED_DIR}/www/gm/GmTools.php
-      # sed -i "s/WEB_ROOT_PASSWORD/${TL_MYSQL_PASSWORD}/g" ${SHARED_DIR}/www/gm/GmTools.php
-
     else
       echo -e "${CRED} 请联系GS游享网购买在线GM软件包!!! https://gsgameshare.com, 客服Q：1303588722 ${CEND}"
       exit
-    fi
-
-    # 创建目录
-    if [ ! -d "/tlgame/tlbb/Server/SecondsTimer" ]; then
-      mkdir -p /tlgame/tlbb/Server/SecondsTimer
     fi
 
     # 部署脚本到服务端
@@ -183,9 +161,11 @@ EOF
         # 表示没开启
         echo -e "\r\nGMDATA_ISOPEN_GMTOOLS=1\r\n" >>"${GLOBAL_SCRIPT}"
       fi
-      # 表示没开启
-      echo -e "\r\nPRIVATE_KEY=\'${PRIVATE_KEY}\'\r\n" >>"${GLOBAL_SCRIPT}"
-
+      cat "${GLOBAL_SCRIPT}" | grep "PRIVATE_KEY=" >/dev/null 2>&1
+      if [ $? -eq 1 ]; then
+        # 表示没开启
+        echo -e "\r\nPRIVATE_KEY=\'${PRIVATE_KEY}\'\r\n" >>"${GLOBAL_SCRIPT}"
+      fi
     fi
 
     # 增加脚本
