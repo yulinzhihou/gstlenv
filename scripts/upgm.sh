@@ -21,10 +21,6 @@ if [ $? -eq 0 ]; then
 
   GLOBAL_SCRIPT="/tlgame/tlbb/Public/Data/Script/ScriptGlobal.lua"
   SCRIPT_DAT="/tlgame/tlbb/Public/Data/Script.dat"
-  LUOYANG_SCENE="/tlgame/tlbb/Public/Scene/luoyang_monster.ini"
-  DALI_SCENE="/tlgame/tlbb/Public/Scene/dali_monster.ini"
-  SU_ZHOU_SCENE="/tlgame/tlbb/Public/Scene/suzhou_monster.ini"
-  LOULAN_SCENE="/tlgame/tlbb/Public/Scene/loulangucheng_monster.ini"
 
   MONSTER_INI=$(
     cat <<EOF
@@ -159,12 +155,12 @@ EOF
       cat "${GLOBAL_SCRIPT}" | grep "GMDATA_ISOPEN_GMTOOLS" >/dev/null 2>&1
       if [ $? -eq 1 ]; then
         # 表示没开启
-        echo -e "\r\nGMDATA_ISOPEN_GMTOOLS=1\r\n" >>"${GLOBAL_SCRIPT}"
+        echo "\r\nGMDATA_ISOPEN_GMTOOLS=1\r\n" >>"${GLOBAL_SCRIPT}"
       fi
       cat "${GLOBAL_SCRIPT}" | grep "PRIVATE_KEY=" >/dev/null 2>&1
       if [ $? -eq 1 ]; then
         # 表示没开启
-        echo -e "\r\nPRIVATE_KEY=\'${PRIVATE_KEY}\'\r\n" >>"${GLOBAL_SCRIPT}"
+        echo "\r\nPRIVATE_KEY='${PRIVATE_KEY}'\r\n" >>"${GLOBAL_SCRIPT}"
       fi
     fi
 
@@ -178,26 +174,26 @@ EOF
       fi
     fi
 
-    DB_IP=$(docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' gsmysql)
-    REDIS_IP=$(docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' gsredis)
+    # DB_IP=$(docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' gsmysql)
+    # REDIS_IP=$(docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' gsredis)
 
     # 定义配置变量（按需修改这些值）
     LOGIN_USER_NAME="${LOGIN_USER_NAME}"
     LOGIN_PASSWORD="${LOGIN_PASSWORD}"
     PRIVATE_KEY="${PRIVATE_KEY}"
-    DB_HOST="${DB_IP}"
+    DB_HOST="gsmysql"
     DB_NAME="gs_gmtools"
     DB_USER="root"
     DB_PASS="${TL_MYSQL_PASSWORD}"
     DB_PORT="3306"
     DB_CHARSET="utf8"
-    WEB_HOST="${DB_IP}"
+    WEB_HOST="gsmysql"
     WEB_NAME="web"
     WEB_PORT="3306"
     WEB_USER="root"
     WEB_PASS="${TL_MYSQL_PASSWORD}"
     WEB_charset="utf8"
-    REDIS_HOST="${REDIS_IP}"
+    REDIS_HOST="gsredis"
     REDIS_PORT="6379"
     REDIS_PASSWORD="${REDIS_PASSWORD}"
     REDIS_DATABASE="0"

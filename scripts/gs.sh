@@ -21,45 +21,45 @@ if [ $? -eq 0 ]; then
   show_help() {
     cat <<EFF
 ${CYELLOW}###########################################
-#                                         #
-#    此命令只获取命令帮助，不会直接执行   #
-#                                         #
-#    GS游享网  https://gsgameshare.com    #
-#                                         #
-#    用法1：gs 01  获取第一个命令帮助文档 #
-#    用法2：gs 1  获取第一个命令帮助文档  #
+#                                         
+#    此命令只获取命令帮助，不会直接执行   
+#                                         
+#    GS游享网  https://gsgameshare.com    
+#                                         
+#    用法1：gs 01  获取第一个命令帮助文档 
+#    用法2：gs 1  获取第一个命令帮助文档  
 #    用法3：gs untar 获取第一个命令帮助文档
-#                                         #
+#                                         
 ###########################################
-#    01:untar      解压服务端             #
-#    02:setini     配置ini文件            #
-#    03:runtlbb    开启服务端             #
-#    04:runtop     查看开服状态           #
-#    05:link       连接容器               #
-#    06:swap       增加虚拟缓存           #
-#    07:rebuild    重构环境               #
-#    08:remove     移除环境               #
-#    09:setconfig  设置配置参数           #
-#    10:change     换端                   #
-#    11:restart    重启容器               #
-#    12:gsbak      备份数据               #
-#    13:upcmd      更新全局命令           #
-#    14:upgm       配置在线GM网站         #
-#    15:upow       配置开服网站           #
-#    16:step       分步调试开服           #
-#    17:gstl       环境安装初始化         #
-#    18:backup     手动备份数据库         #
-#    19:close      关服                   #
-#    20:gslog      查看日志               #
-#    21:rmlog      删除日志               #
-#    22:curgs      查看配置               #
-#    23:setpoint   设置默认充值点数       #
-#    24:reset      删档数据库             #
-#    25:setvalid   解/封号                #
-#    26:restore    还原数据库             #
-#    27:delbak    删除备份文件           #
-#    28:gsfix    修复环境安装           #
-#    0:q 退出,或者按 CTRL+C               #
+#    01:untar      解压服务端             
+#    02:setini     配置ini文件            
+#    03:runtlbb    开启服务端             
+#    04:runtop     查看开服状态           
+#    05:link       连接容器               
+#    06:swap       增加虚拟缓存           
+#    07:rebuild    重构环境               
+#    08:remove     移除环境               
+#    09:setconfig  设置配置参数           
+#    10:change     换端                   
+#    11:restart    重启容器               
+#    12:gsbak      备份数据               
+#    13:upcmd      更新全局命令           
+#    14:upgm       配置在线GM网站         
+#    15:upow       配置开服网站           
+#    16:step       分步调试开服           
+#    17:gstl       环境安装初始化         
+#    18:backup     手动备份数据库         
+#    19:close      关服                   
+#    20:gslog      查看日志               
+#    21:rmlog      删除日志               
+#    22:curgs      查看配置               
+#    23:setpoint   设置默认充值点数       
+#    24:reset      删档数据库             
+#    25:setvalid   解/封号                
+#    26:restore    还原数据库             
+#    27:delbak     删除备份文件           
+#    28:gsfix      修复环境安装           
+#    0:q 退出,或者按 CTRL+C               
 ###########################################${CEND}
 EFF
   }
@@ -227,11 +227,11 @@ EOF
   #    14:upgm
   upgm_help() {
     cat <<EOF
-${CRED}upgm${CEND} ${CGREEN}作用: 增加GM网站，暂时只支持GS游享网定制的在线GM管理系统
+${CRED}upgm${CEND} ${CGREEN}作用: 增加GM网站，需要付费到网站购买GM源码，也算是对GS游享开源环境的支持
       用法: upgm
-      条件: 无
+      条件: https://gsgameshare.com/ 购买
       参数: 无 
-      说明: 如有问题，可以向客服反馈
+      说明: 如有问题，可以向客服反馈，购买后，上传到 /root 目录下。
 ${CEND}
 EOF
   }

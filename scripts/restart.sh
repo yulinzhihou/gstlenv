@@ -53,7 +53,7 @@ if [ $? -eq 0 ]; then
     if [ $? -eq 0 ]; then
       # 删除因为改版本导致引擎启动失败的dump文件
       cd ${ROOT_PATH}/${GSDIR} && rm -rf core.*
-      echo -e "${CSUCCESS} 服务端已经重启成功，如果需要重新开服，请运行【runtlbb】命令 ${CEND}"
+      echo -e "${CSUCCESS} 服务端已经重启成功，如果需要重新开服，请运行【runtlbb】命令，如果需要配置在线GM，请运行【upgm】命令，再运行【runtlbb】命令 ${CEND}"
       exit 0
     else
       echo -e "${GSISSUE}\r\n"

@@ -220,7 +220,7 @@ setconfig_rebuild() {
         # 修改 WEB_GM_PORT
         while :; do
             echo
-            read -e -p "当前【网站端口】为：${CYELLOW}[${WEB_GM_PORT}]${CEND}，是否需要修改【GM网站端口】 [y/n](默认: n): " IS_MODIFY
+            read -e -p "当前【GM网站端口】为：${CYELLOW}[${WEB_GM_PORT}]${CEND}，是否需要修改【GM网站端口】 [y/n](默认: n): " IS_MODIFY
             IS_MODIFY=${IS_MODIFY:-'n'}
             if [[ ! ${IS_MODIFY} =~ ^[y,n]$ ]]; then
                 echo "${CWARNING}输入错误! 请输入 'y' 或者 'n',当前【网站端口】为：[${WEB_GM_PORT}]${CEND}"
@@ -276,9 +276,7 @@ setconfig_rebuild() {
         exit 1
     fi
     # 先停止容器，再将容器删除，重新根据镜像文件以及配置文件，通过docker-compose重新生成容器环境
-    docker stop gsmysql gsnginx gsserver &&
-        docker rm -f gsmysql gsnginx gsserver &&
-        rm -rf /tlgame/gsmysql/mysql
+    cd ${ROOT_PATH}/${GSDIR} && docker-compose down && docker-compose up -d
 }
 
 # 备份数据

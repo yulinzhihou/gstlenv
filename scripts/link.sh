@@ -32,8 +32,8 @@ if [ $? -eq 0 ]; then
     'gsnginx' | 'nginx' | 'n')
       cd ${ROOT_PATH}/${GSDIR} && docker-compose exec gsnginx /bin/sh
       ;;
-    'redis' | 'gsredis' | 'r')
-      cd ${ROOT_PATH}/${GSDIR} && docker-compose exec gsredis /bin/bash
+    'gsredis' | 'redis' | 'r')
+      cd ${ROOT_PATH}/${GSDIR} && docker-compose exec gsredis /bin/sh
       ;;
     'gsphp' | 'php' | 'p')
       cd ${ROOT_PATH}/${GSDIR} && docker-compose exec gsphp /bin/sh

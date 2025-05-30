@@ -283,7 +283,7 @@ EOF
         # chown -R root:root ${GS_PROJECT_PATH} &&
         chmod -R 777 ${GS_PROJECT_PATH}/billing ${GS_PROJECT_PATH}/tlbb
         if [ $? -eq 0 ]; then
-            echo -e "${CSUCCESS}配置文件已经写入成功，可以执行【runtlbb】进行开服操作！！${CEND}"
+            echo -e "${CSUCCESS}配置文件已经写入成功，可以执行【runtlbb】进行开服操作！！如需要配置在线GM，请执行【upgm】进行配置，再执行【runtlbb】进行开服操作！！${CEND}"
             exit 0
         else
             echo -e "${GSISSUE}\r\n"
