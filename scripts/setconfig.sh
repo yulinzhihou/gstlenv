@@ -228,7 +228,7 @@ setconfig_rebuild() {
                 if [ "${IS_MODIFY}" == 'y' ]; then
                     while :; do
                         echo
-                        read -e -p "请输入【网站端口】：(默认: ${WEB_GM_DEFAULT_PORT}): " WEB_NEW_PORT
+                        read -e -p "请输入【网站端口】：(默认: ${WEB_GM_DEFAULT_PORT}): " WEB_GM_NEW_PORT
                         WEB_GM_NEW_PORT=${WEB_GM_NEW_PORT:-${WEB_GM_PORT}}
                         if [ ${WEB_GM_NEW_PORT} -eq ${WEB_GM_DEFAULT_PORT} -o ${WEB_GM_NEW_PORT} -gt 1 -a ${WEB_GM_NEW_PORT} -lt 65535 ] >/dev/null 2>&1 >/dev/null 2>&1 >/dev/null 2>&1; then
                             sed -i "s/WEB_GM_PORT=.*/WEB_GM_PORT=${WEB_GM_NEW_PORT}/g" ${GS_WHOLE_PATH}
