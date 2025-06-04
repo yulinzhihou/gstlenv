@@ -32,11 +32,9 @@ while :; do
     fi
   done
 
-  docker stop gsmysql gsnginx gsserver gsphp gsredis
-  docker rm -f gsmysql gsnginx gsserver gsphp gsredis
+  cd ${ROOT_PATH}/${GSDIR} && docker-compose down --rmi all
   mv /tlgame /tlgame-$(date +%Y%m%d%H%I%S)
   \cp -rf ${ROOT_PATH}/${GSDIR}/.env /root/gsenv-$(date +%Y%m%d%H%I%S)
-  cd ${ROOT_PATH}/${GSDIR} && docker-compose down --rmi all
   chattr -i ${GS_WHOLE_PATH}
   rm -rf /usr/local/bin/.env
   rm -rf ${ROOT_PATH}/${GSDIR}

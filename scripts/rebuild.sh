@@ -36,8 +36,8 @@ if [ $? -eq 0 ]; then
 
   }
 
-  # mysql 5.1 初始化
-  init_mysql51() {
+  # mysql 初始化
+  init_mysql() {
     docker exec -d gsmysql /bin/bash /usr/local/bin/init_db.sh
   }
 
@@ -51,14 +51,14 @@ if [ $? -eq 0 ]; then
     echo -ne "${CYELLOW}正在重构，数据不会清除……${CEND}\r\n"
     #重构前，先备份数据库以及版本数据。
     setconfig_backup &&
-      docker stop gsmysql gsnginx gsserver &&
-      docker rm gsmysql gsnginx gsserver &&
+    cd ${ROOT_PATH}/${GSDIR} &&
+      docker-compose down &&
       rm -rf /tlgame/gsmysql/mysql &&
       rm -rf /tlgame/tlbb/* &&
       cd ${ROOT_PATH}/${GSDIR} &&
       docker-compose up -d &&
       setconfig_restore &&
-      init_mysql51
+      init_mysql
     if [ $? -eq 0 ]; then
       echo -e "${CSUCCESS}环境已经重构成功，请上传服务端到指定位置，然后再开服操作！！可以重新上传服务端进行【untar】【setini】【runtlbb】进行开服操作！！${CEND}"
       exit 0

@@ -21,20 +21,18 @@ if [ $? -eq 0 ]; then
   function backup_tlbb() {
     backup all
   }
-  # mysql 5.1 初始化
-  init_mysql51() {
+  # mysql 初始化
+  init_mysql() {
     docker exec -it gsmysql /bin/bash /usr/local/bin/init_db.sh
   }
 
   function main() {
-    docker stop gsmysql gsnginx gsserver &&
-      docker rm gsmysql gsnginx gsserver &&
+    cd ${ROOT_PATH}/${GSDIR} && docker-compose down &&
       rm -rf /tlgame/gsmysql/mysql &&
       rm -rf /tlgame/tlbb/* &&
       untar &&
-      cd ${ROOT_PATH}/${GSDIR} &&
       docker-compose up -d &&
-      init_mysql51 &&
+      init_mysql &&
       setini &&
       runtlbb
     if [ $? -eq 0 ]; then
