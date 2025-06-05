@@ -305,7 +305,7 @@ change_password() {
         docker exec -i gsmysql mysql -u root -p"123456" -e "\
         SET PASSWORD FOR 'root'@'localhost' = PASSWORD('$TL_MYSQL_PASSWORD'); \
         SET PASSWORD FOR 'root'@'%' = PASSWORD('$TL_MYSQL_PASSWORD'); \
-        FLUSH PRIVILEGES;"
+        FLUSH PRIVILEGES;" >/dev/null 2>&1
 
         echo -e "${CYELLOW}验证密码修改...${CEND}"
         docker exec -i gsmysql mysql -u root -p"$TL_MYSQL_PASSWORD" -e "STATUS;" >/dev/null 2>&1
@@ -322,7 +322,7 @@ change_password() {
         docker exec -i gsmysql mysql -u root -p"123456" -e "\
         ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '$TL_MYSQL_PASSWORD'; \
         ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY '$TL_MYSQL_PASSWORD'; \
-        FLUSH PRIVILEGES;"
+        FLUSH PRIVILEGES;" >/dev/null 2>&1
 
         echo "验证密码修改..."
         docker exec -i gsmysql mysql -u root -p"$TL_MYSQL_PASSWORD" -e "STATUS;" >/dev/null 2>&1
@@ -340,7 +340,7 @@ change_password() {
         docker exec -i gsmysql mysql -u root -p"123456" -e "\
         ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '$TL_MYSQL_PASSWORD'; \
         ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY '$TL_MYSQL_PASSWORD'; \
-        FLUSH PRIVILEGES;"
+        FLUSH PRIVILEGES;" >/dev/null 2>&1
 
         echo "验证密码修改..."
         docker exec -i gsmysql mysql -u root -p"$TL_MYSQL_PASSWORD" -e "STATUS;" >/dev/null 2>&1

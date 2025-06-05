@@ -64,6 +64,8 @@ if [ $? -eq 0 ]; then
     # 先将编码转换一下
     # 三个 ini 文件的替换
     # 定义新值（根据你的需求修改）
+    MOTHER_IP="0.0.0.0"  # Mother区块的新IP
+    WORLD_IP="127.0.0.1" # World区块的新IP
     IP1="${BILLING_SERVER_IPADDR}"
     PORT1="${BILLING_PORT}"
     IP2="127.0.0.1"
@@ -99,12 +101,50 @@ BEGIN {
 ' "${GS_PROJECT_PATH}/tlbb/Server/Config/ServerInfo.ini" >${BASE_PATH}/tmp1 &&
         # 1. 强制转换换行符为 CRLF（双重保障）
         unix2dos ${BASE_PATH}/tmp1 >/dev/null 2>&1
-    # 2. 清理孤立 \r 字符（避免 \015 问题）
-    # sed -i 's/\r$//' tmp1 &&
-    # 3. 强制转为 ASCII 编码（清理特殊字符）
-    # iconv -f ASCII -t ASCII//TRANSLIT//IGNORE -o tmp1 tmp1 &&
 
-    # 定义新值（根据你的需求修改）
+    \cp -rf ${BASE_PATH}/tmp1 "${GS_PROJECT_PATH}/tlbb/Server/Config/ServerInfo.ini"
+
+    # 使用awk进行精准替换
+    awk -v mother_ip="$MOTHER_IP" -v world_ip="$WORLD_IP" '
+# 状态标记
+BEGIN {
+    in_mother = 0
+    in_world = 0
+}
+ 
+# 匹配区块标题（支持大小写和空格）
+match($0, /^\[[ \t]*[Mm][Oo][Tt][Hh][Ee][Rr][ \t]*\]/, arr) {
+    in_mother = 1
+    in_world = 0
+    print
+    next
+}
+match($0, /^\[[ \t]*[Ww][Oo][Rr][Ll][Dd][ \t]*\]/, arr) {
+    in_world = 1
+    in_mother = 0
+    print
+    next
+}
+ 
+# 处理IP行（支持大小写和空格）
+{
+    # Mother区块处理
+    if (in_mother && match($0, /^[ \t]*[Ii][Pp][ \t]*=/, arr)) {
+        $0 = "IP=" mother_ip
+        in_mother = 0  # 确保只替换一次
+    }
+    # World区块处理
+    else if (in_world && match($0, /^[ \t]*[Ii][Pp][ \t]*=/, arr)) {
+        $0 = "IP=" world_ip
+        in_world = 0  # 确保只替换一次
+    }
+    print
+}
+ 
+' "${GS_PROJECT_PATH}/tlbb/Server/Config/ServerInfo.ini" >${BASE_PATH}/tmp1 &&
+        # 1. 强制转换换行符为 CRLF（双重保障）
+        unix2dos ${BASE_PATH}/tmp1 >/dev/null 2>&1
+
     # 定义新值（根据你的需求修改）
     DBIP_NEW="gsmysql"
     DBPort_NEW="3306"
@@ -127,10 +167,6 @@ in_system && /^DBPassword=/ { $0="DBPassword=" dbpassword }
 ' "${GS_PROJECT_PATH}/tlbb/Server/Config/LoginInfo.ini" >${BASE_PATH}/tmp2 &&
         # 1. 强制转换换行符为 CRLF（双重保障）
         unix2dos ${BASE_PATH}/tmp2 >/dev/null 2>&1
-    # 2. 清理孤立 \r 字符（避免 \015 问题）
-    # sed -i 's/\r$//' tmp2 &&
-    # 3. 强制转为 ASCII 编码（清理特殊字符）
-    # iconv -f ASCII -t ASCII//TRANSLIT//IGNORE -o tmp2 tmp2 &&
 
     # 定义新值（根据你的需求修改）
     DBIP_NEW="gsmysql"
@@ -154,10 +190,6 @@ in_system && /^DBPassword=/ { $0="DBPassword=" dbpassword }
 ' "${GS_PROJECT_PATH}/tlbb/Server/Config/ShareMemInfo.ini" >${BASE_PATH}/tmp3 &&
         # 1. 强制转换换行符为 CRLF
         unix2dos ${BASE_PATH}/tmp3 >/dev/null 2>&1
-    # 2. 清理孤立 \r 字符
-    # sed -i 's/\r$//' tmp3 &&
-    # 3. 强制转为 ASCII 编码
-    # iconv -f ASCII -t ASCII//TRANSLIT//IGNORE -o tmp3 tmp3 &&
 
     # 定义变量（根据你的需求修改值）
     SERVER_VAR="gsmysql"
