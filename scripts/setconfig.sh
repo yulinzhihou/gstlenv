@@ -276,7 +276,7 @@ setconfig_rebuild() {
         exit 1
     fi
     # 先停止容器，再将容器删除，重新根据镜像文件以及配置文件，通过docker-compose重新生成容器环境
-    cd ${ROOT_PATH}/${GSDIR} && docker-compose down
+    cd ${ROOT_PATH}/${GSDIR} && docker-compose down && rm -rf /tlgame
 }
 
 # 备份数据
@@ -293,6 +293,63 @@ setconfig_restore() {
     if [ -f "/tlgame/tlbb-setconfig-backup.tar.gz" ]; then
         cd /tlgame && tar zxf tlbb-setconfig-backup.tar.gz && mv /tlgame/tlbb-setconfig-backup.tar.gz /tlgame/backup
         docker exec -d gsmysql /bin/bash /usr/local/bin/gsmysqlRestore.sh
+    fi
+}
+
+change_password() {
+    . /root/.gs/.env
+    # 判断是mysql多少版本
+    docker images | grep "gs_mysql51" >/dev/null 2>&1
+    if [ $? -eq 0 ]; then
+        # 表示为 mysql5.1 版本
+        docker exec -i gsmysql mysql -u root -p"123456" -e "\
+        SET PASSWORD FOR 'root'@'localhost' = PASSWORD('$TL_MYSQL_PASSWORD'); \
+        SET PASSWORD FOR 'root'@'%' = PASSWORD('$TL_MYSQL_PASSWORD'); \
+        FLUSH PRIVILEGES;"
+
+        echo -e "${CYELLOW}验证密码修改...${CEND}"
+        docker exec -i gsmysql mysql -u root -p"$TL_MYSQL_PASSWORD" -e "STATUS;" >/dev/null 2>&1
+        if [ $? -eq 0 ]; then
+            echo "✅ 密码修改成功！新密码已生效。"
+        else
+            echo "❌ 密码修改失败，请检查日志：docker logs gsmysql"
+        fi
+    fi
+
+    docker images | grep "gs_mysql57" >/dev/null 2>&1
+    if [ $? -eq 0 ]; then
+        # 表示为 mysql5.7 版本
+        docker exec -i gsmysql mysql -u root -p"123456" -e "\
+        ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '$TL_MYSQL_PASSWORD'; \
+        ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY '$TL_MYSQL_PASSWORD'; \
+        FLUSH PRIVILEGES;"
+
+        echo "验证密码修改..."
+        docker exec -i gsmysql mysql -u root -p"$TL_MYSQL_PASSWORD" -e "STATUS;" >/dev/null 2>&1
+
+        if [ $? -eq 0 ]; then
+            echo "✅ 密码修改成功！新密码已生效。"
+        else
+            echo "❌ 密码修改失败，请检查日志：docker logs gsmysql"
+        fi
+    fi
+
+    docker images | grep "gs_mysql80" >/dev/null 2>&1
+    if [ $? -eq 0 ]; then
+        # 表示为 mysql8.0 版本
+        docker exec -i gsmysql mysql -u root -p"123456" -e "\
+        ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '$TL_MYSQL_PASSWORD'; \
+        ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY '$TL_MYSQL_PASSWORD'; \
+        FLUSH PRIVILEGES;"
+
+        echo "验证密码修改..."
+        docker exec -i gsmysql mysql -u root -p"$TL_MYSQL_PASSWORD" -e "STATUS;" >/dev/null 2>&1
+
+        if [ $? -eq 0 ]; then
+            echo "✅ 密码修改成功！新密码已生效。"
+        else
+            echo "❌ 密码修改失败，请检查日志：docker logs gsmysql"
+        fi
     fi
 }
 
@@ -321,7 +378,9 @@ main() {
                     # 开环境
                     cd ${ROOT_PATH}/${GSDIR} && docker-compose up -d &&
                     # 还原数据
-                    setconfig_restore
+                    setconfig_restore &&
+                    # 修改密码
+                    change_password
 
                 if [ ! -d /tlgame/tlbb/Server/Config ]; then
                     echo -e "${CSUCCESS}未发现版本，请上传版本后依次执行 【 untar 】【 setini 】【 runtlbb 】进行开服！！${CEND}"
@@ -334,6 +393,8 @@ main() {
                 setconfig_rebuild &&
                     # 开环境
                     cd ${ROOT_PATH}/${GSDIR} && docker-compose up -d &&
+                    # 修改密码
+                    change_password &&
                     rm -rf /tlgame/tlbb-setconfig-backup.tar.gz &&
                     docker exec -it gsmysql /bin/bash /usr/local/bin/gsmysqlRestore.sh reset
             fi

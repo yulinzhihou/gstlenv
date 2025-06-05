@@ -192,6 +192,11 @@ set_command() {
 
 # 设置服务器时间
 set_timezone() {
+    echo -e "${CYELLOW}########################################################################################${CEND}"
+    echo -e "${CYELLOW}#${CEND}"
+    echo -e "${CYELLOW}#\t\t欢迎使用【GS游享环境】 当前版本：${VERSION} 更新时间：${UPDATE} ！！！${CEND}"
+    echo -e "${CYELLOW}#${CEND}"
+    echo -e "${CYELLOW}########################################################################################${CEND}"
     echo -e "${CYELLOW}开始设置时区 ！！！${CEND}"
     rm -rf /etc/localtime
     timedatectl set-timezone Asia/Shanghai
@@ -219,8 +224,8 @@ do_install() {
     }
 }
 
-# mysql 5.1 初始化
-init_mysql51() {
+# mysql 初始化
+init_mysql() {
     docker exec -d gsmysql /bin/bash /usr/local/bin/init_db.sh
 }
 
@@ -355,7 +360,7 @@ EOF
 fi
 
 # 第三步：核心调用及安装
-do_install && gstl && init_mysql51
+do_install && gstl && init_mysql
 ##################################################################
 # GS环境安装结束
 ##################################################################
