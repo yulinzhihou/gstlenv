@@ -38,7 +38,15 @@ if [ $? -eq 0 ]; then
             chown -R root:root ${GS_PROJECT_PATH}/billing ${GS_PROJECT_PATH}/tlbb &&
             chmod -R 777 ${GS_PROJECT_PATH}/billing ${GS_PROJECT_PATH}/tlbb
     fi
-    \cp -rf ${BASE_PATH}/billing ${GS_PROJECT_PATH}/billing/
+
+    # 需要判断环境的版本，使用不同版本的 billing 程序
+    docker ps | grep "gs_server" >/dev/null 2>&1
+
+    if [ $? -eq 0 ]; then
+        \cp -rf ${BASE_PATH}/billing32 ${GS_PROJECT_PATH}/billing/billing
+    else
+        \cp -rf ${BASE_PATH}/billing64 ${GS_PROJECT_PATH}/billing/billing
+    fi
 
     #每次更新后，先重置更改过的文件
     if [ ${IS_DLQ} -eq 0 ]; then
