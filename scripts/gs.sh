@@ -74,6 +74,7 @@ ${CRED}untar${CEND} ${CGREEN}作用: 解压服务端压缩包，暂时只支持 
       说明: 如有问题，可以向客服反馈
 ${CEND}
 EOF
+    untar
   }
   #    02:setini
   setini_help() {
@@ -85,6 +86,7 @@ ${CRED}setini${CEND} ${CGREEN}作用: 自动设置服务器配置文件，3个�
       说明: 如有问题，可以向客服反馈
 ${CEND}
 EOF
+    setini
   }
 
   #    03:runtlbb
@@ -97,6 +99,7 @@ ${CRED}runtlbb${CEND} ${CGREEN}作用: 运行一键服务端命令，会调用�
       说明: 如有问题，可以向客服反馈
 ${CEND}
 EOF
+    runtlbb
   }
 
   #    04:runtop
@@ -109,6 +112,7 @@ ${CRED}runtop${CEND} ${CGREEN}作用: 查看开服是否成功，查看是否有
       说明: 如有问题，可以向客服反馈
 ${CEND}
 EOF
+    runtop
   }
 
   #    05:link
@@ -125,6 +129,7 @@ ${CRED}link${CEND} ${CGREEN}作用: 进行服务端所在的容器里面，此�
       说明: 如有问题，可以向客服反馈
 ${CEND}
 EOF
+    link
   }
 
   #    06:swap
@@ -137,6 +142,7 @@ ${CRED}swap${CEND} ${CGREEN}作用: 增加云服务器或者虚拟机系统的�
       说明: 如有问题，可以向客服反馈
 ${CEND}
 EOF
+    swap
   }
 
   #    07:rebuild
@@ -149,6 +155,7 @@ ${CRED}rebuild${CEND} ${CGREEN}作用: 删除当前所有容器，当前物理�
       说明: 如有问题，可以向客服反馈
 ${CEND}
 EOF
+    rebuild
   }
 
   #    08:remove
@@ -161,6 +168,7 @@ ${CRED}remove${CEND} ${CGREEN}作用: 删除所有已经构建好的数据，需
       说明: 如有问题，可以向客服反馈
 ${CEND}
 EOF
+    remove
   }
 
   #    09:setconfig
@@ -173,6 +181,7 @@ ${CRED}setconfig${CEND} ${CGREEN}作用: 会删除当前服务端版本里面的
       说明: 如有问题，可以向客服反馈
 ${CEND}
 EOF
+    setconfig
   }
 
   #    10:change
@@ -185,6 +194,7 @@ ${CRED}change${CEND} ${CGREEN}作用: 执行此命令，即可完成更换服务
       说明: 如有问题，可以向客服反馈
 ${CEND}
 EOF
+    change
   }
 
   #    11:restart
@@ -197,6 +207,7 @@ ${CRED}restart${CEND} ${CGREEN}作用: 只是相当于重启服务端，不会�
       说明: 如有问题，可以向客服反馈
 ${CEND}
 EOF
+    restart
   }
 
   #    12:gsbak
@@ -210,6 +221,7 @@ ${CRED}gsbak${CEND} ${CGREEN}作用: 开启定时备份，默认是半小时备�
       说明: 如有问题，可以向客服反馈
 ${CEND}
 EOF
+    gsbak
   }
 
   #    13:upcmd
@@ -222,6 +234,7 @@ ${CRED}upcmd${CEND} ${CGREEN}作用: 更新命令，更新上述所有命令，�
       说明: 如有问题，可以向客服反馈
 ${CEND}
 EOF
+    upcmd
   }
 
   #    14:upgm
@@ -234,6 +247,7 @@ ${CRED}upgm${CEND} ${CGREEN}作用: 增加GM网站，需要付费到网站购买
       说明: 如有问题，可以向客服反馈，购买后，上传到 /root 目录下。
 ${CEND}
 EOF
+    upgm
   }
 
   #    15:upow
@@ -246,6 +260,7 @@ ${CRED}upow${CEND} ${CGREEN}作用: 增加官方网站，游戏官网，首页in
       说明: 如有问题，可以向客服反馈
 ${CEND}
 EOF
+    upow
   }
 
   #    16:step
@@ -258,6 +273,7 @@ ${CRED}step${CEND} ${CGREEN}作用: 分步调试命令脚本，需要配合参�
       说明: 如有问题，可以向客服反馈
 ${CEND}
 EOF
+    step
   }
 
   #    17:gstl
@@ -282,6 +298,7 @@ ${CRED}backup${CEND} ${CGREEN}作用: 手动执行备份服务端版本，数据
       说明: 如有问题，可以向客服反馈
 ${CEND}
 EOF
+    backup
   }
 
   #    19:close
@@ -295,6 +312,7 @@ ${CRED}close${CEND} ${CGREEN}作用: 关闭服务端
       说明: 如有问题，可以向客服反馈
 ${CEND}
 EOF
+    close
   }
 
   #    20:gslog
@@ -312,6 +330,7 @@ ${CRED}gslog${CEND} ${CGREEN}作用: 查看调试日志，开启后，/tlgame/tl
       说明: 如有问题，可以向客服反馈
 ${CEND}
 EOF
+    gslog
   }
 
   #    21:rmlog
@@ -324,6 +343,7 @@ ${CRED}rmlog${CEND} ${CGREEN}作用: 删除调试日志，全清除 /tlgame/tlbb
       说明: 如有问题，可以向客服反馈
 ${CEND}
 EOF
+    rmlog
   }
 
   #    22:curgs
@@ -337,6 +357,7 @@ ${CRED}curgs${CEND} ${CGREEN}作用: 查看配置信息，包括端口号，账�
       说明: 如有问题，可以向客服反馈
 ${CEND}
 EOF
+    curgs
   }
 
   #    23:setpoint
@@ -354,6 +375,7 @@ ${CRED}setpoint${CEND} ${CGREEN}作用: 修复注册账号送默认充值点
       说明: 如有问题，可以向客服反馈
 ${CEND}
 EOF
+    setpoint
   }
 
   #    24:reset
@@ -366,6 +388,7 @@ ${CRED}reset${CEND} ${CGREEN}作用: 删档数据库
       说明: 如有问题，可以向客服反馈
 ${CEND}
 EOF
+    reset
   }
 
   #    25:setvalid
@@ -380,6 +403,7 @@ ${CRED}reset${CEND} ${CGREEN}作用: 封号/解封号
       说明: 如有问题，可以向客服反馈
 ${CEND}
 EOF
+    setvalid
   }
 
   #    26:restore
@@ -394,6 +418,7 @@ ${CRED}restore${CEND} ${CGREEN}作用: 使用命令行进行数据库还原操�
       说明: 如有问题，可以向客服反馈
 ${CEND}
 EOF
+    restore
   }
   # 27 delbak
   delbak_help() {
@@ -405,6 +430,7 @@ ${CRED}delbak${CEND} ${CGREEN}作用: 删除备份文件，默认保留最新的
       说明: 默认 gsbak 会1小时备份一次 web tlbbdb库，tlbb版本。delbak会定时删除多余的备份文件，只保留三种备份的各10份最新文件
 ${CEND}
 EOF
+    delbak
   }
   # 28 gsfix
   gsfix_help() {
@@ -416,6 +442,7 @@ ${CRED}gsfix${CEND} ${CGREEN}作用: 修复安装 docker 及 docker-compose 失�
       说明: 
 ${CEND}
 EOF
+    gsfix
   }
 
   # 执行
