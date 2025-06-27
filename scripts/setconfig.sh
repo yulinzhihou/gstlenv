@@ -295,8 +295,10 @@ setconfig_restore() {
     echo -ne "正在还原修改参数之前的数据库与版本请稍候……\r\n"
     if [ -f "/tlgame/tlbb-setconfig-backup.tar.gz" ]; then
         cd /tlgame && tar zxf tlbb-setconfig-backup.tar.gz && mv /tlgame/tlbb-setconfig-backup.tar.gz /tlgame/backup
+        docker exec -d gsmysql /bin/bash /usr/local/bin/gsmysqlRestore.sh
+    else
+        docker exec -d gsmysql /bin/bash /usr/local/bin/gsmysqlRestore.sh reset
     fi
-    docker exec -d gsmysql /bin/bash /usr/local/bin/gsmysqlRestore.sh
 }
 
 change_password() {
