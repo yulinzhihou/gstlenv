@@ -64,7 +64,7 @@ server {
     root   /www/ow;
     index  index.html index.htm default.html default.htm;
 
-    access_log  /var/log/nginx/nginx.ow.access.log  main;
+    #access_log  /var/log/nginx/nginx.ow.access.log  main;
     error_log  /var/log/nginx/nginx.ow.error.log  warn;
     
     error_page   500 502 503 504  /50x.html;

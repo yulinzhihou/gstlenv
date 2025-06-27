@@ -18,6 +18,9 @@ else
 fi
 
 FILE_PATH="/root/.gs/"
+# 数据库密码
+# 当前在使用的数据库密码
+TL_MYSQL_PASSWORD_CURRENT=${TL_MYSQL_PASSWORD}
 
 # 设置配置参数
 setconfig_rebuild() {
@@ -77,7 +80,7 @@ setconfig_rebuild() {
                 fi
 
                 if [[ ${ckStep1} -eq 0 ]]; then
-                    sed -i "s/BILLING_SERVER_IPADDR=.*/BILLING_SERVER_IPADDR=${BILLING_NEW_SERVER_IPADDR}/g" ${GS_WHOLE_PATH}
+                    sed -i "s/BILLING_SERVER_IPADDR=.*/BILLING_SERVER_IPADDR=${BILLING_DEFAULT_SERVER_IPADDR}/g" ${GS_WHOLE_PATH}
                     break
                 else
                     echo -e "${CRED}两次输入的IP不一致，请重新输入${CEND}"
@@ -151,7 +154,7 @@ setconfig_rebuild() {
                     while :; do
                         echo
                         read -e -p "请输入【登录端口】：(默认: ${LOGIN_DEFAULT_PORT}): " LOGIN_NEW_PORT
-                        LOGIN_NEW_PORT=${LOGIN_NEW_PORT:-${LOGIN_PORT}}
+                        LOGIN_NEW_PORT=${LOGIN_NEW_PORT:-${LOGIN_DEFAULT_PORT}}
                         if [ ${LOGIN_NEW_PORT} -eq ${LOGIN_DEFAULT_PORT} -o ${LOGIN_NEW_PORT} -gt 1024 -a ${LOGIN_NEW_PORT} -lt 65535 ] >/dev/null 2>&1 >/dev/null 2>&1 >/dev/null 2>&1; then
                             sed -i "s/LOGIN_PORT=.*/LOGIN_PORT=${LOGIN_NEW_PORT}/g" ${GS_WHOLE_PATH}
                             break
@@ -203,7 +206,7 @@ setconfig_rebuild() {
                     while :; do
                         echo
                         read -e -p "请输入【网站端口】：(默认: ${WEB_DEFAULT_PORT}): " WEB_NEW_PORT
-                        WEB_NEW_PORT=${WEB_NEW_PORT:-${WEB_PORT}}
+                        WEB_NEW_PORT=${WEB_NEW_PORT:-${WEB_DEFAULT_PORT}}
                         if [ ${WEB_NEW_PORT} -eq ${WEB_DEFAULT_PORT} -o ${WEB_NEW_PORT} -gt 1 -a ${WEB_NEW_PORT} -lt 65535 ] >/dev/null 2>&1 >/dev/null 2>&1 >/dev/null 2>&1; then
                             sed -i "s/WEB_PORT=.*/WEB_PORT=${WEB_NEW_PORT}/g" ${GS_WHOLE_PATH}
                             break
@@ -229,7 +232,7 @@ setconfig_rebuild() {
                     while :; do
                         echo
                         read -e -p "请输入【网站端口】：(默认: ${WEB_GM_DEFAULT_PORT}): " WEB_GM_NEW_PORT
-                        WEB_GM_NEW_PORT=${WEB_GM_NEW_PORT:-${WEB_GM_PORT}}
+                        WEB_GM_NEW_PORT=${WEB_GM_NEW_PORT:-${WEB_GM_DEFAULT_PORT}}
                         if [ ${WEB_GM_NEW_PORT} -eq ${WEB_GM_DEFAULT_PORT} -o ${WEB_GM_NEW_PORT} -gt 1 -a ${WEB_GM_NEW_PORT} -lt 65535 ] >/dev/null 2>&1 >/dev/null 2>&1 >/dev/null 2>&1; then
                             sed -i "s/WEB_GM_PORT=.*/WEB_GM_PORT=${WEB_GM_NEW_PORT}/g" ${GS_WHOLE_PATH}
                             break
@@ -255,7 +258,7 @@ setconfig_rebuild() {
                     while :; do
                         echo
                         read -e -p "请输入【数据库密码】(默认: ${TL_MYSQL_DEFAULT_PASSWORD}): " TL_MYSQL_NEW_PASSWORD
-                        TL_MYSQL_NEW_PASSWORD=${TL_MYSQL_NEW_PASSWORD:-${TL_MYSQL_PASSWORD}}
+                        TL_MYSQL_NEW_PASSWORD=${TL_MYSQL_NEW_PASSWORD:-${TL_MYSQL_DEFAULT_PASSWORD}}
                         if ((${#TL_MYSQL_NEW_PASSWORD} >= 5)); then
                             sed -i "s/TL_MYSQL_PASSWORD=.*/TL_MYSQL_PASSWORD=${TL_MYSQL_NEW_PASSWORD}/g" ${GS_WHOLE_PATH}
                             break
@@ -281,7 +284,7 @@ setconfig_rebuild() {
 
 # 备份数据
 setconfig_backup() {
-    echo -ne "正在备份版本数据请稍候……\r"
+    echo -ne "正在备份版本数据请稍候……\r\n"
     [ ! -d /tlgame/backup ] && mkdir /tlgame/backup
     cd /tlgame && tar zcf tlbb-setconfig-backup.tar.gz tlbb &&
         docker exec -d gsmysql /bin/bash /usr/local/bin/gsmysqlBackup.sh
@@ -289,11 +292,11 @@ setconfig_backup() {
 
 # 还原数据
 setconfig_restore() {
-    echo -ne "正在还原修改参数之前的数据库与版本请稍候……\r"
+    echo -ne "正在还原修改参数之前的数据库与版本请稍候……\r\n"
     if [ -f "/tlgame/tlbb-setconfig-backup.tar.gz" ]; then
         cd /tlgame && tar zxf tlbb-setconfig-backup.tar.gz && mv /tlgame/tlbb-setconfig-backup.tar.gz /tlgame/backup
-        docker exec -d gsmysql /bin/bash /usr/local/bin/gsmysqlRestore.sh
     fi
+    docker exec -d gsmysql /bin/bash /usr/local/bin/gsmysqlRestore.sh
 }
 
 change_password() {
@@ -302,53 +305,54 @@ change_password() {
     docker images | grep "gs_mysql51" >/dev/null 2>&1
     if [ $? -eq 0 ]; then
         # 表示为 mysql5.1 版本
-        docker exec -i gsmysql mysql -u root -p"123456" -e "\
+        docker exec -i gsmysql mysql -u root -p"${TL_MYSQL_PASSWORD_CURRENT}" -e "\
         SET PASSWORD FOR 'root'@'localhost' = PASSWORD('$TL_MYSQL_PASSWORD'); \
         SET PASSWORD FOR 'root'@'%' = PASSWORD('$TL_MYSQL_PASSWORD'); \
         FLUSH PRIVILEGES;" >/dev/null 2>&1
 
-        echo -e "${CYELLOW}验证密码修改...${CEND}"
-        docker exec -i gsmysql mysql -u root -p"$TL_MYSQL_PASSWORD" -e "STATUS;" >/dev/null 2>&1
+        echo -ne "${CYELLOW}验证密码修改...${CEND}\r\n"
         if [ $? -eq 0 ]; then
-            echo "✅ 密码修改成功！新密码已生效。"
+            echo "✅ gsmysql51密码修改成功！新密码已生效。"
+            exit 0
         else
-            echo "❌ 密码修改失败，请检查日志：docker logs gsmysql"
+            echo "❌ gsmysql51密码修改失败，请检查日志：docker logs gsmysql"
+            return 1
         fi
     fi
 
     docker images | grep "gs_mysql57" >/dev/null 2>&1
     if [ $? -eq 0 ]; then
         # 表示为 mysql5.7 版本
-        docker exec -i gsmysql mysql -u root -p"123456" -e "\
+        docker exec -i gsmysql mysql -u root -p"${TL_MYSQL_PASSWORD_CURRENT}" -e "\
         ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '$TL_MYSQL_PASSWORD'; \
         ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY '$TL_MYSQL_PASSWORD'; \
         FLUSH PRIVILEGES;" >/dev/null 2>&1
 
-        echo "验证密码修改..."
-        docker exec -i gsmysql mysql -u root -p"$TL_MYSQL_PASSWORD" -e "STATUS;" >/dev/null 2>&1
-
+        echo -ne "${CYELLOW}验证密码修改...${CEND}\r\n"
         if [ $? -eq 0 ]; then
-            echo "✅ 密码修改成功！新密码已生效。"
+            echo "✅ gsmysql57密码修改成功！新密码已生效。"
+            return 0
         else
-            echo "❌ 密码修改失败，请检查日志：docker logs gsmysql"
+            echo "❌ gsmysql57密码修改失败，请检查日志：docker logs gsmysql"
+            return 1
         fi
     fi
 
     docker images | grep "gs_mysql80" >/dev/null 2>&1
     if [ $? -eq 0 ]; then
         # 表示为 mysql8.0 版本
-        docker exec -i gsmysql mysql -u root -p"123456" -e "\
-        ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '$TL_MYSQL_PASSWORD'; \
-        ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY '$TL_MYSQL_PASSWORD'; \
+        docker exec -i gsmysql mysql -u root -p"${TL_MYSQL_PASSWORD_CURRENT}" -e "\
+        ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '${TL_MYSQL_PASSWORD}'; \
+        ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY '${TL_MYSQL_PASSWORD}'; \
         FLUSH PRIVILEGES;" >/dev/null 2>&1
 
-        echo "验证密码修改..."
-        docker exec -i gsmysql mysql -u root -p"$TL_MYSQL_PASSWORD" -e "STATUS;" >/dev/null 2>&1
-
+        echo -ne "${CYELLOW}验证密码修改...${CEND}\r\n"
         if [ $? -eq 0 ]; then
-            echo "✅ 密码修改成功！新密码已生效。"
+            echo "✅ gsmysql80密码修改成功！新密码已生效。"
+            return 0
         else
-            echo "❌ 密码修改失败，请检查日志：docker logs gsmysql"
+            echo "❌ gsmysql80密码修改失败，请检查日志：docker logs gsmysql"
+            return 1
         fi
     fi
 }
@@ -372,15 +376,7 @@ main() {
             . /root/.gs/.env
             if [ "${IS_MODIFY}" == 'y' ]; then
                 # 备份数据
-                setconfig_backup &&
-                    # 设置参数
-                    setconfig_rebuild &&
-                    # 开环境
-                    cd ${ROOT_PATH}/${GSDIR} && docker-compose up -d &&
-                    # 还原数据
-                    setconfig_restore &&
-                    # 修改密码
-                    change_password
+                setconfig_backup
 
                 if [ ! -d /tlgame/tlbb/Server/Config ]; then
                     echo -e "${CSUCCESS}未发现版本，请上传版本后依次执行 【 untar 】【 setini 】【 runtlbb 】进行开服！！${CEND}"
@@ -388,16 +384,17 @@ main() {
                 else
                     setini
                 fi
-            else
-                # 设置参数
-                setconfig_rebuild &&
-                    # 开环境
-                    cd ${ROOT_PATH}/${GSDIR} && docker-compose up -d &&
-                    # 修改密码
-                    change_password &&
-                    rm -rf /tlgame/tlbb-setconfig-backup.tar.gz &&
-                    docker exec -it gsmysql /bin/bash /usr/local/bin/gsmysqlRestore.sh reset
             fi
+            # 设置参数
+            setconfig_rebuild &&
+                # 开环境
+                cd ${ROOT_PATH}/${GSDIR} && docker-compose up -d &&
+                # 还原数据
+                setconfig_restore &&
+                # 修改密码
+                change_password &&
+                rm -rf /tlgame/tlbb-setconfig-backup.tar.gz &&
+                docker exec -it gsmysql /bin/bash /usr/local/bin/gsmysqlRestore.sh reset >/dev/null 2>&1
             break
         fi
     done
