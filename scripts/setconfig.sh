@@ -80,13 +80,15 @@ setconfig_rebuild() {
                 fi
 
                 if [[ ${ckStep1} -eq 0 ]]; then
-                    sed -i "s/BILLING_SERVER_IPADDR=.*/BILLING_SERVER_IPADDR=${BILLING_DEFAULT_SERVER_IPADDR}/g" ${GS_WHOLE_PATH}
+                    sed -i "s/BILLING_SERVER_IPADDR=.*/BILLING_SERVER_IPADDR=${BILLING_NEW_SERVER_IPADDR}/g" ${GS_WHOLE_PATH}
                     break
                 else
                     echo -e "${CRED}两次输入的IP不一致，请重新输入${CEND}"
                     exit 1
                 fi
             done
+        else
+            sed -i "s/BILLING_SERVER_IPADDR=.*/BILLING_SERVER_IPADDR=${BILLING_DEFAULT_SERVER_IPADDR}/g" ${GS_WHOLE_PATH}
         fi
 
         # 配置BILLING_PORT
@@ -285,17 +287,20 @@ setconfig_rebuild() {
 # 备份数据
 setconfig_backup() {
     echo -ne "正在备份版本数据请稍候……\r\n"
-    [ ! -d /tlgame/backup ] && mkdir /tlgame/backup
     cd /tlgame && tar zcf tlbb-setconfig-backup.tar.gz tlbb &&
-        docker exec -d gsmysql /bin/bash /usr/local/bin/gsmysqlBackup.sh
+        docker exec -d gsmysql /bin/bash /usr/local/bin/gsmysqlBackup.sh &&
+        mv /tlgame/backup/web-*.sql /root/ &&
+        mv /tlgame/backup/tlbbdb-*.sql /root/ &&
+        mv /tlgame/*.tar.gz /root/
 }
 
 # 还原数据
 setconfig_restore() {
     echo -ne "正在还原修改参数之前的数据库与版本请稍候……\r\n"
-    if [ -f "/tlgame/tlbb-setconfig-backup.tar.gz" ]; then
-        cd /tlgame && tar zxf tlbb-setconfig-backup.tar.gz && mv /tlgame/tlbb-setconfig-backup.tar.gz /tlgame/backup
-        docker exec -d gsmysql /bin/bash /usr/local/bin/gsmysqlRestore.sh
+    if [ -f "/root/tlbb-setconfig-backup.tar.gz" ]; then
+        cd /root && tar zxf tlbb-setconfig-backup.tar.gz -C /tlgame && mv /root/tlbb-setconfig-backup.tar.gz /tlgame/backup &&
+            mv /root/*.sql /tlgame/backup &&
+            docker exec -d gsmysql /bin/bash /usr/local/bin/gsmysqlRestore.sh
     else
         docker exec -d gsmysql /bin/bash /usr/local/bin/gsmysqlRestore.sh reset
     fi
