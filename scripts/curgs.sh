@@ -24,6 +24,8 @@ ${CYELLOW}
 ◎           
 ◎  GS游戏享网服务器环境 gstlenv
 ◎           
+◎  欢迎使用【GS游享环境】 当前版本：${VERSION} 更新时间：${UPDATE} ！！！${CEND}"
+◎           
 ◎  环境开源免费，无后门，无劫持，防泄漏，完全可靠
 ◎  环境教程文字：https://gitee.com/yulinzhihou/gstlenv
 ◎  环境视频教程：https://gsgameshare.com/deploy/1.html
@@ -31,7 +33,8 @@ ${CYELLOW}
 ◎  环境命令文档：https://gsgameshare.com/deploy/28.html
 ◎  环境常见问题：https://gitee.com/yulinzhihou/gstlenv/issues
 ◎           
-◎ 【curgs】此命令只用于查看当前配置信息，不作任何修改。如需要重新设置，请执行【 setconfig 】命令
+◎ 【 curgs 】此命令只用于查看当前配置信息，不作任何修改。如需要重新设置，请执行【 setconfig 】命令
+◎ 【 gs 】获取帮助，请输入此命令
 ◎           
 ※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※
 ◎           

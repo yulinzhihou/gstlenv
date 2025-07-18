@@ -27,7 +27,8 @@ if [ $? -eq 0 ]; then
   }
 
   function main() {
-    cd ${ROOT_PATH}/${GSDIR} && docker-compose down &&
+    cd ${ROOT_PATH}/${GSDIR} &&
+      docker-compose down &&
       rm -rf /tlgame/gsmysql/mysql &&
       rm -rf /tlgame/tlbb/* &&
       untar &&

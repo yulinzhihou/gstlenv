@@ -52,7 +52,9 @@ if [ $? -eq 0 ]; then
     if [ ${IS_DLQ} -eq 0 ]; then
         cat ${GS_PROJECT_PATH}/tlbb/run.sh | grep "cd /home/billing && ./billing up -d" >/dev/null 2>&1
         if [ $? -eq 1 ]; then
-            echo "cd /home/billing && ./billing up -d" >>${GS_PROJECT_PATH}/tlbb/run.sh
+            echo -ne "\r\n" >>${GS_PROJECT_PATH}/tlbb/run.sh
+            echo -ne "\r\ncd /home/billing && ./billing up -d\r\n" >>${GS_PROJECT_PATH}/tlbb/run.sh
+            echo -ne "\r\n" >>${GS_PROJECT_PATH}/tlbb/run.sh
         fi
     fi
     # 解压配置文件，根据服务端程序，进行生成 启动脚本 run.sh
