@@ -29,10 +29,12 @@ if [ $? -eq 0 ]; then
   function main() {
     cd ${ROOT_PATH}/${GSDIR} &&
       docker-compose down &&
-      rm -rf /tlgame/gsmysql/mysql &&
+      sleep 10 &&
+      rm -rf /tlgame/gsmysql/* &&
       rm -rf /tlgame/tlbb/* &&
-      untar &&
       docker-compose up -d &&
+      sleep 10 &&
+      untar &&
       init_mysql &&
       setini &&
       runtlbb
@@ -59,7 +61,8 @@ if [ $? -eq 0 ]; then
     done
     echo -ne "\r\n"
     echo -ne "${CYELLOW}正在重构环境，换版本…………${CEND}\r\n"
-    backup_tlbb && main
+    backup_tlbb 
+    main
   done
 else
   echo -e "${GSISSUE}\r\n"
