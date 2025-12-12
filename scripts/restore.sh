@@ -1,4 +1,7 @@
 #!/usr/bin/env sh
+# 设置字符编码，确保中文正常显示
+export LANG=C.UTF-8
+export LC_ALL=C.UTF-8
 # Author: yulinzhihou <yulinzhihou@gmail.com>
 # Forum:  https://gsgamesahre.com
 # Project: https://github.com/yulinzhihou/gstlenv.git
