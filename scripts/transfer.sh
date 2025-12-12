@@ -44,8 +44,13 @@ if [ $? -eq 0 ]; then
     docker exec -d gsmysql /bin/bash /usr/local/bin/init_db.sh
   }
 
-  main_transfer() {
-    cat <<EOF
+  # 切换 docker-compose 文件
+  switch_compose_file() {
+    local env_index=$1
+    
+    # 如果没有提供参数，则交互式输入
+    if [ -z "$env_index" ]; then
+      cat <<EOF
 ${CYELLOW}
 ※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※
 ◎           
@@ -59,44 +64,60 @@ ${CYELLOW}
 ※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※
 ${CEND}
 EOF
+      read -e -p "请输入你需要安装的环境编号【默认不输入则为1，直接回车即可】(默认: ${DEFAULT_ENV_INDEX}): " env_index
+      env_index=${env_index:-${DEFAULT_ENV_INDEX}}
+    fi
 
-    read -e -p "请输入你需要安装的环境编号【默认不输入则为1，直接回车即可】(默认: ${DEFAULT_ENV_INDEX}): " DEFAULT_ENV_INDEX
-
-    # 解压防线安装包
+    # 切换 docker-compose 文件
     if [ -d ${GS_PROJECT} ]; then
-      # 部署脚本
-      case "${DEFAULT_ENV_INDEX}" in
+      case "${env_index}" in
       '01' | '1')
+        echo -e "${CYELLOW}正在切换到 docker-compose.yml (Centos 6 + Mysql5.1)${CEND}"
         \cp -rf ${GS_PROJECT}/docker-compose.yml /root/.gs/docker-compose.yml &&
           . ${GS_WHOLE_PATH} &&
           chmod -R 777 ${GS_PROJECT}
         ;;
       '02' | '2')
+        echo -e "${CYELLOW}正在切换到 docker-compose751.yml (Centos 7 + Mysql5.1)${CEND}"
         \cp -rf ${GS_PROJECT}/docker-compose751.yml /root/.gs/docker-compose.yml &&
           . ${GS_WHOLE_PATH} &&
           chmod -R 777 ${GS_PROJECT}
         ;;
       '03' | '3')
+        echo -e "${CYELLOW}正在切换到 docker-compose757.yml (Centos 7 + Mysql5.7)${CEND}"
         \cp -rf ${GS_PROJECT}/docker-compose757.yml /root/.gs/docker-compose.yml &&
           . ${GS_WHOLE_PATH} &&
           chmod -R 777 ${GS_PROJECT}
         ;;
       '04' | '4')
+        echo -e "${CYELLOW}正在切换到 docker-compose980.yml (Centos 9 + Mysql8.0)${CEND}"
         \cp -rf ${GS_PROJECT}/docker-compose980.yml /root/.gs/docker-compose.yml &&
           . ${GS_WHOLE_PATH} &&
           chmod -R 777 ${GS_PROJECT}
         ;;
       *)
+        echo -e "${CWARNING}输入的环境编号无效，使用默认配置 docker-compose.yml${CEND}"
         \cp -rf ${GS_PROJECT}/docker-compose.yml /root/.gs/docker-compose.yml &&
           . ${GS_WHOLE_PATH} &&
           chmod -R 777 ${GS_PROJECT}
         ;;
       esac
+      
+      if [ $? -eq 0 ]; then
+        echo -e "${CSUCCESS}docker-compose 文件切换成功！${CEND}"
+        return 0
+      else
+        echo -e "${CRED}docker-compose 文件切换失败！${CEND}"
+        return 1
+      fi
     else
       echo -e "${CRED}环境不存在，请先安装环境！${CEND}"
-      exit 1
+      return 1
     fi
   }
+
+  # 获取命令行参数（如果提供）
+  ENV_INDEX=$1
 
   while :; do
     echo
@@ -106,19 +127,65 @@ EOF
     done
     echo -ne "\r\n"
     echo -ne "${CYELLOW}正在重构，数据不会清除……${CEND}\r\n"
-    #重构前，先备份数据库以及版本数据。
-    setconfig_backup &&
-      cd ${ROOT_PATH}/${GSDIR} &&
-      docker-compose down &&
-      rm -rf /tlgame/gsmysql/mysql &&
-      rm -rf /tlgame/tlbb/* &&
-      cd ${ROOT_PATH}/${GSDIR} &&
-      docker-compose up -d &&
-      setconfig_restore &&
-      init_mysql &&
-      main_transfer
-    if [ $? -eq 0 ]; then
+    
+    # 重构前，先备份数据库以及版本数据
+    setconfig_backup || {
+      echo -e "${CRED}备份失败！${CEND}"
+      exit 1
+    }
+    
+    # 停止容器
+    cd ${ROOT_PATH}/${GSDIR} &&
+      docker-compose down || {
+        echo -e "${CRED}停止容器失败！${CEND}"
+        exit 1
+      }
+    
+    # 切换 docker-compose 文件（在启动容器之前）
+    switch_compose_file "${ENV_INDEX}" || {
+      echo -e "${CRED}切换 docker-compose 文件失败！${CEND}"
+      exit 1
+    }
+    
+    # 重新加载环境变量
+    if [ -f ${GS_WHOLE_PATH} ]; then
+      . ${GS_WHOLE_PATH}
+    fi
+    
+    # 清理数据（可选，根据需求决定是否删除）
+    # rm -rf /tlgame/gsmysql/mysql
+    # rm -rf /tlgame/tlbb/*
+    
+    # 使用新的 docker-compose 文件启动容器
+    cd ${ROOT_PATH}/${GSDIR} &&
+      docker-compose up -d || {
+        echo -e "${CRED}启动容器失败！${CEND}"
+        exit 1
+      }
+    
+    # 等待容器启动
+    sleep 10
+    
+    # 还原数据
+    RESTORE_RESULT=0
+    setconfig_restore || {
+      echo -e "${CWARNING}数据还原失败，但容器已启动！${CEND}"
+      RESTORE_RESULT=1
+    }
+    
+    # 初始化 MySQL
+    INIT_RESULT=0
+    init_mysql || {
+      echo -e "${CWARNING}MySQL 初始化失败，但容器已启动！${CEND}"
+      INIT_RESULT=1
+    }
+    
+    # 检查整体执行结果
+    if [ $RESTORE_RESULT -eq 0 ] && [ $INIT_RESULT -eq 0 ]; then
       echo -e "${CSUCCESS}环境已经重构成功，请上传服务端到指定位置，然后再开服操作！！可以重新上传服务端进行【untar】【setini】【runtlbb】进行开服操作！！${CEND}"
+      exit 0
+    elif [ $RESTORE_RESULT -eq 0 ] || [ $INIT_RESULT -eq 0 ]; then
+      echo -e "${CWARNING}环境重构部分成功，容器已启动，但部分操作失败，请检查日志！${CEND}"
       exit 0
     else
       echo -e "${GSISSUE}\r\n"
