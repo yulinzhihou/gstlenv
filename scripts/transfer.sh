@@ -135,13 +135,36 @@ EOF
     }
     
     # 停止容器
+    echo -e "${CYELLOW}正在停止容器……${CEND}"
     cd ${ROOT_PATH}/${GSDIR} &&
-      docker-compose down || {
+      docker-compose down --remove-orphans || {
         echo -e "${CRED}停止容器失败！${CEND}"
         exit 1
       }
     
+    # 等待容器完全停止
+    echo -e "${CYELLOW}等待容器完全停止……${CEND}"
+    sleep 3
+    
+    # 检查容器是否真的停止了
+    RUNNING_CONTAINERS=$(docker ps --format "{{.Names}}" | grep -E "(gsserver|gsmysql|gsnginx|gsphp|gsredis)" 2>/dev/null || true)
+    if [ -n "$RUNNING_CONTAINERS" ]; then
+      echo -e "${CWARNING}检测到仍有容器在运行，强制停止……${CEND}"
+      echo "$RUNNING_CONTAINERS" | while read container; do
+        [ -n "$container" ] && docker stop "$container" 2>/dev/null || true
+      done
+      ALL_CONTAINERS=$(docker ps -a --format "{{.Names}}" | grep -E "(gsserver|gsmysql|gsnginx|gsphp|gsredis)" 2>/dev/null || true)
+      if [ -n "$ALL_CONTAINERS" ]; then
+        echo "$ALL_CONTAINERS" | while read container; do
+          [ -n "$container" ] && docker rm -f "$container" 2>/dev/null || true
+        done
+      fi
+      sleep 2
+    fi
+    
     # 切换 docker-compose 文件（在启动容器之前）
+    # 如果用户没有提供参数，这里会等待用户输入
+    echo -e "${CYELLOW}准备切换 docker-compose 配置文件……${CEND}"
     switch_compose_file "${ENV_INDEX}" || {
       echo -e "${CRED}切换 docker-compose 文件失败！${CEND}"
       exit 1
