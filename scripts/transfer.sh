@@ -25,7 +25,10 @@ if [ $? -eq 0 ]; then
   setconfig_backup() {
     echo -ne "正在备份版本数据请稍候……\r\n"
     cd /tlgame && tar zcf tlbb-setconfig-backup.tar.gz tlbb &&
-      docker exec -d gsmysql /bin/bash /usr/local/bin/gsmysqlBackup.sh
+      docker exec -d gsmysql /bin/bash /usr/local/bin/gsmysqlBackup.sh &&
+          # 清理数据（可选，根据需求决定是否删除）
+       rm -rf /tlgame/gsmysql/mysql &&
+        rm -rf /tlgame/tlbb/*
   }
 
   # 还原数据
@@ -175,9 +178,6 @@ EOF
       . ${GS_WHOLE_PATH}
     fi
     
-    # 清理数据（可选，根据需求决定是否删除）
-    # rm -rf /tlgame/gsmysql/mysql
-    # rm -rf /tlgame/tlbb/*
     
     # 使用新的 docker-compose 文件启动容器
     cd ${ROOT_PATH}/${GSDIR} &&
