@@ -5,3 +5,4 @@ workspace
 .DS_Store
 push.sh
 tag.sh
+sh

@@ -276,6 +276,32 @@ setconfig_rebuild() {
                 break
             fi
         done
+
+        # 修改Redis密码
+        while :; do
+            echo
+            read -e -p "当前【Redis密码】为：${CYELLOW}[${REDIS_PASSWORD}]${CEND}，是否需要修改【Redis密码】 [y/n](默认: n): " IS_MODIFY
+            IS_MODIFY=${IS_MODIFY:-'n'}
+            if [[ ! ${IS_MODIFY} =~ ^[y,n]$ ]]; then
+                echo "${CWARNING}输入错误! 请输入 'y' 或者 'n',当前【Redis密码】为：[${REDIS_PASSWORD}]${CEND}"
+            else
+                if [ "${IS_MODIFY}" == 'y' ]; then
+                    while :; do
+                        echo
+                        read -e -p "请输入【Redis密码】(默认: ${REDIS_DEFAULT_PASSWORD}): " REDIS_NEW_PASSWORD
+                        REDIS_NEW_PASSWORD=${REDIS_NEW_PASSWORD:-${REDIS_DEFAULT_PASSWORD}}
+                        if ((${#REDIS_NEW_PASSWORD} >= 1)); then
+                            sed -i "s/REDIS_PASSWORD=.*/REDIS_PASSWORD=${REDIS_NEW_PASSWORD}/g" ${GS_WHOLE_PATH}
+                            break
+                        else
+                            echo "${CRED}密码不能为空! ${CEND}"
+                            exit 1
+                        fi
+                    done
+                fi
+                break
+            fi
+        done
         echo "${CYELLOW}请稍等，正在写入配置信息……${CEND}"
         chattr +i ${GS_WHOLE_PATH}
     else

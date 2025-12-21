@@ -55,9 +55,21 @@ if [ $? -eq 0 ]; then
     if [ ${IS_DLQ} -eq 0 ]; then
         cat ${GS_PROJECT_PATH}/tlbb/run.sh | grep "cd /home/billing && ./billing up -d" >/dev/null 2>&1
         if [ $? -eq 1 ]; then
-            echo -ne "\r\n" >>${GS_PROJECT_PATH}/tlbb/run.sh
-            echo -ne "\r\ncd /home/billing && ./billing up -d\r\n" >>${GS_PROJECT_PATH}/tlbb/run.sh
-            echo -ne "\r\n" >>${GS_PROJECT_PATH}/tlbb/run.sh
+            # 确保文件末尾有换行符，避免命令被直接拼接到上一行（如 fi 后面）
+            if [ -f ${GS_PROJECT_PATH}/tlbb/run.sh ] && [ -s ${GS_PROJECT_PATH}/tlbb/run.sh ]; then
+                # 检查文件最后一个字符是否是换行符
+                # 使用最简单可靠的方法：读取最后一个字节并检查
+                LAST_BYTE=$(tail -c 1 ${GS_PROJECT_PATH}/tlbb/run.sh 2>/dev/null | od -An -tu1 | tr -d ' \n')
+                # 如果最后一个字节不是 10（LF换行符）或 13（CR），说明没有换行符，需要添加
+                if [ -n "$LAST_BYTE" ] && [ "$LAST_BYTE" != "10" ] && [ "$LAST_BYTE" != "13" ]; then
+                    # 如果最后一个字符不是换行符，则先添加一个换行符
+                    printf '\n' >>${GS_PROJECT_PATH}/tlbb/run.sh
+                fi
+            fi
+            # 追加新的命令（使用 echo 确保有换行符）
+            echo "" >>${GS_PROJECT_PATH}/tlbb/run.sh
+            echo "cd /home/billing && ./billing up -d" >>${GS_PROJECT_PATH}/tlbb/run.sh
+            echo "" >>${GS_PROJECT_PATH}/tlbb/run.sh
         fi
     fi
     # 解压配置文件，根据服务端程序，进行生成 启动脚本 run.sh
@@ -299,6 +311,25 @@ pc_max_client_count: 3
 bill_type: ${BILLING_GAME_SRC}
 
 EOF
+
+    # 配置 Redis 密码
+    REDIS_CONF_FILE="${GS_PROJECT_PATH}/conf.d/redis.conf"
+    if [ -f "${REDIS_CONF_FILE}" ]; then
+        # 替换 Redis 密码配置
+        # 处理多种可能的格式：# requirepass foobared, #requirepass foobared, requirepass xxx 等
+        if grep -qE "^[[:space:]]*#?[[:space:]]*requirepass" "${REDIS_CONF_FILE}" 2>/dev/null; then
+            # 如果存在 requirepass（无论是否注释），取消注释并替换密码
+            # 先处理带空格的注释格式：# requirepass
+            sed -i "s/^[[:space:]]*#[[:space:]]*requirepass[[:space:]]*.*/requirepass ${REDIS_PASSWORD}/g" "${REDIS_CONF_FILE}" 2>/dev/null
+            # 再处理不带空格的注释格式：#requirepass
+            sed -i "s/^[[:space:]]*#requirepass[[:space:]]*.*/requirepass ${REDIS_PASSWORD}/g" "${REDIS_CONF_FILE}" 2>/dev/null
+            # 最后处理未注释的格式：requirepass
+            sed -i "s/^[[:space:]]*requirepass[[:space:]]*.*/requirepass ${REDIS_PASSWORD}/g" "${REDIS_CONF_FILE}" 2>/dev/null
+        else
+            # 如果不存在 requirepass 配置，添加新的配置
+            echo "requirepass ${REDIS_PASSWORD}" >> "${REDIS_CONF_FILE}"
+        fi
+    fi
 
     if [ ! -d /tlgame/tlbb/Server ]; then
         echo -e "${GSISSUE}\r\n"
