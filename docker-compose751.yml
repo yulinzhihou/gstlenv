@@ -70,7 +70,7 @@ services:
       - "${REDIS_HOST_PORT}:6379"
     volumes:
       - ${SHARED_DIR}/redis:/data/:rw
-       - ${SHARED_DIR}/conf.d/:/usr/local/etc/redis/:rw
+       - ${SHARED_DIR}/redis/:/usr/local/etc/redis/:rw
     restart: always
     environment:
       TZ: "$TZ"

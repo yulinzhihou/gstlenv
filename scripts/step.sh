@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
 # 设置字符编码，确保中文正常显示
-export LANG=C.UTF-8
-export LC_ALL=C.UTF-8
+# 尝试设置 locale，如果失败则静默处理（不显示警告）
+# 使用命令块包裹并重定向所有错误输出，彻底屏蔽警告信息
+{
+    export LANG=C.UTF-8 2>/dev/null || export LANG=en_US.UTF-8 2>/dev/null || export LANG=POSIX 2>/dev/null || true
+    export LC_ALL=C.UTF-8 2>/dev/null || export LC_ALL=en_US.UTF-8 2>/dev/null || export LC_ALL=POSIX 2>/dev/null || true
+} 2>/dev/null
 # Author: yulinzhihou <yulinzhihou@gmail.com>
 # Forum:  https://gsgamesahre.com
 # Project: https://github.com/yulinzhihou/gstlenv.git
@@ -130,9 +134,9 @@ parse_run_sh() {
                 for existing in "${steps[@]}"; do
                     if [[ "$existing" == "$full_cmd" ]]; then
                         exists=1
-                        break
-                    fi
-                done
+        break
+    fi
+done
                 
                 if [ $exists -eq 0 ]; then
                     steps+=("$full_cmd")
@@ -218,7 +222,7 @@ main() {
         echo -e "${GSISSUE}\r\n"
         exit 1
     fi
-    
+
     # 解析 run.sh 文件
     echo -e "${CYELLOW}正在解析 run.sh 文件...${CEND}"
     local steps=()
@@ -230,7 +234,7 @@ main() {
         echo -e "${CRED}错误：无法从 run.sh 中解析出启动命令！${CEND}"
         exit 1
     fi
-    
+
     # 检查是否有 billing
     local has_billing=0
     if [ -d "/home/billing" ]; then
@@ -318,7 +322,7 @@ main() {
                     local cmd="${steps[$((actual_step - 1))]}"
                     local step_name=$(get_step_name "$cmd")
                     run_step_from_runsh "$num" "$cmd" "$step_name"
-                    break
+                break
                 else
                     echo -e "${CRED}输入错误！请输入有效的步骤编号！${CEND}"
                 fi

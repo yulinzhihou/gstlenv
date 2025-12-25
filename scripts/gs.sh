@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
 # 设置字符编码，确保中文正常显示
-export LANG=C.UTF-8
-export LC_ALL=C.UTF-8
+# 尝试设置 locale，如果失败则静默处理（不显示警告）
+# 使用命令块包裹并重定向所有错误输出，彻底屏蔽警告信息
+{
+    export LANG=C.UTF-8 2>/dev/null || export LANG=en_US.UTF-8 2>/dev/null || export LANG=POSIX 2>/dev/null || true
+    export LC_ALL=C.UTF-8 2>/dev/null || export LC_ALL=en_US.UTF-8 2>/dev/null || export LC_ALL=POSIX 2>/dev/null || true
+} 2>/dev/null
 # Author: yulinzhihou <yulinzhihou@gmail.com>
 # Forum:  https://gsgamesahre.com
 # Project: https://github.com/yulinzhihou/gstlenv.git
@@ -62,6 +66,7 @@ ${CYELLOW}###########################################
 #    26:restore    还原数据库             
 #    27:delbak     删除备份文件           
 #    28:gsfix      修复环境安装           
+#    29:logbak     定时备份日志文件       
 #    0:q 退出,或者按 CTRL+C               
 ###########################################${CEND}
 EFF
@@ -447,6 +452,27 @@ ${CEND}
 EOF
     gsfix
   }
+  # 29 logbak
+  logbak_help() {
+    cat <<EOF
+${CRED}logbak${CEND} ${CGREEN}作用: 定时备份日志文件，默认1小时备份一次，保留10份
+      用法: logbak
+      用法: logbak cron [间隔小时] [保留份数]
+      描述: 手动执行备份日志，或设置定时备份任务
+      条件: 无
+      参数: 无参数时，手动执行备份（使用默认值：1小时间隔，保留10份）
+            参数1: cron 或 setup，表示设置定时任务
+            参数2: 备份间隔时间（小时），范围 1-24，默认 1
+            参数3: 保留份数，范围 1-30，默认 10
+      示例: logbak                    # 手动备份一次
+            logbak cron 1 10          # 设置定时任务：1小时备份一次，保留10份
+            logbak cron 2 20           # 设置定时任务：2小时备份一次，保留20份
+      说明: 备份目录在 /tlgame/tlbb/logbak，日志目录在 /tlgame/tlbb/Server/Log
+            开服时会自动启动日志备份定时任务
+${CEND}
+EOF
+    logbak
+  }
 
   # 执行
   if [ ! -z $1 ]; then
@@ -531,6 +557,12 @@ EOF
       ;;
     '27' | 'delbak')
       delbak_help
+      ;;
+    '28' | 'gsfix')
+      gsfix_help
+      ;;
+    '29' | 'logbak')
+      logbak_help
       ;;
     '0' | '00' | 'q' | 'Q')
       break
@@ -628,19 +660,22 @@ EOF
         '26' | 'restore')
           restore_help
           ;;
-        '27' | 'delbak')
-          delbak_help
-          ;;
-        '28' | 'gsfix')
-          gsfix_help
-          ;;
-        '0' | '00' | 'q' | 'Q')
-          break
-          ;;
-        *)
-          show_help
-          ;;
-        esac
+    '27' | 'delbak')
+      delbak_help
+      ;;
+    '28' | 'gsfix')
+      gsfix_help
+      ;;
+    '29' | 'logbak')
+      logbak_help
+      ;;
+    '0' | '00' | 'q' | 'Q')
+      break
+      ;;
+    *)
+      show_help
+      ;;
+    esac
       fi
     done
   fi

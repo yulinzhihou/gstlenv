@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
 # 设置字符编码，确保中文正常显示
-export LANG=C.UTF-8
-export LC_ALL=C.UTF-8
+# 尝试设置 locale，如果失败则静默处理（不显示警告）
+# 使用命令块包裹并重定向所有错误输出，彻底屏蔽警告信息
+{
+    export LANG=C.UTF-8 2>/dev/null || export LANG=en_US.UTF-8 2>/dev/null || export LANG=POSIX 2>/dev/null || true
+    export LC_ALL=C.UTF-8 2>/dev/null || export LC_ALL=en_US.UTF-8 2>/dev/null || export LC_ALL=POSIX 2>/dev/null || true
+} 2>/dev/null
 # Author: yulinzhihou <yulinzhihou@gmail.com>
 # Forum:  https://gsgamesahre.com
 # Project: https://github.com/yulinzhihou/gstlenv.git
@@ -68,6 +72,16 @@ if [ $? -eq 0 ]; then
       # 删除因为改版本导致引擎启动失败的dump文件
       # gsbak
       cd ${ROOT_PATH}/${GSDIR} && rm -rf core.*
+      
+      # 启动日志备份定时任务
+      if [ -f /usr/local/bin/logbak ]; then
+        /bin/bash /usr/local/bin/logbak cron 1 10 >/dev/null 2>&1
+        echo -e "${CYELLOW}已自动启动日志备份定时任务，默认1小时备份一次，保留10份${CEND}"
+      elif [ -f ${GS_PROJECT}/scripts/logbak.sh ]; then
+        /bin/bash ${GS_PROJECT}/scripts/logbak.sh cron 1 10 >/dev/null 2>&1
+        echo -e "${CYELLOW}已自动启动日志备份定时任务，默认1小时备份一次，保留10份${CEND}"
+      fi
+      
       echo -e "${CSUCCESS}已经成功启动服务端，请耐心等待几分钟后，建议使用：【runtop】查看开服的情况！！${CEND}"
       echo -e "${CWARNING}如果需要定时备份，请执行【gsbak】命令，默认1小时备份一次数据库和版本，保留10次备份数据！！${CEND}"
       exit 0
